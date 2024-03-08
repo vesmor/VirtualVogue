@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
+
 const Signup = () => {
+  const [login, setLogin] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,7 +31,32 @@ const Signup = () => {
     console.log("PASSWORD DOESN'T MEET CRITERIA");
   } else {
     console.log("ALL FIELDS ARE CORRECT!");
-    // Proceed with registration
+
+
+    var obj = {login:login, password:password, firstName: firstName, lastName: lastName, email: email};
+    var js = JSON.stringify(obj);
+    try
+    {
+      const response = await fetch('http://localhost:5001/api/Register',{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+      var res = JSON.parse(await response.text());
+      if( res.id <= 0 )
+      {
+        console.log('User/Password combination incorrect');
+      }
+      else
+      {
+        alert("SUCCESS!!");
+        var user = {login:res.login, password:res.password, firstName:res.firstName, lastName:res.lastName, email: res.email, id:res.id}
+        localStorage.setItem('user_data', JSON.stringify(user));
+        window.location.href = '/home';
+      }
+    }
+    catch(e)
+    {
+    alert(e.toString());
+    return;
+    }
+    
   }
   };
 
@@ -37,6 +64,14 @@ const Signup = () => {
     <div id="loginDiv">
       <form onSubmit={doRegister}>
         <span id="inner-title">PLEASE SIGN UP</span>
+        <br />
+        <input
+          type="text"
+          id="idLogin"
+          placeholder="Login"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+        />
         <br />
         <input
           type="text"
