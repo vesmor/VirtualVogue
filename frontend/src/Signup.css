@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Lemands';
+    src: url('./fonts/lemands/Lemands.ttf');
+  }
+.signupButtonsPage {
+    background-color: #342A21;
+}
+
+.signup-form {
+    font-family: 'Roboto';
+    color: rgba(52, 42, 33, 0.7);
+  }
+
+  .signupTitle {
+    color: rgba(52, 42, 33, 1);
+    font-family: 'Lemands';
+  }
+  
+  .signup-form input[type="text"],
+  .signup-form input[type="text"]::placeholder,
+  .signup-form input[type="password"],
+  .signup-form input[type="password"]::placeholder {
+    font-style: italic;
+    color: rgba(52, 42, 33, 0.5);;
+  }
+
+  .errorSignUp{
+    color: rgba(218,102,123,1);
+    font-weight: bold;
+
+  }
