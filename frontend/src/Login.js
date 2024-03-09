@@ -7,45 +7,56 @@ import {
     Col,
     Card,
     Form,
-    Image,
+    CardBody,
+    FormLabel,
+    FormText,
+    FormControl,
 } from "react-bootstrap";
 import "./styles.css";
 import { Button } from "bootstrap";
 
+function doLogin() {
+    email = document.getElementById("email")
+    password = document.getElementById("password")
+}
 
 const Home = () => {
-    return (<Container class="main-container" id="registerPage">
-        <div class="container-flex text-center">
+    return (
+        <Container fluid class="main-container" id="loginPage">
             <Row>
-                <div class="col-md-6 min-vh-100" id="sideBar">
+                <Col md={6} class="min-vh-100" id="sideBar">
                     <Row>
                         <h1 class="h1">New Here?</h1>
                     </Row>
                     <Row>
-                        <Button>Sign Up</Button>
+                        <a href="/Signup"></a>
                     </Row>
-                </div>
+                </Col>
             </Row>
             <Row>
                 <Card>
-                    <Form>
-                        <Row>
-                            <h2 class="h2">Login</h2>
-                        </Row>
-                        <Row class = "flex-column">
-                            <label>Email</label>
-                            <input type = "text"></input>
-                        </Row>
-                        <Row class = "flex-column">
-                            <label>Password</label>
-                            <input type = "password"></input>
-                        </Row>
-                        <Row>
-                            <input type = "submit">Login</input>
-                        </Row>
-                    </Form>
+                    <CardBody>
+                        <Form onSubmit={doLogin()}>
+                            <Row>
+                                <h2 class="h2">Login</h2>
+                            </Row>
+                            <Row class="flex-column">
+                                <FormLabel>Email</FormLabel>
+                                <FormControl id="email" type="text"></FormControl>
+                            </Row>
+                            <Row class="flex-column">
+                                <FormLabel>Password</FormLabel>
+                                <FormControl id="password" type="password"></FormControl>
+                            </Row>
+                            <Row>
+                                <Button variant="primary" type="submit">Login</Button>
+                            </Row>
+                        </Form>
+                    </CardBody>
                 </Card>
             </Row>
-        </div>
-    </Container>)
+
+        </Container>)
 }
+
+export default Login;
