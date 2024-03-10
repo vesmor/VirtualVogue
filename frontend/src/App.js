@@ -13,7 +13,7 @@ import "./styles.css";
 
 const isAuthenticated = () => {
   // return !!localStorage.getItem("token");
-  return false; // Temporarily hard-coded to always return true
+  return true; // Temporarily hard-coded to always return true
 };
 
 function App() {

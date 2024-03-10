@@ -1,10 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Image,
-} from "react-bootstrap";
+import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import "./styles.css";
 
 function SignInFirst() {
@@ -18,9 +13,9 @@ function SignInFirst() {
           <Image src={gifUrl} className="no-image" />{" "}
         </Col>
       </Row>
-      <Row>
-        <Col className="d-flex justify-content-center align-items-center">
-          <button onClick={() => navigate("/signin")}>Go to Sign In</button>
+      <Row className="mb-5">
+        <Col className="d-flex justify-content-center align-items-end">
+          <Button onClick={() => navigate("/signin")}>Go to Sign In</Button>
         </Col>
       </Row>
     </Container>
