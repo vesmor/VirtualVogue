@@ -9,6 +9,7 @@ import "./App.css";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
 import SignInFirst from "./SignInFirst";
+import Signup from "./Signup";
 import "./styles.css";
 
 const isAuthenticated = () => {
