@@ -21,6 +21,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Signup />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin-first" element={<SignInFirst />} />
         {/* Do this for all the other routes */}
