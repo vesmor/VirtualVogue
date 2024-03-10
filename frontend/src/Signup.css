@@ -2,31 +2,97 @@
 @font-face {
     font-family: 'Lemands';
     src: url('./fonts/lemands/Lemands.ttf');
-  }
-.signupButtonsPage {
-    background-color: #342A21;
 }
 
-.signup-form {
-    font-family: 'Roboto';
-    color: rgba(52, 42, 33, 0.7);
+body{
+  background-image: linear-gradient(to right,  #C9B79C 50%, #F1E0C5 50%);
+}
+
+.leftText{
+  color: white;
+  margin-top: 20px;
+  font-size: 100px;
+  font-family: 'Lemands';
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+
+.leftColumn{
+  background-color: #C9B79C;
+  text-align: center;
+  width: 100%;
+   flex: 1;
+}
+
+.rightColumn{
+  width: 100%;
+  background-color: #F1E0C5;
+  flex: 1;
+}
+  .signupForm input[type="text"],
+  .signupForm input[type="password"] {
+    font-style: italic;
+    color: rgba(52, 42, 33, 0);
   }
 
+  .signupForm input[type="text"],
+  .signupForm input[type="password"] {
+    font-style: italic;
+    line-height: 1;
+    color: rgba(52, 42, 33, 1);
+    border-radius: 24px;
+    width: 100%;
+    border-color: rgba(217, 217, 217,1);
+    border-width: 2px;
+  }
+  
+  #errorSignUp{
+    color: rgba(218,102,123,1);
+    font-weight: bold;
+    text-align: center;
+  }
+  
   .signupTitle {
     color: rgba(52, 42, 33, 1);
     font-family: 'Lemands';
+    text-align: center;
+  }
+  .signupForm {
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: white;
+    justify-content: center;
+    max-width: 430px;
+    border-radius: 47px;
+    padding: 20px;
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .signupButtonsPage {
+    background-color: #342A21;
+    height: auto;
+    width: 30%;
+    border-radius: 47px;
+    margin-left: 35%;
+    margin-right: 35%;
+    max-height: 40px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .signupButtonsPage:hover {
+    background-color: #F1E0C5;
+    color:#342A21
+  }
+
+  .loginQuestion{
+    text-align: center;
+    margin:5px;
   }
   
-  .signup-form input[type="text"],
-  .signup-form input[type="text"]::placeholder,
-  .signup-form input[type="password"],
-  .signup-form input[type="password"]::placeholder {
-    font-style: italic;
-    color: rgba(52, 42, 33, 0.5);;
-  }
-
-  .errorSignUp{
-    color: rgba(218,102,123,1);
-    font-weight: bold;
-
+  .form-label {
+    padding-left: 15px; 
   }
