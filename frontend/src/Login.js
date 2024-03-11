@@ -98,7 +98,7 @@ const Login = () => {
                         <h1 className="h1">New Here?</h1>
                     </Row>
                     <Row>
-                        <Button type = "button" onClick={openSignup}></Button>
+                        <Button type = "button" onClick={openSignup}>Sign up</Button>
                     </Row>
                 </Col>
                 <Col>
