@@ -8,6 +8,8 @@ import {
 import "./App.css";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
+import Login from "./Login"
+//import SignUp from "./signup"
 import SignInFirst from "./SignInFirst";
 import Signup from "./Signup";
 import "./styles.css";
@@ -22,6 +24,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path = "/login" element = {<Login />} />
+      
         <Route path="/signin-first" element={<SignInFirst />} />
         {/* Do this for all the other routes */}
         <Route
