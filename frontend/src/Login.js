@@ -16,36 +16,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Login = () => {
 
 
-    const [email, setEmail] = useState("");
+    const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setError] = useState("");
 
     const doLogin = async (event) => {
         event.preventDefault();
-        console.log(email, password);
+        console.log(login, password);
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,.])[A-Za-z\d@$!%*?&,.]{8,}$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         let error = '';
 
-        if (!email.trim()) {
-            error = "Enter email!";
-            setError(error);
-            console.log(errorMessage)
-            return;
-        }
-        else if (!password.trim()) {
-            error = "Enter Password!";
-            console.log(errorMessage)
-            setError(error);
-            return;
-        }
-
 
         console.log("Valid form");
 
         let jsonPayload = JSON.stringify({
-            login: email,
+            login: login,
             password: password
         }
         )
@@ -64,9 +51,10 @@ const Login = () => {
 
             if(res.error){
                 console.log('Error');
+                setError(res.error);
                 return;
             }
-
+            else(setError('Success'));
 
             console.log("Success")
 
@@ -111,8 +99,8 @@ const Login = () => {
                                         <h2 class="h2">Login</h2>
                                     </Row>
                                     <Row class="flex-column">
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl required value = {email} placeholder="Email" id="email" type="text" onChange={(e) => setEmail(e.target.value)}></FormControl>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormControl required value = {login} placeholder="Username" id="login" type="text" onChange={(e) => setLogin(e.target.value)}></FormControl>
                                     </Row>
                                     <Row class="flex-column">
                                         <FormLabel>Password</FormLabel>
