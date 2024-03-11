@@ -15,7 +15,7 @@ body{
   font-family: 'Lemands';
   font-weight: bold;
   text-align: center;
-  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  text-shadow: -3px 2px 0px #71816D;
 }
 
 
@@ -72,10 +72,12 @@ body{
   }
 
   .signupButtonsPage {
-    background-color: #342A21;
+    background: #342A21;
+    color: white;
     height: auto;
     width: 30%;
-    border-radius: 47px;
+    border-radius: 25px;
+    border: none;
     margin-left: 35%;
     margin-right: 35%;
     max-height: 40px;
