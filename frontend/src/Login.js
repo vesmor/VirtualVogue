@@ -35,39 +35,45 @@ const Login = () => {
             login: login,
             password: password
         }
-        )
+        );
 
         //API stuff here!
 
-        try{
-            const response = await fetch('http://localhost:5002/api/Login', {method: 'POST', 
+        try {
+            const response = await fetch('http://localhost:5002/api/Login', {
+                method: 'POST',
                 body: jsonPayload,
-                headers:{'Content-Type':'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             });
 
-            console.log("Fetch response")
+            console.log("Fetch response");
 
             let res = JSON.parse(await response.text());
 
-            if(res.error){
+            if (res.userId < 0) {
                 console.log('Error');
-                setError(res.error);
-                return;
+                setError('Wrong username/password');
             }
-            else(setError('Success'));
+            else {
 
-            console.log("Success")
+                console.log('Success')
 
-            //save info 
-            let user = {
-                login: res.login,
-                password: res.password
+                //save info 
+                let user = {
+                    userId: res.userId,
+                    firstName: res.firstName,
+                    lastName: res.lastName,
+                    email: res.email,
+                    isVerified: res.verified,
+                };
+
+                console.log(user)
+                localStorage.setItem('user_data', JSON.stringify(user));
+
+                window.location.href = '/landingpage';
             }
-            localStorage.setItem('user_data', JSON.stringify(user));
-            
-            //window.location.href = '/landingpage';
         }
-        catch(e){
+        catch (e) {
             alert(e.toString());
             return;
         }
@@ -86,7 +92,7 @@ const Login = () => {
                         <h1 className="h1">New Here?</h1>
                     </Row>
                     <Row>
-                        <Button type = "button" onClick={openSignup}>Sign up</Button>
+                        <Button type="button" onClick={openSignup}>Sign up</Button>
                     </Row>
                 </Col>
                 <Col>
@@ -100,11 +106,11 @@ const Login = () => {
                                     </Row>
                                     <Row class="flex-column">
                                         <FormLabel>Username</FormLabel>
-                                        <FormControl required value = {login} placeholder="Username" id="login" type="text" onChange={(e) => setLogin(e.target.value)}></FormControl>
+                                        <FormControl required value={login} placeholder="Username" id="login" type="text" onChange={(e) => setLogin(e.target.value)}></FormControl>
                                     </Row>
                                     <Row class="flex-column">
                                         <FormLabel>Password</FormLabel>
-                                        <FormControl required value = {password} placeholder="Password" id="password" type="password" onChange={(e) => setPassword(e.target.value)}></FormControl>
+                                        <FormControl required value={password} placeholder="Password" id="password" type="password" onChange={(e) => setPassword(e.target.value)}></FormControl>
                                     </Row>
                                     <Row>
                                         <p>{errorMessage}</p>
