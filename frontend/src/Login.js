@@ -1,30 +1,27 @@
 import React, { useState } from "react";
 import {
-    Navbar,
-    Nav,
     Container,
     Row,
     Col,
     Card,
     Form,
-    CardBody,
     FormLabel,
-    FormText,
+    CardBody,
     Button,
     FormControl,
 } from "react-bootstrap";
 import "./styles.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
 
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMessaege, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setError] = useState("");
 
     const doLogin = async (event) => {
         event.preventDefault();
-
         console.log(email, password);
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,.])[A-Za-z\d@$!%*?&,.]{8,}$/;
@@ -34,18 +31,21 @@ const Login = () => {
         if (!email.trim()) {
             error = "Enter email!";
             setError(error);
+            console.log(errorMessage)
             return;
         }
-        if (!password.trim()) {
+        else if (!password.trim()) {
             error = "Enter Password!";
+            console.log(errorMessage)
             setError(error);
             return;
         }
 
+
         console.log("Valid form");
 
         let jsonPayload = JSON.stringify({
-            email: email,
+            login: email,
             password: password
         }
         )
@@ -53,17 +53,22 @@ const Login = () => {
         //API stuff here!
 
         try{
-            let response = await fetch('~/api/Login', {method: 'POST', 
+            const response = await fetch('http://localhost:5002/api/Login', {method: 'POST', 
                 body: jsonPayload,
                 headers:{'Content-Type':'application/json'}
             });
 
+            console.log("Fetch response")
+
             let res = JSON.parse(await response.text());
 
-            if(res <= 0){
+            if(res.error){
                 console.log('Error');
                 return;
             }
+
+
+            console.log("Success")
 
             //save info 
             let user = {
@@ -72,46 +77,50 @@ const Login = () => {
             }
             localStorage.setItem('user_data', JSON.stringify(user));
             
-            //go to landing page
-            window.location.href = '/landingpage';
+            //window.location.href = '/landingpage';
         }
         catch(e){
             alert(e.toString());
             return;
         }
 
+    };
+
+    const openSignup = () => {
+        window.location.href = '/signup'
     }
 
     return (
-        <Container fluid class="main-container" id="loginPage">
+        <Container fluid className="main-container" id="loginPage">
             <Row>
                 <Col md={4} style={{ height: 100, }} id="sideBar">
                     <Row>
-                        <h1 class="h1">New Here?</h1>
+                        <h1 className="h1">New Here?</h1>
                     </Row>
                     <Row>
-                        <a href="/Signup"></a>
+                        <Button type = "button" onClick={openSignup}></Button>
                     </Row>
                 </Col>
-                <Col text-center>
+                <Col>
 
                     <Row>
                         <Card>
                             <CardBody>
-                                <Form onSubmit={doLogin()}>
+                                <Form onSubmit={doLogin}>
                                     <Row>
                                         <h2 class="h2">Login</h2>
                                     </Row>
                                     <Row class="flex-column">
                                         <FormLabel>Email</FormLabel>
-                                        <FormControl required placeholder="Email" id="email" type="text" onChange={(ev) => setEmail(ev.target.value)}></FormControl>
+                                        <FormControl required value = {email} placeholder="Email" id="email" type="text" onChange={(e) => setEmail(e.target.value)}></FormControl>
                                     </Row>
                                     <Row class="flex-column">
                                         <FormLabel>Password</FormLabel>
-                                        <FormControl required placeholder="Password" id="password" type="password" onChange={(ev) => setPassword(ev.target.value)}></FormControl>
+                                        <FormControl required value = {password} placeholder="Password" id="password" type="password" onChange={(e) => setPassword(e.target.value)}></FormControl>
                                     </Row>
                                     <Row>
-                                        <button variant="primary" type="submit">Login</button>
+                                        <p>{errorMessage}</p>
+                                        <Button variant="primary" type="submit">Login</Button>
                                     </Row>
                                 </Form>
                             </CardBody>

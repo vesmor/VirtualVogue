@@ -4,15 +4,17 @@ import "./App.css";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
 import Login from "./Login"
+import SignUp from "./signup"
 import "./styles.css";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
-        <Route path = "/ogin" element = {<Login />} />
+        <Route path = "/login" element = {<Login />} />
+        <Route path = "/signup" element = {<SignUp />}/>
       </Routes>
     </Router>
   );
