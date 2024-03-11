@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-bootstrap";
 import "./styles.css";
+import "./landing.css";
 import bruhImage from "./img/bruh.jpeg";
 
 const LandingPage = () => {
@@ -24,7 +25,7 @@ const LandingPage = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
             <Nav>
-              <Nav.Link href="/Login">Login</Nav.Link>
+              <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link  href="/signup">Sign up</Nav.Link>
             </Nav>
           </Navbar.Collapse>
