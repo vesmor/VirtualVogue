@@ -87,13 +87,13 @@ const Signup = () => {
   };
 
   const redirectToLogin = () => {
-    window.location.href = '/home'; // Specify the URL you want to navigate to
+    window.location.href = '/login'; // Specify the URL you want to navigate to
   };
 
   return (
     <Container fluid className="signupContainer">
       <Row className= "rowContainer">
-        <Col className = "leftColumn" >
+        <Col md = {10} className = "leftColumn" >
         <h2 className = "leftText">Virtual Vogue</h2>
         <Image className="image-holder" src={Logo}></Image>
         <h2 className = "leftText">Set the next trend!</h2>
@@ -173,12 +173,12 @@ const Signup = () => {
             {/* Error Message field*/}
             <p id="errorSignUp">{errorMessage}</p>
 
-            <Button type="submit" id="signupButton" className="signupButtonsPage">Sign up</Button>
-            <hr></hr>
+            <Button type="submit" className="signupButtonsPage">Sign up</Button>
+            <hr />
 
              {/* Redirect to the login page */}
              <p className="loginQuestion">Already have an account?</p>
-            <Button type="button" id="loginButton" className="signupButtonsPage" onClick={redirectToLogin}>Login</Button>
+            <Button style= {{alignSelf: "center"}} type="button" className="signupButtonsPage" onClick={redirectToLogin}>Login</Button>
 
             </Form>
             </Col>

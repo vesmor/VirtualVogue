@@ -24,15 +24,15 @@ const LandingPage = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
-            <Nav>
-              <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link  href="/signup">Sign up</Nav.Link>
+            <Nav id = "navBarGroup">
+              <Nav.Link className = "bodyText navButton" href="/login">Login</Nav.Link>
+              <Nav.Link  className = "bodyText navButton" href="/signup">Sign up</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
 
         </Row>
-          <p className="landing-text">we virtual</p>
+          <p className="landing-text bodyText">we virtual</p>
         <Row>
 
       </Row>

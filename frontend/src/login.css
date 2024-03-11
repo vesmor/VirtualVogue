@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Lemands';
+    src: url('./fonts/lemands/Lemands.ttf');
+}
+
+body{
+    background: white;
+}
+
+#sideBar{
+    background: #C9B79C;
+    min-height: 100vh;
+    padding-left: 5%;
+    padding-top: 10%;
+    justify-content: center;
+    align-items: center;
+    flex: 1
+}
+
+#signupButton{
+    background: white;
+    font-style: italic;
+    font-size: 3vh;
+    color: #C9B79C;
+    font-weight: bolder;
+    border-radius: 25px;
+    border-color: white;
+    width: fit-content;
+    padding: 1% 5%
+}
+
+
+#rightBar{
+    background: #F1E0C5;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+    padding-top: 10%;
+    flex: 2
+}
+
+#loginHeader{
+    font-size: 300%;
+}
+
+#login{
+    border-radius: 25px;
+}
+#password{
+    border-radius: 25px;
+}
+
+#loginButton{
+    width: fit-content;
+    border-radius: 25px;
+    background: #342A21;
+    border: none;
+    font-weight: bold;
+    padding: 1% 5%;
+    margin: 0 0 5% 0
+}
+
+.loginButton :hover{
+    background-color: #F1E0C5;
+    color:#342A21
+}
+
+#formInput{
+    margin: 10% 0 10% 0;
+}
+
+.formPart{
+    padding: 2%
+}
+.h1{
+    font-family: 'Lemands';
+    font-size: 800%;
+    color: white;
+    text-shadow: -3px 2px 0px #71816D;
+}
+
+.h2{
+    font-family: 'Lemands';
+    text-align: center;
+    padding: 5% 0 0 0;
+}
+
+.loginCard{
+    background: white;
+    height: auto;
+    justify-content: center;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
