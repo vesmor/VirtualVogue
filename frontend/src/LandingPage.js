@@ -20,7 +20,7 @@ const LandingPage = () => {
       <Row>
         <Navbar id="myNavbar" bg="light" expand="lg" className="w-100">
           <Navbar.Brand className="title">
-            Virtual Vogue
+            Virtual Voge
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
