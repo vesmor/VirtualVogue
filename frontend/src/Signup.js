@@ -20,6 +20,19 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const app_name = 'virtvogue';
+  function buildPath(route)
+  {
+    if(process.env.NODE_ENV === 'production')
+    {
+      return 'https://' + app_name + '.herokuapp.com' + route;
+    }
+    else
+    {
+      return 'http://localhost:5002/' + route;
+    }
+  }
+
   const doRegister = async (event) => {
     event.preventDefault();
     console.log(firstName, lastName, email, password, confirmPassword);
@@ -64,7 +77,7 @@ const Signup = () => {
     var js = JSON.stringify(obj);
     try
     {
-      const response = await fetch('http://localhost:5001/api/Register',{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+      const response = await fetch(buildPath('api/Register'),{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
       var res = JSON.parse(await response.text());
       if( res.id <= 0 )
       {
