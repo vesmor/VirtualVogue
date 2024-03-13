@@ -19,6 +19,19 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setError] = useState("");
 
+    const app_name = 'virtvogue';
+    function buildPath(route)
+    {
+        if(process.env.NODE_ENV === 'production')
+        {
+            return 'https://' + app_name + '.herokuapp.com' + route;
+        }
+        else
+        {
+            return 'http://localhost:5002/' + route;
+        }
+    }
+
     const doLogin = async (event) => {
         event.preventDefault();
         console.log(login, password);
@@ -39,7 +52,7 @@ const Login = () => {
         //API stuff here!
 
         try {
-            const response = await fetch('http://localhost:5002/api/Login', {
+            const response = await fetch(buildPath('api/Login'), {
                 method: 'POST',
                 body: jsonPayload,
                 headers: { 'Content-Type': 'application/json' }
