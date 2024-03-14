@@ -20,7 +20,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const app_name = 'virtvogue';
+  const app_name = 'virtvogue-af76e325d3c9';
   function buildPath(route)
   {
     if(process.env.NODE_ENV === 'production')
