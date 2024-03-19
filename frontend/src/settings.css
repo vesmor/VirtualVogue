@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Lemands';
+    src: url('./fonts/lemands/Lemands.ttf');
+}
+
+.main-container{
+    background-color: #F1E0C5;
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    width: 100vw;
+}
+
+.settingsTitle{
+  display:flex;
+  justify-content: center;
+  font-family: 'Lemands';
+  font-weight: bold;
+  font-size: 500%;
+color: #342A21;
+  margin-top: 1%;
+}
+
+.SettingsForm{
+    font-family: 'Roboto';
+    font-weight: bold;
+    color:#342A21;
+    margin-bottom: 5%;
+    margin-right: 15%;
+    margin-left: 15%;
+    background-color: white;
+    justify-content: center;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* settings.css */
+.form-group {
+    display: flex;
+    align-items: center; 
+    flex-direction: row;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    margin-left: 2%;
+  }
+  
+  .form-label {
+    margin-right: 10px; /* Adjust spacing between label and input */
+    width: 150px; /* Set a fixed width for the labels */
+  }
+  
+  .SettingsForm input[type="text"],
+  .SettingsForm input[type="password"] {
+    font-family: 'Roboto';
+    font-weight: bold;
+    color:#342A21;
+    line-height: 1;
+    border-radius: 24px;
+    border-color: rgba(217, 217, 217,1);
+    border-width: 3px;
+    flex-grow: 1; /* Allow inputs to grow to fill available space */
+    /* margin-right: 15%; */
+  }
+  
+  .icon-container {
+    margin-right: 5%; /* Adjust the margin as needed */
+  }
+
+  .settingButtons {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+  }
+
+  .deleteButton{
+    margin: 1%;
+    background: #DA667B;
+    color: white;
+    border-radius: 15px;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+
+  }
+
+  .saveButton{
+    margin: 1%;
+    background: #71816D;
+    color: white;
+    border-radius: 15px;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  
+  .deleteButton:hover{
+    background: #342A21;
+  }
+
+  .saveButton:hover{
+    background: #342A21;
+  }
