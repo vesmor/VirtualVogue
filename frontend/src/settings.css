@@ -40,7 +40,7 @@ color: #342A21;
     align-items: center; 
     flex-direction: row;
     margin-bottom: 2%;
-    margin-top: 2%;
+    margin-top: 0.5%;
     margin-left: 2%;
   }
   
@@ -57,13 +57,14 @@ color: #342A21;
     line-height: 1;
     border-radius: 24px;
     border-color: rgba(217, 217, 217,1);
-    border-width: 3px;
+    border-width: 0px;
     flex-grow: 1; /* Allow inputs to grow to fill available space */
     /* margin-right: 15%; */
   }
   
   .icon-container {
     margin-right: 5%; /* Adjust the margin as needed */
+    border-radius: 50%;
   }
 
   .settingButtons {
@@ -102,3 +103,18 @@ color: #342A21;
   .saveButton:hover{
     background: #342A21;
   }
+
+  #settingsMessage{
+    color: #342A21;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .icon-container:hover {
+    background-color: #F1E0C5; 
+  }
+
+  .SettingsForm input[type="text"].border-highlight,
+.SettingsForm input[type="password"].border-highlight {
+    border-width: 3px; /* Change the border width to 3px when the border-highlight class is applied */
+}
