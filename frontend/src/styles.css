@@ -1,10 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Lemands';
+    src: url('./fonts/lemands/Lemands.ttf');
+}
+
 #myNavbar {
   background-color: #c9b79c !important;
   font-family: Arial, sans-serif;
 }
 
 #myNavbar .nav-link {
-  color: #ffffff !important;
+  font-family: 'Roboto';
+  color: #432A21 !important;
+  font-weight: bold;
+  text-decoration: underline #FFFFFF;
+  font-size: large;
+  margin-right: 70px; 
 }
 
 #myNavbar .nav-link:hover {
@@ -55,6 +66,9 @@
 
 .brand-margin {
   margin-left: 20px;
+  font-size:x-large;
+  font-family: 'Lemands';
+  font-weight: bold;
 }
 
 .signin-first {

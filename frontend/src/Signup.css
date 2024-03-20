@@ -5,7 +5,7 @@
 }
 
 body{
-  background-image: linear-gradient(to right,  #C9B79C 50%, #F1E0C5 50%);
+  background-image: linear-gradient(to right,  #F1E0C5 50%, #F1E0C5 50%);
 }
 
 .leftText{
@@ -18,11 +18,10 @@ body{
   text-shadow: -3px 2px 0px #71816D;
 }
 
-
 .leftColumn{
+  min-height: 100vh;
   background-color: #C9B79C;
   text-align: center;
-  width: 100%;
    flex: 1;
 }
 

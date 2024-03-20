@@ -106,7 +106,7 @@ const Signup = () => {
   return (
     <Container fluid className="signupContainer">
       <Row className= "rowContainer">
-        <Col md = {10} className = "leftColumn" >
+        <Col className = "leftColumn" >
         <h2 className = "leftText">Virtual Vogue</h2>
         <Image className="image-holder" src={Logo}></Image>
         <h2 className = "leftText">Set the next trend!</h2>

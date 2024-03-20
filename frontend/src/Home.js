@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-bootstrap";
 import "./styles.css";
+import Settings from "./Settings"
 import bruhImage from "./img/bruh.jpeg";
 
 const Home = () => {
@@ -26,6 +27,7 @@ const Home = () => {
               <Nav.Link href="/my-outfits">My Outfits</Nav.Link>
               <Nav.Link href="/create-outfit">Create Outfit</Nav.Link>
               <Nav.Link href="/my-clothes">My Clothes</Nav.Link>
+              <Nav.Link href="/Settings">Settings</Nav.Link>
             </Nav>
             <Nav>
               <Image src={bruhImage} roundedCircle className="large-circle" />{" "}
