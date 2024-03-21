@@ -77,6 +77,8 @@ const Login = () => {
                     lastName: res.lastName,
                     email: res.email,
                     isVerified: res.verified,
+                    login: login,
+                    password: password
                 };
 
                 console.log(user)
