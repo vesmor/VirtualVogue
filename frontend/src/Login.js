@@ -98,6 +98,10 @@ const Login = () => {
         window.location.href = '/signup'
     }
 
+    const openForgotPassword = () => {
+        window.location.href = '/forgotpassword'
+    }
+
     return (
         <Container fluid id="loginPage">
             <Row>
@@ -107,6 +111,12 @@ const Login = () => {
                     </Row>
                     <Row>
                         <Button id="signupButton" variant="primary" type="button" onClick={openSignup}>Sign up</Button>
+                    </Row>
+                    <Row>
+                    <h1 className="h1">Forgot Password?</h1>
+                    </Row>
+                    <Row>
+                        <Button id="signupButton" variant="primary" type="button" onClick={openForgotPassword}>Forgot Password?</Button>
                     </Row>
                 </Col>
 

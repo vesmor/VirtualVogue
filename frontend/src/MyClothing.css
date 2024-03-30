@@ -1,0 +1,96 @@
+.clothingContainer {
+    background-color: #FFFFFF !important;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+  }
+
+.LeftBar{
+    display: flex;
+    background-color:#F1E0C5;
+    justify-content: center;
+    font-family: 'Roboto';
+    color: #342A21;
+    font-weight: bold;
+    font-size: x-large;
+    height:100%;
+}
+
+
+.cloth-icon{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    align-self: center;
+    
+}
+.fullView{
+    height: 90%;
+}
+
+.RightBar{
+    height:100%;
+}
+
+.imagesDisplay{
+    width: auto;
+    height: auto;
+    max-height: 90%;
+    padding-bottom: 2%;
+    overflow-y: auto !important;
+}
+
+.IconCards{
+    height: 20%;
+    margin-bottom: 10%;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+}
+
+.IconCards:hover {
+    background-color: #C9B79C; 
+    cursor: pointer; 
+}
+
+.clothItem{
+    margin-bottom: 10%;
+    margin-top: 10%;
+    text-decoration: underline;
+    text-decoration-thickness: 15%;
+    text-decoration-color: white;
+}
+
+.icon-wrapper {
+    display: none; 
+    background-color: #DA667B;
+    width: 15%; 
+    height: 15%;
+    border-radius: 50%; 
+    justify-content: center;
+    align-items: center;
+}
+
+.card:hover .icon-wrapper {
+    display: flex;
+}
+
+.card:hover .icon-wrapper:hover {
+    background-color: white; 
+}
+
+.uploadButton{
+    background-color: #71816D;
+    text-decoration:none;
+}
+
+.uploadButton:hover{
+    background-color: #342A21;
+}
+
+.myClothing{
+    font-family: 'Lemands';
+    font-size: 200%;
+    margin-right: 3%;
+  }

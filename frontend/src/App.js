@@ -11,7 +11,10 @@ import LandingPage from "./LandingPage";
 import Login from "./Login"
 import SignInFirst from "./SignInFirst";
 import Signup from "./Signup";
+import ForgotPassword from "./ForgotPassword"
 import Settings from "./Settings";
+import MyClothing from "./MyClothing";
+import CreateOutfit from "./CreateOutfit";
 
 const isAuthenticated = () => {
   // return !!localStorage.getItem("token");
@@ -25,8 +28,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path = "/login" element = {<Login />} />
         <Route path = "/signup" element = {<Signup />} />
+        <Route path = "/forgotpassword" element = {<ForgotPassword />} />
         <Route path="/signin-first" element={<SignInFirst />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/my-clothes" element={<MyClothing />} />
+        <Route path="/create-outfit" element={<CreateOutfit />} />
         {/* Do this for all the other routes */}
         <Route
           path="/home"
