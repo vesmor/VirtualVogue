@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-bootstrap";
 import "./styles.css";
-import Settings from "./Settings"
+import Settings from "./Settings";
 import bruhImage from "./img/bruh.jpeg";
 
 const Home = () => {
@@ -44,7 +44,7 @@ const Home = () => {
         </Col>
       </Row>
       <Row className="flex-grow h-100 overflow-auto">
-        <Container className="card-container">
+        <Container className="card-container p-3">
           {[...Array(20)].map((_, i) => (
             <Card key={i} className="card">
               <Card.Body>
