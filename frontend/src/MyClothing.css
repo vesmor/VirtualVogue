@@ -1,96 +1,105 @@
+html,
+body {
+  height: 100%;
+}
+
 .clothingContainer {
-    background-color: #FFFFFF !important;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-
-  }
-
-.LeftBar{
-    display: flex;
-    background-color:#F1E0C5;
-    justify-content: center;
-    font-family: 'Roboto';
-    color: #342A21;
-    font-weight: bold;
-    font-size: x-large;
-    height:100%;
+  background-color: #ffffff !important;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 56px); /* Replace 56px with the height of your navbar */
+}
+.LeftBar {
+  display: flex;
+  background-color: #f1e0c5;
+  justify-content: center;
+  font-family: "Roboto";
+  color: #342a21;
+  font-weight: bold;
+  font-size: x-large;
+  height: 100%;
 }
 
-
-.cloth-icon{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    align-self: center;
-    
-}
-.fullView{
-    height: 90%;
+.card-container {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(
+    100% - 48px
+  ); /* Replace 56px with the height of your search bar row */
 }
 
-.RightBar{
-    height:100%;
+.cloth-icon {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  align-self: center;
+}
+.fullView {
+  flex-grow: 1;
 }
 
-.imagesDisplay{
-    width: auto;
-    height: auto;
-    max-height: 90%;
-    padding-bottom: 2%;
-    overflow-y: auto !important;
+.RightBar {
+  /* display: flex;
+  flex-direction: column; */
+  height: 100%;
 }
 
-.IconCards{
-    height: 20%;
-    margin-bottom: 10%;
-    background-color: white;
-    align-items: center;
-    justify-content: center;
+.imagesDisplay {
+  flex: 1;
+  overflow-y: auto !important;
+}
+
+.IconCards {
+  height: 20%;
+  margin-bottom: 10%;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
 }
 
 .IconCards:hover {
-    background-color: #C9B79C; 
-    cursor: pointer; 
+  background-color: #c9b79c;
+  cursor: pointer;
 }
 
-.clothItem{
-    margin-bottom: 10%;
-    margin-top: 10%;
-    text-decoration: underline;
-    text-decoration-thickness: 15%;
-    text-decoration-color: white;
+.clothItem {
+  margin-bottom: 10%;
+  margin-top: 10%;
+  text-decoration: underline;
+  text-decoration-thickness: 15%;
+  text-decoration-color: white;
 }
 
 .icon-wrapper {
-    display: none; 
-    background-color: #DA667B;
-    width: 15%; 
-    height: 15%;
-    border-radius: 50%; 
-    justify-content: center;
-    align-items: center;
+  display: none;
+  background-color: #da667b;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
 }
 
 .card:hover .icon-wrapper {
-    display: flex;
+  display: flex;
 }
 
 .card:hover .icon-wrapper:hover {
-    background-color: white; 
+  background-color: white;
 }
 
-.uploadButton{
-    background-color: #71816D;
-    text-decoration:none;
+.uploadButton {
+  background-color: #71816d;
+  text-decoration: none;
 }
 
-.uploadButton:hover{
-    background-color: #342A21;
+.uploadButton:hover {
+  background-color: #342a21;
 }
 
-.myClothing{
-    font-family: 'Lemands';
-    font-size: 200%;
-    margin-right: 3%;
-  }
+.myClothing {
+  font-family: "Lemands";
+  font-size: 200%;
+  margin: 0;
+  /* margin-right: 3%; */
+}

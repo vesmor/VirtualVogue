@@ -1,79 +1,76 @@
-.LeftBar{
-    display: flex;
-    background-color:#F1E0C5;
-    justify-content: center;
-    font-family: 'Roboto';
-    color: #342A21;
-    font-weight: bold;
-    font-size: x-large;
-    height:100%;
+.LeftBar {
+  display: flex;
+  background-color: #f1e0c5;
+  justify-content: center;
+  font-family: "Roboto";
+  color: #342a21;
+  font-weight: bold;
+  font-size: x-large;
+  height: 100%;
 }
 
-.fullView{
-    height: 90%;
+.fullView {
+  height: 90%;
 }
 
-.RightBar{
-    height: 100%;
+.RightBar {
+  height: 100%;
 }
 
-.imagesDisplay{
-    width: auto;
-    height: auto;
-    max-height: 90%;
-    padding-bottom: 2%;
-    overflow-y: auto !important;
+.imagesDisplay {
+  width: auto;
+  height: auto;
+  max-height: 90%;
+  padding-bottom: 2%;
+  overflow-y: auto !important;
 }
 
-.IconCards{
-    height: 20%;
-    margin-bottom: 10%;
-    background-color: white;
-    align-items: center;
-    justify-content: center;
-
+.IconCards {
+  height: 20%;
+  margin-bottom: 10%;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
 }
 
 .IconCards:hover {
-    background-color: #C9B79C  !important; 
-    cursor: pointer; 
-
+  background-color: #c9b79c !important;
+  cursor: pointer;
 }
 
-.clothItem{
-    margin-bottom: 10%;
-    margin-top: 10%;
-    text-decoration: underline;
-    text-decoration-thickness: 15%;
-    text-decoration-color: white;
+.clothItem {
+  margin-bottom: 10%;
+  margin-top: 10%;
+  text-decoration: underline;
+  text-decoration-thickness: 15%;
+  text-decoration-color: white;
 }
 
 .check-icon {
-    display: none; 
-    background-color: #71816D;
-    width: 15%; 
-    height: 15%;
-    border-radius: 50%; 
-    padding-left: 3%;
+  display: none;
+  background-color: #71816d;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  padding-left: 3%;
 }
 
-
-.cloth-icon{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    align-self: center;
+.cloth-icon {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  align-self: center;
 }
 
-.newOutfitButton{
-    background-color: #71816D;
-    text-decoration:none;
+.newOutfitButton {
+  background-color: #71816d;
+  text-decoration: none;
 }
 
-.newOutfitButton:hover{
-    background-color: #342A21;
+.newOutfitButton:hover {
+  background-color: #342a21;
 }
 
-.newOutfitButton:disabled{
-    background-color: #342A21;
+.newOutfitButton:disabled {
+  background-color: #342a21;
 }
