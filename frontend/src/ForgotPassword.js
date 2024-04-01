@@ -15,6 +15,19 @@ const ForgotPassword= () => {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const app_name = 'virtvogue-af76e325d3c9';
+    function buildPath(route)
+    {
+        if(process.env.NODE_ENV === 'production')
+        {
+            return 'https://' + app_name + '.herokuapp.com/' + route;
+        }
+        else
+        {
+            return 'http://localhost:5001/' + route;
+        }
+    }
+
     const openSignup = () => {
         window.location.href = '/signup'
     }
@@ -23,8 +36,28 @@ const ForgotPassword= () => {
         window.location.href = '/login'
     }
 
-    const sendEmail=()=>{
-        setErrorMessage("No user exist with this email");
+    const sendEmail=async (event)=>{
+    event.preventDefault();
+    var obj = {email: email};
+    var js = JSON.stringify(obj);
+    try
+    {
+      const response = await fetch(buildPath('api/findUser'),{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+      var res = JSON.parse(await response.text());
+      if( !res.found )
+      {
+        setErrorMessage('User was not found');
+      }
+      else
+      {
+        setErrorMessage('User was found. An email will be sent!');
+      }
+    }
+    catch(e)
+    {
+    alert(e.toString());
+    return;
+    }
     }
 
     return(

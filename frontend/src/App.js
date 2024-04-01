@@ -15,6 +15,8 @@ import ForgotPassword from "./ForgotPassword"
 import Settings from "./Settings";
 import MyClothing from "./MyClothing";
 import CreateOutfit from "./CreateOutfit";
+import ResetPassword from "./ResetPassword";
+import VerificationCheck from "./VerificationCheck";
 
 const isAuthenticated = () => {
   // return !!localStorage.getItem("token");
@@ -32,6 +34,8 @@ function App() {
         <Route path="/signin-first" element={<SignInFirst />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/my-clothes" element={<MyClothing />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/verification-check" element={<VerificationCheck />} />
         <Route path="/create-outfit" element={<CreateOutfit />} />
         {/* Do this for all the other routes */}
         <Route
