@@ -94,8 +94,8 @@ const ForgotPassword= () => {
                                                     <Col md = {10}>
                                                         <p className="instructions">Reset password Instructions:</p>
                                                         <p className="instructions"style={{ marginLeft: '20%' }}>1. Enter your email</p>
-                                                        <p className="instructions"style={{ marginLeft: '20%' }}>2. An email will be sent with a confirmation code</p>
-                                                        <p className="instructions"style={{ marginLeft: '20%' }}>3. Enter code in the next page</p>
+                                                        <p className="instructions"style={{ marginLeft: '20%' }}>2. An email will be sent with a link to click on</p>
+                                                        <p className="instructions"style={{ marginLeft: '20%' }}>3. Enter new password in the next page</p>
                                                         <FormLabel>Email</FormLabel>
                                                         <FormControl required value={email} placeholder="Username" id="login" type="text" onChange={(e) => setEmail(e.target.value)}></FormControl>
                                                     </Col>
