@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { IoIosShirt } from "react-icons/io";
 import { GiAmpleDress, GiArmoredPants } from "react-icons/gi";
 import { FaCheck } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import {
   Navbar,
@@ -76,7 +75,7 @@ const CreateOutfit = () => {
     <>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Upload New Cloth</Modal.Title>
+          <Modal.Title>Create New Outfit</Modal.Title>
         </Modal.Header>
         <Modal.Body>Info that will be sent to API here</Modal.Body>
         <Modal.Footer>
@@ -84,7 +83,7 @@ const CreateOutfit = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            Save
           </Button>
         </Modal.Footer>
       </Modal>
@@ -131,19 +130,6 @@ const CreateOutfit = () => {
               <Card
                 className="IconCards"
                 style={{
-                  backgroundColor: dressIconColor ? "#71816D" : "white",
-                }}
-              >
-                <Card.Body
-                  className="d-flex justify-content-center align-items-center"
-                  onClick={() => selectClothIcon(2)}
-                >
-                  <GiAmpleDress className="cloth-icon" />
-                </Card.Body>
-              </Card>
-              <Card
-                className="IconCards"
-                style={{
                   backgroundColor: pantsIconColor ? "#71816D" : "white",
                 }}
               >
@@ -160,6 +146,7 @@ const CreateOutfit = () => {
                 background
                 size="lg"
                 onClick={handleShow}
+                disabled={isButtonDisabled}
               >
                 New Outfit
               </Button>
@@ -180,11 +167,11 @@ const CreateOutfit = () => {
             </Row>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(20)].map((_, i) => (
-                <Card key={i} className="card">
+                <Card key={i} className="card" onClick={() => imageSelected(i)}>
                   <Card.Body>
-                    <div className="icon-wrapper" onClick={deleteImage}>
-                      <FaTrashAlt />
-                    </div>
+                  <div className="check-icon" style={{ display: showCheckIcon[i] ? "block" : "none" }} >
+                            <FaCheck />
+                  </div>
                   </Card.Body>
                 </Card>
               ))}
