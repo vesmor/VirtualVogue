@@ -98,7 +98,7 @@ app.post('/api/Register', async (req, res, next) =>
 
     const { login, password, firstName, lastName, email } = req.body;
 
-    const newUser = {Login:login,Password:password,FirstName:firstName,LastName:lastName,Email:email,isVerified:false};
+    const newUser = {Login:login,Password:password,FirstName:firstName,LastName:lastName,Email:email,isVerified:false,Images: [],};
     var error = '';
     var id = -1;
 
