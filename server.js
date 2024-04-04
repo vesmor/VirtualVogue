@@ -364,6 +364,9 @@ app.post('/api/findUser', async (req, res, next) =>
 // make file size of photos limiter and also maybe img compression
 app.post("/api/Upload/:userId", upload.single("image"), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
     const userId = req.params.userId;
     const tag = req.body.tag;
 
