@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 5001;
 // Allow ".env" to be used
 require("dotenv").config();
 
+const cloudinary = require("./utils/cloudinary");
+const upload = require("./middleware/multer");
+
 // Connect to MongoDB
 const { MongoClient } = require("mongodb");
 const url = process.env.ATLAS_URI;
