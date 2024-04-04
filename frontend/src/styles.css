@@ -29,9 +29,28 @@
 }
 
 .main-container {
+  background-color: #FFFFFF !important;
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+.myOutfit{
+  font-family: 'Lemands';
+  font-size: 200%;
+  margin-right: 3%;
+}
+
+.homeSearchBar{
+  margin-top:2%;
+  font-family: 'Roboto';
+  color:#342A21;
+  line-height: 1;
+  border-radius: 16px;
+  border-width: 1px;
+  border-color: #000000;
+  flex-grow: 1;
+  height: 60%;
 }
 
 .main-container .flex-grow {
@@ -66,7 +85,7 @@
 
 .brand-margin {
   margin-left: 20px;
-  font-size:x-large;
+  font-size:200%;
   font-family: 'Lemands';
   font-weight: bold;
 }

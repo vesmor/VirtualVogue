@@ -9,7 +9,7 @@ import {
   Form,
   Image,
 } from "react-bootstrap";
-import bruhImage from "./img/bruh.jpeg";
+import Logo from "./img/Logo.jpg";
 import "./settings.css";
 
 const Settings = () => {
@@ -50,7 +50,7 @@ const Settings = () => {
     const [editPassword, setEditPassword] = useState(false);
 
     const deleteAccount = () => {
-      window.confirm("Are you sure you want to delete your account?"); // Specify the URL you want to navigate to
+      window.confirm("Are you sure you want to delete your account?"); 
     };
 
     const saveChanges = () => {
@@ -85,11 +85,11 @@ const Settings = () => {
     };
 
     return (
-        <Container fluid className="main-container">
+        <Container fluid className="mainContainer">
           <Row>
             <Navbar id="myNavbar" bg="light" expand="lg" className="w-100">
             <Nav>
-                  <Image src={bruhImage} roundedCircle className="large-circle" />{" "}
+                  <Image src={Logo} roundedCircle className="large-circle" />{" "}
             </Nav>
               <Navbar.Brand href="#home" className="brand-margin">
                 VIRTUAL VOGUE
@@ -97,10 +97,11 @@ const Settings = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
                 <Nav >
-                  <Nav.Link href="/my-outfits">MY OUTFITS</Nav.Link>
+                  <Nav.Link href="/Home">MY OUTFITS</Nav.Link>
                   <Nav.Link href="/create-outfit">CREATE OUTFIT</Nav.Link>
-                  <Nav.Link href="/my-clothes">LOGOUT</Nav.Link>
+                  <Nav.Link href="/my-clothes">MY CLOTHING</Nav.Link>
                   <Nav.Link href="/Settings">SETTINGS</Nav.Link>
+                  <Nav.Link href="/">LOGOUT</Nav.Link>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

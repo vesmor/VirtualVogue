@@ -29,7 +29,7 @@ const Signup = () => {
     }
     else
     {
-      return 'http://localhost:5002/' + route;
+      return 'http://localhost:5001/' + route;
     }
   }
 
@@ -79,9 +79,9 @@ const Signup = () => {
     {
       const response = await fetch(buildPath('api/Register'),{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
       var res = JSON.parse(await response.text());
-      if( res.id <= 0 )
+      if( res.error )
       {
-        console.log('User/Password combination incorrect');
+        setErrorMessage(res.error);
       }
       else
       {
