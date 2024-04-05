@@ -32,7 +32,7 @@ const Home = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
             <Nav>
-              <Nav.Link href="/my-outfits">MY OUTFITS</Nav.Link>
+              <Nav.Link href="/Home">MY OUTFITS</Nav.Link>
               <Nav.Link href="/create-outfit">CREATE OUTFIT</Nav.Link>
               <Nav.Link href="/my-clothes">MY CLOTHING</Nav.Link>
               <Nav.Link href="/Settings">SETTINGS</Nav.Link>
