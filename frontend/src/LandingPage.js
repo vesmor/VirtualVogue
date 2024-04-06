@@ -10,54 +10,75 @@ import {
   Form,
   Image,
 } from "react-bootstrap";
-import "./styles.css";
+// import "./styles.css";
 import "./landing.css";
 import bruhImage from "./img/bruh.jpeg";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Logo from "./img/Logo.jpg";
 
 const LandingPage = () => {
   return (
     <Container fluid className="landing">
       <Row>
-        <Navbar id="myNavbar" bg="light" expand="lg" className="w-100">
-          <Navbar.Brand className="title">
-            Virtual Vogue
+        <Navbar
+          id="myNavbar"
+          bg="light"
+          expand="lg"
+          className="w-100 pr-3 px-3 py-2"
+        >
+          <Nav>
+            <Image src={Logo} roundedCircle className="large-circle mx-0" />{" "}
+          </Nav>
+          <Navbar.Brand href="./" className="brand-margin py-0">
+            VIRTUAL VOGUE
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
-            <Nav id = "navBarGroup">
-              <Nav.Link className = "bodyText navButton" href="/login">Login</Nav.Link>
-              <Nav.Link  className = "bodyText navButton" href="/signup">Sign up</Nav.Link>
+            <Nav className="ml-auto">
+              {/* <Button variant="outline-light">Login/Signup</Button> */}
+              <Button
+                variant="outline-light"
+                as={Link}
+                to="/login" // Change this to the path of your login page
+                className="about-us-btn py-1"
+                size="lg"
+              >
+                Login/Signup
+              </Button>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+      </Row>
 
+      <Row className="justify-content-center align-items-center mt-5">
+        <Col xs={8} sm={8} md={4} lg={3} xl={3} xxl={2} className="text-center">
+          <Image src={Logo} roundedCircle className="big-logo" />
+        </Col>
+        <Row className="justify-content-center align-items-center">
+          <Col lg={6} className="text-center">
+            <h1 className="virtual-vogue-text">VIRTUAL VOGUE</h1>
+          </Col>
         </Row>
-          <p className="landing-text bodyText">we virtual</p>
-        <Row>
-
       </Row>
-      
-      <Row>
-       <Container className="landing-card-container">
-            <Card className="landing-card">
-              <Image className="image-holder" src={bruhImage}></Image>
-              <p>swag</p>
-            </Card>
-            <Card className="landing-card">
-              <Image className="image-holder" src={bruhImage}></Image>
-              <p>more swag</p>
-            </Card>
-            <Card className="landing-card">
-              <Image className="image-holder" src={bruhImage}></Image>
-              <p>more more swag</p>
-            </Card>
-            
-        </Container>
+      <Row className="justify-content-center align-items-center">
+        <Col className="brand-sub-text">
+          <h1 className="display-1 brand-sub-text">Your Virtual Wardrobe</h1>
+        </Col>
       </Row>
-
-        <a className="landing-text" href="/aboutus">Learn more about us</a>
-
-
+      <Row className="justify-content-center align-items-center my-4">
+        <Col className="text-center">
+          <Button
+            variant="outline-light"
+            as={Link}
+            to="/about-us"
+            className="about-us-btn"
+            size="lg"
+          >
+            Learn more about us
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 };
