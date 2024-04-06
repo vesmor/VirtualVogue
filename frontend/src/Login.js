@@ -82,9 +82,21 @@ const Login = () => {
                 };
 
                 console.log(user)
-                localStorage.setItem('user_data', JSON.stringify(user));
+                
 
-                window.location.href = '/home';
+                if(user.isVerified == false){
+                    setError("User not verified yet. Please check your email");
+                    
+                    //To make things easier when testing uncomment these 2 lines. In the Heroku version, COMMENT THESE 2 LINES BELOW
+                    // localStorage.setItem('user_data', JSON.stringify(user));
+                    // window.location.href = '/home';
+                }
+                else{
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    window.location.href = '/home';
+                }
+
+                
             }
         }
         catch (e) {

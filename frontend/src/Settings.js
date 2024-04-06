@@ -14,6 +14,7 @@ import "./settings.css";
 
 const Settings = () => {
     // These variables are used if the user want to update any field, then the respective variable will store the updated request
+    const [userId, setUserId] = useState("");
     const [login, setLogin] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -21,39 +22,59 @@ const Settings = () => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
+        // State variables to track edit mode for each input field
+        const [editLogin, setEditLogin] = useState(false);
+        const [editFirstName, setEditFirstName] = useState(false);
+        const [editLastName, setEditLastName] = useState(false);
+        const [editEmail, setEditEmail] = useState(false);
+        const [editPassword, setEditPassword] = useState(false);
+
     //This is the current user data info. The info is read only
     const [user, setUser] = useState({});
 
+    //
+    const loadData = () =>{
+      const userData = localStorage.getItem('user_data');
+      if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          
+          //Read only data
+          setUser(parsedUserData);
+          setUserId(parsedUserData.userId);
+
+          //Updatable variables
+          setLogin(parsedUserData.login);
+          setFirstName(parsedUserData.firstName);
+          setLastName(parsedUserData.lastName);
+          setEmail(parsedUserData.email);
+          setPassword(parsedUserData.password);
+      }
+    }
+
     //Read user and assign it to each updatable variable
     useEffect(() => {
-        const userData = localStorage.getItem('user_data');
-        if (userData) {
-            const parsedUserData = JSON.parse(userData);
-            
-            //Read only data
-            setUser(parsedUserData);
-
-            //Updatable variables
-            setLogin(parsedUserData.login);
-            setFirstName(parsedUserData.firstName);
-            setLastName(parsedUserData.lastName);
-            setEmail(parsedUserData.email);
-            setPassword(parsedUserData.password);
-        }
+        loadData();
     }, []);
 
-    // State variables to track edit mode for each input field
-    const [editLogin, setEditLogin] = useState(false);
-    const [editFirstName, setEditFirstName] = useState(false);
-    const [editLastName, setEditLastName] = useState(false);
-    const [editEmail, setEditEmail] = useState(false);
-    const [editPassword, setEditPassword] = useState(false);
+    const app_name = 'virtvogue-af76e325d3c9';
+    function buildPath(route)
+    {
+        if(process.env.NODE_ENV === 'production')
+        {
+            return 'https://' + app_name + '.herokuapp.com/' + route;
+        }
+        else
+        {
+            return 'http://localhost:5001/' + route;
+        }
+    }
 
     const deleteAccount = () => {
       window.confirm("Are you sure you want to delete your account?"); 
     };
 
-    const saveChanges = () => {
+    const saveChanges = async (event) =>  {
+      event.preventDefault();
       console.log(firstName, lastName, email, password, login);
   
       // Password validation criteria
@@ -81,7 +102,33 @@ const Settings = () => {
       }
   
       console.log("ALL FIELDS ARE CORRECT!");
-      setMessage("All changes were saved!");
+      var obj = {userId:userId, firstName: firstName, lastName: lastName, email: email, login:login, password: password};
+    var js = JSON.stringify(obj);
+    try
+    {
+      const response = await fetch(buildPath('api/UpdateSettings'),{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+      var res = JSON.parse(await response.text());
+      if( res.error )
+      {
+        setMessage(res.error);
+      }
+      else
+      {
+        
+        console.log(res);
+        var save = {userId:userId, firstName: firstName, lastName: lastName, email: email, isVerified: true , login:login, password: password};
+        localStorage.setItem('user_data', JSON.stringify(save));
+        loadData();
+
+        setMessage("All changes were saved!");
+      }
+    }
+    catch(e)
+    {
+      alert(e.toString());
+      return;
+    }
+      
     };
 
     return (
