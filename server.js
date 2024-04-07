@@ -444,31 +444,35 @@ app.get("/api/images/:userId", async (req, res) => {
     });
   }
 });
-
-// fetch all the images by specific tag
-app.get("/api/images/:userId/:tag", async (req, res) => {
+// fetch all the images by specific tag or multiple tags
+app.get("/api/images/:userId/:tags", async (req, res) => {
   const userId = req.params.userId; // Get user ID from URL parameter
-  const tag = req.params.tag; // Get tag from URL parameter
+  const tags = req.params.tags.split(","); // Get tags from URL parameter and split into an array
 
   try {
-    // Retrieve user's images with the specified tag from MongoDB
+    // Retrieve user's images from MongoDB
     const user = await db
       .collection("Users")
       .findOne({ _id: new ObjectId(userId) });
 
-    // If the user doesn't exist or has no images associated with the tag, return an empty response
-    if (
-      !user ||
-      !user.Images ||
-      user.Images.length === 0 ||
-      !user.Images.some((image) => image.tag === tag)
-    ) {
+    // If the user doesn't exist or has no images, return an empty response
+    if (!user || !user.Images || user.Images.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "No images found for the specified tag.",
+        message: "No images found for the user.",
       });
     }
-    const filteredImages = user.Images.filter((image) => image.tag === tag);
+
+    // Filter images based on tags
+    const filteredImages = user.Images.filter((image) => tags.includes(image.tag));
+
+    // If no images match any of the specified tags, return an empty response
+    if (filteredImages.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No images found for the specified tag(s).",
+      });
+    }
 
     // Extract public IDs of filtered images
     const imageIds = filteredImages.map((image) => image.publicId);
@@ -478,16 +482,19 @@ app.get("/api/images/:userId/:tag", async (req, res) => {
       tags: true,
     });
 
-    // Extract image URLs or other relevant data
-    const imageUrls = resources.map((image) => image.secure_url);
+    // Extract image URLs and tags
+    const imagesWithUrlsAndTags = resources.map((image) => ({
+      url: image.secure_url,
+      tag: filteredImages.find((img) => img.publicId === image.public_id).tag,
+    }));
 
-    // Respond with the images
-    res.status(200).json({ success: true, images: imageUrls });
+    // Respond with the images and their URLs
+    res.status(200).json({ success: true, images: imagesWithUrlsAndTags });
   } catch (error) {
-    console.error("Error fetching images by user ID and tag:", error);
+    console.error("Error fetching images by user ID and tag(s):", error);
     res.status(500).json({
       success: false,
-      message: "Error fetching images by user ID and tag",
+      message: "Error fetching images by user ID and tag(s)",
       error: error.message,
     });
   }
