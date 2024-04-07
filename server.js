@@ -398,40 +398,7 @@ app.post("/api/Upload/:userId", upload.single("image"), async (req, res) => {
   }
 });
 
-// View a photo
-// id is the public id
-//<img src="https://res.cloudinary.com/${cloudinaryConfig.cloud_name}/image/upload/w_200,h_100,c_fill,q_100/${id}.jpg"></img>
-app.get("/api/ViewImage/:id", async (req, res) => {
-  const photoId = req.params.id;
-
-  try {
-    // Get image and construct the link using cloudinary
-    const result = await cloudinary.api.resource(photoId);
-
-    // if (image) then send URL as a response
-    if (result) {
-      const imageUrl = result.secure_url;
-      res.status(200).json({
-        success: true,
-        imageUrl,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "Image not found",
-      });
-    }
-  } catch (error) {
-    console.error("Error retrieving image:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error retrieving image",
-      error: error.message,
-    });
-  }
-});
-
-// fetch ALL the images associated to a user
+// fetch ALL the images associated to a user and return their tags
 app.get("/api/images/:userId", async (req, res) => {
   const userId = req.params.userId; // Get user ID from URL parameter
 
@@ -447,19 +414,27 @@ app.get("/api/images/:userId", async (req, res) => {
         .status(404)
         .json({ success: false, message: "No images found for the user." });
     }
-    // Extract public IDs of images
-    const imageIds = user.Images.map((image) => image.publicId);
+    // Extract public IDs of images and their tags
+    const imagesData = user.Images.map((image) => ({
+      publicId: image.publicId,
+      tag: image.tag,
+    }));
 
     // Fetch images from Cloudinary using public IDs
-    const { resources } = await cloudinary.api.resources_by_ids(imageIds, {
-      tags: true,
+    const imageIds = imagesData.map((image) => image.publicId);
+    const { resources } = await cloudinary.api.resources_by_ids(imageIds);
+
+    // Combine image URLs with tags
+    const imagesWithTags = resources.map((cloudinaryImage) => {
+      const userData = imagesData.find((image) => image.publicId === cloudinaryImage.public_id);
+      return {
+        url: cloudinaryImage.secure_url,
+        tag: userData.tag,
+      };
     });
 
-    // Extract image URLs or other relevant data
-    const imageUrls = resources.map((image) => image.secure_url);
-
-    // Respond with the images
-    res.status(200).json({ success: true, images: imageUrls });
+    // Respond with the images and their tags
+    res.status(200).json({ success: true, images: imagesWithTags });
   } catch (error) {
     console.error("Error fetching images for user:", error);
     res.status(500).json({
