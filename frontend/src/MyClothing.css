@@ -123,6 +123,9 @@ body {
 
 .card-body {
   position: relative;
+  justify-content: center; /* Vertically center content */
+  align-items: center;
+  height: 100%;
 }
 
 .card-image {
@@ -133,9 +136,11 @@ body {
 
 
 .imageTagText{
-
+  position: absolute;
+  left: 50%; /* Place the text horizontally centered */
+  transform: translateX(-50%); /* Center the text horizontally */
   color: #342a21;
   text-align: center;
   font-family: "Lemands";
-  margin-top: 3%;
+
 }

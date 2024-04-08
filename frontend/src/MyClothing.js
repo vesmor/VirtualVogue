@@ -3,6 +3,7 @@ import { IoIosShirt } from "react-icons/io";
 import { GiAmpleDress, GiArmoredPants } from "react-icons/gi";
 import { FaTrashAlt } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
+import imglyRemoveBackground from "@imgly/background-removal";
 import {
   Navbar,
   Nav,
@@ -18,6 +19,7 @@ import {
 import "./MyClothing.css";
 import Logo from "./img/Logo.jpg";
 
+
 const MyClothing = () => {
   //Used to know which clothing type image should display
   const [clothingText, setClothingText] = useState("My Clothing");
@@ -30,17 +32,21 @@ const MyClothing = () => {
   const [selectedTag, setSelectedTag] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
 
   //Count number of pictures to be displayed so far
   const [numPictures, setNumPictures] = useState(0); 
   const [imagesURL, setImagesURL] = useState(null);
   const [imagesTag , setImagesTag] = useState(null);
+  const [removeBackground, setRemoveBackground] = useState(false);
   const [doFirstFetch, setDoFirstFech] = useState(true);
 
   const handleClose = () => {
     setShowModal(false);
     setSelectedImage(null); 
     setSelectedTag('');
+    setRemoveBackground(false);
+    setMessage('');
   };
   const handleShow = () => setShowModal(true);
 
@@ -48,7 +54,11 @@ const MyClothing = () => {
     setSelectedTag(tag);
   };
 
-  const handleImageChange = (e) => {
+  const handleRemoveBackgroundChange = (option) => {
+    setRemoveBackground(option);
+  }
+
+  const handleImageChange= async (e) => {
     const file = e.target.files[0];
   
     // Check if a file was selected
@@ -58,7 +68,6 @@ const MyClothing = () => {
   
       // Check if the file's MIME type starts with 'image/'
       if (fileType && fileType.startsWith('image/')) {
-        // If the file is an image, set it as selected
         setSelectedImage(file);
       } else {
         // If the file is not an image, alert the user and clear the selection
@@ -116,15 +125,29 @@ const MyClothing = () => {
 
   const UploadImage = async (event) => {
     event.preventDefault();
+    if(!selectedTag){
+      setMessage("Please select a clothing type");
+      return;
+    }
     const userData = localStorage.getItem('user_data');
     var parsedUserData;
+    setLoading(true);
     if (userData) {
       parsedUserData = JSON.parse(userData);
     }
   
     var formData = new FormData();
     formData.append('tag', selectedTag);
-    formData.append('image', selectedImage);
+    if(removeBackground){
+      setMessage("Removing background, this might take a minute");
+      const processedImage = await imglyRemoveBackground(selectedImage);
+      setSelectedImage(processedImage);
+      formData.append('image', processedImage);
+    }
+    else{
+      formData.append('image', selectedImage);
+    }
+    
   
     try {
       const response = await fetch(buildPath(`api/Upload/${parsedUserData.userId}`), {
@@ -140,6 +163,7 @@ const MyClothing = () => {
       } else {
         setMessage(res.message);
       }
+      setLoading(false);
     } catch (e) {
       alert(e.toString());
       return;
@@ -237,7 +261,8 @@ const MyClothing = () => {
           });
         }
         else{
-          alert("No links were given");
+          setNumPictures(0);
+          console.error('No links given.');
         }
       } else {
         alert("User not found");
@@ -279,7 +304,7 @@ const MyClothing = () => {
   
           }
           else{
-            alert("No links were given");
+            console.error('No links were given');
           }
         } else {
           alert("User not found");
@@ -307,13 +332,13 @@ const MyClothing = () => {
   return (
     <>
       <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={!loading}>
           <Modal.Title>Upload New Cloth</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
               <p>Upload your cloth image: </p>
-                {selectedImage && (
+                {selectedImage && ( 
                 <img className="mb-4"
                   src={URL.createObjectURL(selectedImage)}
                   alt="Selected"
@@ -328,7 +353,7 @@ const MyClothing = () => {
 
               <Dropdown className="mt-2">
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  {selectedTag ? selectedTag : 'Clothing type'}
+                {selectedTag ? selectedTag : 'Clothing type'}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
@@ -337,21 +362,31 @@ const MyClothing = () => {
                   <Dropdown.Item onClick={() => handleTagChange('Dress')}>Dress</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+
+              <p className="mb-0 mr-2">Do you want to remove the background to your cloth? Doing so will make an outfit visual more efficient, however doing so will take a minute or two</p>
+
+              <Dropdown className="mt-2">
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  {removeBackground ? 'Yes' : 'No'}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(true)}>Yes</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(false)}>No</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
           </Row>
           <Row>
               <p>{message}</p>
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={UploadImage}
-          >
-            Upload Clothing
-          </Button>
+<Button variant="secondary" onClick={handleClose} disabled={loading}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={UploadImage} disabled={loading}>
+          {loading ? 'Uploading...' : 'Upload Clothing'}
+        </Button>
         </Modal.Footer>
       </Modal>
       <Container fluid className="main-container">
