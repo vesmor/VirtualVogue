@@ -55,7 +55,7 @@ const Home = () => {
       <Row className="flex-grow h-100 overflow-auto">
         <Container className="card-container">
           {[...Array(20)].map((_, i) => (
-            <Card key={i} className="card">
+            <Card key={i} className="cardImages">
               <Card.Body>
                 <div className="icon-wrapper" onClick={deleteImage}>
                   <FaTrashAlt />
