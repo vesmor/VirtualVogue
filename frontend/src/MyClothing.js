@@ -3,6 +3,7 @@ import { IoIosShirt } from "react-icons/io";
 import { GiAmpleDress, GiArmoredPants } from "react-icons/gi";
 import { FaTrashAlt } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
+import imglyRemoveBackground from "@imgly/background-removal";
 import {
   Navbar,
   Nav,
@@ -13,23 +14,67 @@ import {
   Form,
   Button,
   Image,
+  Dropdown
 } from "react-bootstrap";
 import "./MyClothing.css";
 import Logo from "./img/Logo.jpg";
 
+
 const MyClothing = () => {
+  //Used to know which clothing type image should display
   const [clothingText, setClothingText] = useState("My Clothing");
   const [shirtIconColor, setShirtIconColor] = useState(false);
   const [dressIconColor, setDressColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
 
-  //Used to hide and show the Modal (Form)
-  const [showModal, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  //Used to hide and show the Modal (Form) info
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const deleteImage = () => {
-    window.confirm("Are you sure you want to delete this clothing?");
+  //Count number of pictures to be displayed so far
+  const [numPictures, setNumPictures] = useState(0); 
+  const [imagesURL, setImagesURL] = useState(null);
+  const [imagesTag , setImagesTag] = useState(null);
+  const [removeBackground, setRemoveBackground] = useState(false);
+  const [doFirstFetch, setDoFirstFech] = useState(true);
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedImage(null); 
+    setSelectedTag('');
+    setRemoveBackground(false);
+    setMessage('');
+  };
+  const handleShow = () => setShowModal(true);
+
+  const handleTagChange = (tag) => {
+    setSelectedTag(tag);
+  };
+
+  const handleRemoveBackgroundChange = (option) => {
+    setRemoveBackground(option);
+  }
+
+  const handleImageChange= async (e) => {
+    const file = e.target.files[0];
+  
+    // Check if a file was selected
+    if (file) {
+      // Get the file's MIME type
+      const fileType = file.type;
+  
+      // Check if the file's MIME type starts with 'image/'
+      if (fileType && fileType.startsWith('image/')) {
+        setSelectedImage(file);
+      } else {
+        // If the file is not an image, alert the user and clear the selection
+        e.target.value = null;
+        setSelectedImage(null);
+      }
+    }
   };
 
   //Change the header text and the color of the icon selected. This function should also then only show the images of the type selected
@@ -50,40 +95,299 @@ const MyClothing = () => {
 
     if (shirtCheck && dressCheck && pantsCheck) {
       setClothingText("My Clothing");
+      fetchAllData();
       setShirtIconColor(false);
       setDressColor(false);
       setPantsColor(false);
     } else if (shirtCheck && dressCheck) {
       setClothingText("My Shirts & Dresses");
+      fetchTagData("Shirt,Dress");
     } else if (shirtCheck && pantsCheck) {
       setClothingText("My Shirts & Pants");
+      fetchTagData("Shirt,Pants");
     } else if (dressCheck && pantsCheck) {
       setClothingText("My Dresses & Pants");
+      fetchTagData("Dress,Pants");
     } else if (shirtCheck) {
       setClothingText("My Shirts");
+      fetchTagData("Shirt");
     } else if (pantsCheck) {
       setClothingText("My Pants");
+      fetchTagData("Pants");
     } else if (dressCheck) {
       setClothingText("My Dresses");
+      fetchTagData("Dress");
     } else {
       setClothingText("My Clothing");
+      fetchAllData();
     }
   };
+
+  const UploadImage = async (event) => {
+    event.preventDefault();
+    if(!selectedTag){
+      setMessage("Please select a clothing type");
+      return;
+    }
+    const userData = localStorage.getItem('user_data');
+    var parsedUserData;
+    setLoading(true);
+    if (userData) {
+      parsedUserData = JSON.parse(userData);
+    }
+  
+    var formData = new FormData();
+    formData.append('tag', selectedTag);
+    if(removeBackground){
+      setMessage("Removing background, this might take a minute");
+      const processedImage = await imglyRemoveBackground(selectedImage);
+      setSelectedImage(processedImage);
+      formData.append('image', processedImage);
+    }
+    else{
+      formData.append('image', selectedImage);
+    }
+    
+  
+    try {
+      const response = await fetch(buildPath(`api/Upload/${parsedUserData.userId}`), {
+        method: 'POST',
+        body: formData
+      });
+  
+      let res = await response.json();
+  
+      if (res.success) {
+        setMessage(res.message);
+        fetchAllData();
+      } else {
+        setMessage(res.message);
+      }
+      setLoading(false);
+    } catch (e) {
+      alert(e.toString());
+      return;
+    }
+  };
+
+  const deleteImage = async (event, url) => {
+    event.preventDefault();
+  
+    const acceptDelete = window.confirm("Are you sure you want to delete this clothing?");
+  
+    // Proceed to delete image
+    if (acceptDelete) {
+      const userData = localStorage.getItem('user_data');
+  
+      // Get the userId
+      var parsedUserData;
+      if (userData) {
+        parsedUserData = JSON.parse(userData);
+      }
+  
+      // Get the image public ID from the link
+      const parts = url.split('/');
+      const idWithExtension = parts[parts.length - 1];
+      const id = idWithExtension.slice(0, -4);
+  
+      // Construct the request body as JSON
+      const bodyData = {
+        id: id
+      };
+  
+      try {
+        const response = await fetch(buildPath(`api/DeletePhoto/${parsedUserData.userId}`), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+          },
+          body: JSON.stringify(bodyData) // Convert the body data object to JSON string
+        });
+  
+        let res = await response.json();
+  
+        if (res.success) {
+          fetchAllData();
+        } else {
+          alert("failed");
+        }
+      } catch (e) {
+        alert(e.toString());
+        return;
+      }
+    } else {
+      return;
+    }
+  };
+  
+
+  useEffect(() => {
+    var firstTime = doFirstFetch;
+    if(firstTime){
+      setDoFirstFech(false);
+      fetchAllData();
+    }
+
+  }, []);
+  
+  //Calls the fetch images API
+  const fetchAllData = async () => {
+    try {
+      const userData = localStorage.getItem('user_data');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const response = await fetch(buildPath(`api/images/${parsedUserData.userId}`), {
+          method: 'GET'
+        });
+    
+        let res = await response.json();
+        if (res.success) {
+          setNumPictures(res.images.length);
+          // Use functional update to append to imagesURL
+          setImagesURL(prevImagesURL => {
+            const newImagesURL = []; 
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesURL.push(res.images[i].url); 
+            }
+            return newImagesURL;
+          });
+
+          setImagesTag(prevImagesTag => {
+            const newImagesTag = []; 
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesTag.push(res.images[i].tag); 
+            }
+            return newImagesTag;
+          });
+        }
+        else{
+          setNumPictures(0);
+          console.error('No links given.');
+        }
+      } else {
+        alert("User not found");
+        console.error('User data not found in localStorage.');
+      }
+    } catch (error) {
+      alert("An error occurred");
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchTagData = async (tag) => {
+      try {
+        const userData = localStorage.getItem('user_data');
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          const response = await fetch(buildPath(`api/images/${parsedUserData.userId}/${tag}`), {
+            method: 'GET'
+          });
+      
+          let res = await response.json();
+          if(res.success){
+            setNumPictures(res.images.length);
+            setImagesURL(prevImagesURL => {
+              const newImagesURL = []; // Create a new array
+              for (var i = 0; i < res.images.length; i++) {
+                newImagesURL.push(res.images[i].url); // Append values to the new array
+              }
+              return newImagesURL;
+            });
+
+            setImagesTag(prevImagesTag => {
+              const newImagesTag = []; 
+              for (var i = 0; i < res.images.length; i++) {
+                newImagesTag.push(res.images[i].tag); 
+              }
+              return newImagesTag;
+            });
+  
+          }
+          else{
+            setNumPictures(0);
+            console.error('No links were given');
+          }
+        } else {
+          alert("User not found");
+          console.error('User data not found in localStorage.');
+        }
+      } catch (error) {
+        alert("An error occurred");
+        console.error('Error fetching data:', error);
+      }
+    };
+
+  const app_name = 'virtvogue-af76e325d3c9';
+  function buildPath(route)
+  {
+      if(process.env.NODE_ENV === 'production')
+      {
+          return 'https://' + app_name + '.herokuapp.com/' + route;
+      }
+      else
+      {
+          return 'http://localhost:5001/' + route;
+      }
+  }
 
   return (
     <>
       <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={!loading}>
           <Modal.Title>Upload New Cloth</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Info that will be sent to API here</Modal.Body>
+        <Modal.Body>
+          <Row>
+              <p>Upload your cloth image: </p>
+                {selectedImage && ( 
+                <img className="mb-4"
+                  src={URL.createObjectURL(selectedImage)}
+                  alt="Selected"
+                  style={{ maxWidth: '100%', display: 'block', margin: 'auto', marginTop: '10px' }}
+                />
+              )}
+              <input type="file" name="image" accept="image/*" onChange={handleImageChange}></input>
+          </Row>
+          <Row className="align-items-center mt-3">
+
+              <p className="mb-0 mr-2">What kind of clothing is it?</p>
+
+              <Dropdown className="mt-2">
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                {selectedTag ? selectedTag : 'Clothing type'}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleTagChange("Shirt")}>Shirt</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleTagChange('Pants')}>Pants</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleTagChange('Dress')}>Dress</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <p className="mb-0 mr-2">Do you want to remove the background to your cloth? Doing so will make an outfit visual more efficient, however doing so will take a minute or two</p>
+
+              <Dropdown className="mt-2">
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  {removeBackground ? 'Yes' : 'No'}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(true)}>Yes</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(false)}>No</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+          </Row>
+          <Row>
+              <p>{message}</p>
+          </Row>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
+<Button variant="secondary" onClick={handleClose} disabled={loading}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={UploadImage} disabled={loading}>
+          {loading ? 'Uploading...' : 'Upload Clothing'}
+        </Button>
         </Modal.Footer>
       </Modal>
       <Container fluid className="main-container">
@@ -177,15 +481,24 @@ const MyClothing = () => {
               </Col>
             </Row>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
-              {[...Array(20)].map((_, i) => (
-                <Card key={i} className="card">
-                  <Card.Body>
-                    <div className="icon-wrapper" onClick={deleteImage}>
-                      <FaTrashAlt />
-                    </div>
-                  </Card.Body>
-                </Card>
-              ))}
+            {[...Array(numPictures)].map((_, i) => (
+              <Card key={i} className="cardImages" >
+                <Card.Body style={{ position: 'relative'}}>
+                <a href={imagesURL[i]} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <div className="icon-wrapper" onClick={(event) => deleteImage(event, imagesURL[i])}>
+                    <FaTrashAlt style={{ color: 'black' }} />
+                  </div>
+                  <img 
+                    src={imagesURL[i]}
+                    alt="Selected"
+                    className="card-image"
+                  />
+
+                  <h1 className= "imageTagText">{imagesTag[i]}</h1>
+                </a>
+                </Card.Body>
+              </Card>
+            ))}
             </Container>
           </Col>
         </Row>

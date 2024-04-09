@@ -424,6 +424,7 @@ app.get("/api/images/:userId", async (req, res) => {
     const imageIds = imagesData.map((image) => image.publicId);
     const { resources } = await cloudinary.api.resources_by_ids(imageIds);
 
+
     // Combine image URLs with tags and public IDs
     const imagesWithTagsAndUrls = resources.map((cloudinaryImage) => {
       const userData = imagesData.find(
@@ -432,12 +433,15 @@ app.get("/api/images/:userId", async (req, res) => {
       return {
         url: cloudinaryImage.secure_url,
         publicId: userData.publicId,
+
         tag: userData.tag,
       };
     });
 
+
     // Respond with the images data (public IDs, tags, and URLs)
     res.status(200).json({ success: true, images: imagesWithTagsAndUrls });
+
   } catch (error) {
     console.error("Error fetching images for user:", error);
     res.status(500).json({
@@ -447,6 +451,8 @@ app.get("/api/images/:userId", async (req, res) => {
     });
   }
 });
+
+
 
 // fetch all the images by specific tag or multiple tags
 app.get("/api/images/:userId/:tags", async (req, res) => {
@@ -461,6 +467,7 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
 
     // If the user doesn't exist or has no images, return an empty response
     if (!user || !user.Images || user.Images.length === 0) {
+
       return res.status(404).json({
         success: false,
         message: "No images found for the user.",
@@ -476,6 +483,7 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
     if (filteredImages.length === 0) {
       return res.status(404).json({
         success: false,
+
         message: "No images found for the specified tag(s).",
       });
     }
@@ -491,7 +499,9 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
     // Extract image URLs and tags
     const imagesWithUrlsAndTags = resources.map((image) => ({
       url: image.secure_url,
+
       publicId: image.public_id,
+
       tag: filteredImages.find((img) => img.publicId === image.public_id).tag,
     }));
 

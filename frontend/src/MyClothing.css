@@ -71,6 +71,9 @@ body {
 }
 
 .icon-wrapper {
+  position: absolute;
+  top: 10px; /* Adjust this value as needed to position the icon */
+  right: 10px; /* Adjust this value as needed to position the icon */
   display: none;
   background-color: #da667b;
   width: 15%;
@@ -80,11 +83,25 @@ body {
   align-items: center;
 }
 
-.card:hover .icon-wrapper {
+.cardImages{
+  background-color: #f1e0c5;
+}
+
+.cardImages:hover {
+  background-color: #342a21; /* Change the background color on hover */
+
+}
+
+.cardImages:hover .imageTagText {
+  color:#f1e0c5;
+}
+
+
+.cardImages:hover .icon-wrapper {
   display: flex;
 }
 
-.card:hover .icon-wrapper:hover {
+.cardImages:hover .icon-wrapper:hover {
   background-color: white;
 }
 
@@ -102,4 +119,28 @@ body {
   font-size: 200%;
   margin: 0;
   /* margin-right: 3%; */
+}
+
+.card-body {
+  position: relative;
+  justify-content: center; /* Vertically center content */
+  align-items: center;
+  height: 100%;
+}
+
+.card-image {
+  width: 100%;
+  height: 85%; /* Maintain aspect ratio */
+  display: block;
+}
+
+
+.imageTagText{
+  position: absolute;
+  left: 50%; /* Place the text horizontally centered */
+  transform: translateX(-50%); /* Center the text horizontally */
+  color: #342a21;
+  text-align: center;
+  font-family: "Lemands";
+
 }

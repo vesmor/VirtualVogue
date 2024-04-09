@@ -21,34 +21,62 @@ const CreateOutfit = () => {
   const [clothingText, setClothingText] = useState("My Outfits");
   const [shirtIconColor, setShirtIconColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
-  const [dressIconColor, setDressColor] = useState(false);
 
   const [showCheckIcon, setShowCheckIcon] = useState(
     [...Array(100)].map(() => false)
   );
-  const [counter, setCounter] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [showModal, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const deleteImage = () => {
-    window.confirm("Are you sure you want to delete this clothing?");
+  const [numPictures, setNumPictures] = useState(0); 
+  const [imagesURL, setImagesURL] = useState(null);
+  const [selectedPants , setSelectedPants] = useState(null);
+  const [selectedShirt , setSelectedShirt] = useState(null);
+  const [imagesTag , setImagesTag] = useState(null);
+  const [doFirstFetch, setDoFirstFech] = useState(true);
+
+  const handleShow = () => setShowModal(true);
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedShirt(null);
+    setSelectedPants(null); 
+    setMessage('');
   };
 
-  const imageSelected = (index) => {
-    var counts = counter;
+  const imageSelected = (index,tag,image) => {
     var arr = [...showCheckIcon];
     arr[index] = !arr[index];
     if (arr[index] == true) {
-      counts++;
+      if(tag === 'Shirt'){
+        if(selectedShirt) return;
+        setSelectedShirt(image);
+        if(selectedPants){
+          setIsButtonDisabled(false);
+        }
+        else{
+          setIsButtonDisabled(true);
+        }
+      }
+      else if(tag === 'Pants'){
+        if(selectedPants) return;
+        setSelectedPants(image);
+        if(selectedShirt){
+          setIsButtonDisabled(false);
+        }
+        else{
+          setIsButtonDisabled(true);
+        }
+      }
     } else {
-      counts--;
-    }
-    setCounter(counts);
-    if (counts == 2) {
-      setIsButtonDisabled(false);
-    } else {
+        if(tag === 'Shirt'){
+        setSelectedShirt(null);
+      }
+      else if (tag === 'Pants'){
+        setSelectedPants(null);
+      }
       setIsButtonDisabled(true);
     }
     setShowCheckIcon(arr);
@@ -68,8 +96,125 @@ const CreateOutfit = () => {
     if (shirtCheck && pantsCheck) {
       setPantsColor(false);
       setShirtIconColor(false);
+      setClothingText("My outfits");
+      fetchTagData("Shirt,Pants");
+    }
+    else if(shirtCheck){
+      setClothingText("My shirts");
+      fetchTagData("Shirt");
+    }
+    else if (pantsCheck){
+      setClothingText("My pants");
+      fetchTagData("Pants");
+    }
+    else{
+      setClothingText("My outfits");
+      fetchTagData("Shirt,Pants");
     }
   };
+
+  const UploadImage = async (event) => {
+    event.preventDefault();
+    const userData = localStorage.getItem('user_data');
+    var parsedUserData;
+    setLoading(true);
+    if (userData) {
+      parsedUserData = JSON.parse(userData);
+    }
+  
+    var formData = new FormData();
+    setMessage("Uploading image...");
+    formData.append('tag', 'Outfit');
+
+    //TODO: COMBINE BOTH IMAGES AND PUT IT INSIDE THE FORM
+    // formData.append('image', selectedImage);
+    
+  
+    try {
+      const response = await fetch(buildPath(`api/Upload/${parsedUserData.userId}`), {
+        method: 'POST',
+        body: formData
+      });
+  
+      let res = await response.json();
+  
+      if (res.success) {
+        setMessage(res.message);
+        fetchTagData("Shirt,Pants");
+      } else {
+        setMessage(res.message);
+      }
+      setLoading(false);
+    } catch (e) {
+      alert(e.toString());
+      return;
+    }
+  };
+
+  const fetchTagData = async (tag) => {
+    try {
+      const userData = localStorage.getItem('user_data');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const response = await fetch(buildPath(`api/images/${parsedUserData.userId}/${tag}`), {
+          method: 'GET'
+        });
+    
+        let res = await response.json();
+        if(res.success){
+          setNumPictures(res.images.length);
+          setImagesURL(prevImagesURL => {
+            const newImagesURL = []; // Create a new array
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesURL.push(res.images[i].url); // Append values to the new array
+            }
+            return newImagesURL;
+          });
+
+          setImagesTag(prevImagesTag => {
+            const newImagesTag = []; 
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesTag.push(res.images[i].tag); 
+            }
+            return newImagesTag;
+          });
+
+        }
+        else{
+          setNumPictures(0);
+          console.error('No links were given');
+        }
+      } else {
+        alert("User not found");
+        console.error('User data not found in localStorage.');
+      }
+    } catch (error) {
+      alert("An error occurred");
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    var firstTime = doFirstFetch;
+    if(firstTime){
+      setDoFirstFech(false);
+      fetchTagData("Shirt,Pants");
+    }
+
+  }, []);
+  
+  const app_name = 'virtvogue-af76e325d3c9';
+  function buildPath(route)
+  {
+      if(process.env.NODE_ENV === 'production')
+      {
+          return 'https://' + app_name + '.herokuapp.com/' + route;
+      }
+      else
+      {
+          return 'http://localhost:5001/' + route;
+      }
+  }
 
   return (
     <>
@@ -166,15 +311,24 @@ const CreateOutfit = () => {
               </Col>
             </Row>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
-              {[...Array(20)].map((_, i) => (
-                <Card key={i} className="card" onClick={() => imageSelected(i)}>
-                  <Card.Body>
-                  <div className="check-icon" style={{ display: showCheckIcon[i] ? "block" : "none" }} >
+              {[...Array(numPictures)].map((_, i) => (
+              <Card key={i} className="cardImages" onClick={() => imageSelected(i, imagesTag[i], imagesURL[i])}>
+                <Card.Body style={{ position: 'relative'}}>
+              
+                <div className="check-icon" style={{ display: showCheckIcon[i] ? "block" : "none" }} >
                             <FaCheck />
                   </div>
-                  </Card.Body>
-                </Card>
-              ))}
+                  <img 
+                    src={imagesURL[i]}
+                    alt="Selected"
+                    className="card-image"
+                  />
+
+                  <h1 className= "imageTagText">{imagesTag[i]}</h1>
+      
+                </Card.Body>
+              </Card>
+            ))}
             </Container>
           </Col>
         </Row>
