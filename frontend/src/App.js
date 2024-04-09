@@ -8,15 +8,16 @@ import {
 import "./App.css";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
-import Login from "./Login"
+import Login from "./Login";
 import SignInFirst from "./SignInFirst";
 import Signup from "./Signup";
-import ForgotPassword from "./ForgotPassword"
+import ForgotPassword from "./ForgotPassword";
 import Settings from "./Settings";
 import MyClothing from "./MyClothing";
 import CreateOutfit from "./CreateOutfit";
 import ResetPassword from "./ResetPassword";
 import VerificationCheck from "./VerificationCheck";
+import AboutUs from "./AboutUs.js";
 
 const isAuthenticated = () => {
   // return !!localStorage.getItem("token");
@@ -28,15 +29,16 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path = "/login" element = {<Login />} />
-        <Route path = "/signup" element = {<Signup />} />
-        <Route path = "/forgotpassword" element = {<ForgotPassword />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/signin-first" element={<SignInFirst />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/my-clothes" element={<MyClothing />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/verification-check" element={<VerificationCheck />} />
         <Route path="/create-outfit" element={<CreateOutfit />} />
+        <Route path="/about-us" element={<AboutUs />} />
         {/* Do this for all the other routes */}
         <Route
           path="/home"

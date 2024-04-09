@@ -44,20 +44,15 @@
   font-family: "Roboto";
 }
 
-.virtual-vogue-text {
-  font-size: 6vw; /* Adjust as needed */
-  font-weight: bold;
-  color: #ffffff;
-}
-
 .landing-card {
   background-color: #c9b79c;
   border: #000000;
-  width: 20vw;
-  height: 32vh;
+  width: 275px;
+  height: auto;
   margin: 0px;
   align-items: center;
   border-radius: 15px;
+  padding: 20px;
 }
 
 .landing-text {
@@ -68,20 +63,7 @@
   display: flex;
 }
 
-.image-holder {
-  flex: 10;
-  border-radius: 15px;
-  margin-top: 5%;
-}
-
 .bold-outline-btn {
-  border-width: 3px !important; /* Adjust as needed */
-  font-weight: bold !important;
-}
-
-.about-us-btn {
-  background-color: white;
-  color: #c9b79c;
   border-width: 3px !important; /* Adjust as needed */
   font-weight: bold !important;
 }
@@ -94,25 +76,12 @@
   color: #342a21;
   font-weight: bold;
   font-size: x-large;
-  height: 100%;
+  /* height: 100%; */
 }
 
-.brand-text {
-  font-family: "Playfair Display", serif;
-  font-size: 8vw;
-  color: #fff;
-  font-weight: bold;
-}
-
-.brand-sub-text {
-  font-family: "Playfair Display", serif;
-  font-size: 4vw;
-  color: #000;
-  /* font-weight: bold; */
-  text-align: center; /* Add this line to center the text */
-}
-
-.big-logo {
-  width: 100%; /* Adjust as needed */
-  height: auto; /* Adjust as needed */
+.image-holder {
+  width: 100%; /* This will make the image take the full width of the card */
+  max-height: 100%; /* This will ensure the image never grows larger than the card */
+  object-fit: contain; /* This will ensure the image fits within the card */
+  margin: 0px;
 }

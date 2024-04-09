@@ -1,12 +1,12 @@
-const express = require('express');
-var nodemailer = require('nodemailer');
+const express = require("express");
+var nodemailer = require("nodemailer");
 const app = express();
 app.use(express.json());
 
 const cors = require("cors");
 app.use(cors());
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 const path = require("path");
@@ -28,335 +28,332 @@ const client = new MongoClient(url, {
 });
 client.connect(console.log("mongodb connected"));
 const db = client.db("VirtualCloset");
-const ObjectId = require('mongodb').ObjectId;   // Get ObjectId type
+const ObjectId = require("mongodb").ObjectId; // Get ObjectId type
 
 // Run Server
-app.listen(PORT, () =>
-{
-    console.log(`Server is running on port: ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
 });
 
 // Headers
-app.use((req, res, next) =>
-{
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PATCH, DELETE, OPTIONS'
-    );
-    next();
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS"
+  );
+  next();
 });
 
 // Login API Endpoint
-app.post('/api/Login', async (req, res, next) =>
-{
-    // incoming: login, password
-    // outgoing: userId, firstName, lastName, email, verified (isVerified), error
+app.post("/api/Login", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: userId, firstName, lastName, email, verified (isVerified), error
 
-    var error = '';
-    var id = -1;
-    var fn = '';
-    var ln = '';
-    var em = '';
-    var vr = false;
+  var error = "";
+  var id = -1;
+  var fn = "";
+  var ln = "";
+  var em = "";
+  var vr = false;
 
-    try {
-        const { login, password } = req.body;
-        const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
-    
-        if( results.length > 0 )
-        {
-            id = results[0]._id;
-            fn = results[0].FirstName;
-            ln = results[0].LastName;
-            em = results[0].Email;
-            vr = results[0].isVerified;
-        }
+  try {
+    const { login, password } = req.body;
+    const results = await db
+      .collection("Users")
+      .find({ Login: login, Password: password })
+      .toArray();
 
-        if ( id == -1 ) {
-            error = "User or password is incorrect"
-        }
-    }
-    catch(e)
-    {
-        error = e.toString();
+    if (results.length > 0) {
+      id = results[0]._id;
+      fn = results[0].FirstName;
+      ln = results[0].LastName;
+      em = results[0].Email;
+      vr = results[0].isVerified;
     }
 
-    var ret = { userId:id, firstName:fn, lastName:ln, email:em, verified:vr, error:error };
-    res.status(200).json(ret);
+    if (id == -1) {
+      error = "User or password is incorrect";
+    }
+  } catch (e) {
+    error = e.toString();
+  }
+
+  var ret = {
+    userId: id,
+    firstName: fn,
+    lastName: ln,
+    email: em,
+    verified: vr,
+    error: error,
+  };
+  res.status(200).json(ret);
 });
 
 // Register API Endpoint
-app.post('/api/Register', async (req, res, next) =>
-{
-    // incoming: login, password, firstName, lastName, email
-    // outgoing: userId, error
+app.post("/api/Register", async (req, res, next) => {
+  // incoming: login, password, firstName, lastName, email
+  // outgoing: userId, error
 
-    const { login, password, firstName, lastName, email } = req.body;
+  const { login, password, firstName, lastName, email } = req.body;
 
-    const newUser = {Login:login,Password:password,FirstName:firstName,LastName:lastName,Email:email,isVerified:false,Images: [],};
-    var error = '';
-    var id = -1;
+  const newUser = {
+    Login: login,
+    Password: password,
+    FirstName: firstName,
+    LastName: lastName,
+    Email: email,
+    isVerified: false,
+    Images: [],
+  };
+  var error = "";
+  var id = -1;
 
-    try
-    {
-        // check if username exists
-        var results = await db.collection('Users').find({Login:login}).toArray();
+  try {
+    // check if username exists
+    var results = await db.collection("Users").find({ Login: login }).toArray();
 
-        if ( results.length == 0 )
-        {
+    if (results.length == 0) {
+      // check if email is already being used
+      results = await db
+        .collection("Users")
+        .find({ Email: email.toLowerCase() })
+        .toArray();
 
-            // check if email is already being used
-            results = await db.collection('Users').find({Email:(email.toLowerCase())}).toArray();
-
-            if ( results.length == 0 ) 
-            {
-
-                // insert user and retrive id
-                results = await db.collection('Users').insertOne(newUser);
-                if (results.acknowledged) 
-                {
-                    id = results.insertedId;
-                }
-            }
-            else
-            {
-                error = "An account is already associated with this email";
-            }
+      if (results.length == 0) {
+        // insert user and retrive id
+        results = await db.collection("Users").insertOne(newUser);
+        if (results.acknowledged) {
+          id = results.insertedId;
         }
-        else 
-        {
-            error = "Username already exists";
-        }
+      } else {
+        error = "An account is already associated with this email";
+      }
+    } else {
+      error = "Username already exists";
     }
-    catch(e)
-    {
-        error = e.toString();
-    }
+  } catch (e) {
+    error = e.toString();
+  }
 
-    var ret = { userId:id, error:error };
-    if(!error) sendVerificationEmail(email, ret.userId);
-    res.status(200).json(ret);
+  var ret = { userId: id, error: error };
+  if (!error) sendVerificationEmail(email, ret.userId);
+  res.status(200).json(ret);
 });
 
 // Update Password API Endpoint
-app.post('/api/UpdatePass', async (req, res, next) =>
-{
-    // incoming: userId, newPassword
-    // outgoing: error
+app.post("/api/UpdatePass", async (req, res, next) => {
+  // incoming: userId, newPassword
+  // outgoing: error
 
-    const { userId, newPassword } = req.body;
+  const { userId, newPassword } = req.body;
 
-    const filter = { _id: new ObjectId(userId) };
-    const updateDoc = {
-        $set: {
-            Password: newPassword
-        },
-    };
-    const options = { upsert: false }
+  const filter = { _id: new ObjectId(userId) };
+  const updateDoc = {
+    $set: {
+      Password: newPassword,
+    },
+  };
+  const options = { upsert: false };
 
-    var error = '';
+  var error = "";
 
-    try
-    {
-        const results = await db.collection('Users').updateOne(filter, updateDoc, options);
-    }
-    catch(e)
-    {
-        error = e.toString();
-    }
+  try {
+    const results = await db
+      .collection("Users")
+      .updateOne(filter, updateDoc, options);
+  } catch (e) {
+    error = e.toString();
+  }
 
-    var ret = { error: error };
-    res.status(200).json(ret);
+  var ret = { error: error };
+  res.status(200).json(ret);
 });
 
 // Update isVerified API Endpoint
-app.post('/api/UpdateVerification', async (req, res, next) =>
-{
-    // incoming: userId
-    // outgoing: error
-    const userId = req.body.userId;
-    console.log("UserId: " + userId);
-    const filter = { _id: new ObjectId(userId) };
-    const updateDoc = {
-        $set: {
-            isVerified: true
-        },
-    };
-    const options = { upsert: false }
+app.post("/api/UpdateVerification", async (req, res, next) => {
+  // incoming: userId
+  // outgoing: error
+  const userId = req.body.userId;
+  console.log("UserId: " + userId);
+  const filter = { _id: new ObjectId(userId) };
+  const updateDoc = {
+    $set: {
+      isVerified: true,
+    },
+  };
+  const options = { upsert: false };
 
-    var error = '';
+  var error = "";
 
-    try
-    {
-        const results = await db.collection('Users').updateOne(filter, updateDoc, options);
-    }
-    catch(e)
-    {
-        error = e.toString();
-    }
+  try {
+    const results = await db
+      .collection("Users")
+      .updateOne(filter, updateDoc, options);
+  } catch (e) {
+    error = e.toString();
+  }
 
-    var ret = { error: error };
-    res.status(200).json(ret);});
-
-// Update Settings API Endpoint
-app.post('/api/UpdateSettings/', async (req, res, next) =>
-{
-    // incoming: userId, firstName, lastName, email, login, password
-    // outgoing: error
-
-    const { userId,firstName,lastName,email,login,password } = req.body;
-
-    const filter = { _id: new ObjectId(userId) };
-    const updateDoc = {
-        $set: {
-            FirstName: firstName,
-            LastName: lastName,
-            Email: email,
-            Login: login,
-            Password: password
-        },
-    };
-    const options = { upsert: false }
-
-    var error = '';
-
-    try
-    {
-        // check if username and email exists already
-        const result1 = await db.collection('Users').find({Login:login}).toArray();
-        const result2 = await db.collection('Users').find({Email:(email.toLowerCase())}).toArray();
-        var userExists = true;
-        var emailExists = true;
-
-        if ( result1.length == 0 || (result1.length > 0 && result1[0]._id == userId) ) 
-        {
-            userExists = false;
-        }
-
-        if ( result2.length == 0 || (result2.length > 0 && result2[0]._id == userId) ) 
-        {
-            emailExists = false;
-        }
-
-        // Update error messages
-        if (userExists == true && emailExists == true)
-        {
-            error = "Username and email are already in use";
-        }
-        else if (userExists == true) 
-        {
-            error = "Username already exists";
-        }
-        else if (emailExists == true) 
-        {
-            error = "An account is already associated with this email";
-        }
-
-        // Update settings
-        else 
-        {
-            const results = await db.collection('Users').updateOne(filter, updateDoc, options);
-        }
-    }
-    catch(e)
-    {
-        error = e.toString();
-    }
-
-    var ret = { error: error };
-    res.status(200).json(ret);
+  var ret = { error: error };
+  res.status(200).json(ret);
 });
 
-const sendVerificationEmail = (email, userId) =>{
-    var Transport = nodemailer.createTransport({
-        service: "Gmail",
-        auth:{
-            user: process.env.emailSender,
-            pass: process.env.emailPassword
-        }
-    });
+// Update Settings API Endpoint
+app.post("/api/UpdateSettings/", async (req, res, next) => {
+  // incoming: userId, firstName, lastName, email, login, password
+  // outgoing: error
 
-    var mailOptions;
-    let sender = "Virtual Vogue Team";
-    mailOptions = {
-        from: sender,
-        to: email,
-        subject: "Email Verification",
-        html: `Click of the following link to verify your email. <a href=http://localhost:3000/verification-check?userId=${userId}> here </a>`
-    };
+  const { userId, firstName, lastName, email, login, password } = req.body;
 
-    Transport.sendMail(mailOptions, function(error, respose){
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log("Message sent");
-        }
-    });
-}
+  const filter = { _id: new ObjectId(userId) };
+  const updateDoc = {
+    $set: {
+      FirstName: firstName,
+      LastName: lastName,
+      Email: email,
+      Login: login,
+      Password: password,
+    },
+  };
+  const options = { upsert: false };
 
-const sendResetPasswodnEmail = (email, userId) =>{
-    var Transport = nodemailer.createTransport({
-        service: "Gmail",
-        auth:{
-          user: process.env.emailSender,
-          pass: process.env.emailPassword
-        }
-    });
+  var error = "";
 
-    var mailOptions;
-    let sender = "Virtual Vogue Team";
-    mailOptions = {
-        from: sender,
-        to: email,
-        subject: "Reset Password",
-        html: `Click of the following link to change your password. <a href=http://localhost:3000/resetpassword?userId=${userId}> here </a>`
-    };
+  try {
+    // check if username and email exists already
+    const result1 = await db
+      .collection("Users")
+      .find({ Login: login })
+      .toArray();
+    const result2 = await db
+      .collection("Users")
+      .find({ Email: email.toLowerCase() })
+      .toArray();
+    var userExists = true;
+    var emailExists = true;
 
-    Transport.sendMail(mailOptions, function(error, respose){
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log("Message sent");
-        }
-    });
-}
-
-app.post('/api/findUser', async (req, res, next) =>
-{
-    // incoming: email
-    // outgoing: boolean found or not
-
-    var error = '';
-    var found = false;
-
-    try {
-        const email = req.body.email;
-        const results = await db.collection('Users').find({Email: email.toLowerCase()}).toArray();
-        console.log(email);
-        console.log(results.length);
-        if( results.length > 0 )
-        {
-            found = true;
-            sendResetPasswodnEmail(email,results[0]._id);
-        }
-        else {
-            error = "User with this email doesn't exist";
-        }
-    }
-    catch(e)
-    {
-        error = e.toString();
+    if (
+      result1.length == 0 ||
+      (result1.length > 0 && result1[0]._id == userId)
+    ) {
+      userExists = false;
     }
 
-    var ret = { found: found, error:error };
-    res.status(200).json(ret);
+    if (
+      result2.length == 0 ||
+      (result2.length > 0 && result2[0]._id == userId)
+    ) {
+      emailExists = false;
+    }
+
+    // Update error messages
+    if (userExists == true && emailExists == true) {
+      error = "Username and email are already in use";
+    } else if (userExists == true) {
+      error = "Username already exists";
+    } else if (emailExists == true) {
+      error = "An account is already associated with this email";
+    }
+
+    // Update settings
+    else {
+      const results = await db
+        .collection("Users")
+        .updateOne(filter, updateDoc, options);
+    }
+  } catch (e) {
+    error = e.toString();
+  }
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+const sendVerificationEmail = (email, userId) => {
+  var Transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.emailSender,
+      pass: process.env.emailPassword,
+    },
+  });
+
+  var mailOptions;
+  let sender = "Virtual Vogue Team";
+  mailOptions = {
+    from: sender,
+    to: email,
+    subject: "Email Verification",
+    html: `Click of the following link to verify your email. <a href=http://localhost:3000/verification-check?userId=${userId}> here </a>`,
+  };
+
+  Transport.sendMail(mailOptions, function (error, respose) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Message sent");
+    }
+  });
+};
+
+const sendResetPasswodnEmail = (email, userId) => {
+  var Transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.emailSender,
+      pass: process.env.emailPassword,
+    },
+  });
+
+  var mailOptions;
+  let sender = "Virtual Vogue Team";
+  mailOptions = {
+    from: sender,
+    to: email,
+    subject: "Reset Password",
+    html: `Click of the following link to change your password. <a href=http://localhost:3000/resetpassword?userId=${userId}> here </a>`,
+  };
+
+  Transport.sendMail(mailOptions, function (error, respose) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Message sent");
+    }
+  });
+};
+
+app.post("/api/findUser", async (req, res, next) => {
+  // incoming: email
+  // outgoing: boolean found or not
+
+  var error = "";
+  var found = false;
+
+  try {
+    const email = req.body.email;
+    const results = await db
+      .collection("Users")
+      .find({ Email: email.toLowerCase() })
+      .toArray();
+    console.log(email);
+    console.log(results.length);
+    if (results.length > 0) {
+      found = true;
+      sendResetPasswodnEmail(email, results[0]._id);
+    } else {
+      error = "User with this email doesn't exist";
+    }
+  } catch (e) {
+    error = e.toString();
+  }
+
+  var ret = { found: found, error: error };
+  res.status(200).json(ret);
 });
 
 // IMG handling
@@ -365,7 +362,9 @@ app.post('/api/findUser', async (req, res, next) =>
 app.post("/api/Upload/:userId", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ success: false, message: "No file uploaded" });
+      return res
+        .status(400)
+        .json({ success: false, message: "No file uploaded" });
     }
     const userId = req.params.userId;
     const tag = req.body.tag;
@@ -398,7 +397,7 @@ app.post("/api/Upload/:userId", upload.single("image"), async (req, res) => {
   }
 });
 
-// fetch ALL the images associated to a user and return their tags
+// fetch ALL the images associated to a user and return their tags/id's
 app.get("/api/images/:userId", async (req, res) => {
   const userId = req.params.userId; // Get user ID from URL parameter
 
@@ -414,6 +413,7 @@ app.get("/api/images/:userId", async (req, res) => {
         .status(404)
         .json({ success: false, message: "No images found for the user." });
     }
+
     // Extract public IDs of images and their tags
     const imagesData = user.Images.map((image) => ({
       publicId: image.publicId,
@@ -424,17 +424,24 @@ app.get("/api/images/:userId", async (req, res) => {
     const imageIds = imagesData.map((image) => image.publicId);
     const { resources } = await cloudinary.api.resources_by_ids(imageIds);
 
-    // Combine image URLs with tags
-    const imagesWithTags = resources.map((cloudinaryImage) => {
-      const userData = imagesData.find((image) => image.publicId === cloudinaryImage.public_id);
+
+    // Combine image URLs with tags and public IDs
+    const imagesWithTagsAndUrls = resources.map((cloudinaryImage) => {
+      const userData = imagesData.find(
+        (image) => image.publicId === cloudinaryImage.public_id
+      );
       return {
         url: cloudinaryImage.secure_url,
+        publicId: userData.publicId,
+
         tag: userData.tag,
       };
     });
 
-    // Respond with the images and their tags
-    res.status(200).json({ success: true, images: imagesWithTags });
+
+    // Respond with the images data (public IDs, tags, and URLs)
+    res.status(200).json({ success: true, images: imagesWithTagsAndUrls });
+
   } catch (error) {
     console.error("Error fetching images for user:", error);
     res.status(500).json({
@@ -444,6 +451,9 @@ app.get("/api/images/:userId", async (req, res) => {
     });
   }
 });
+
+
+
 // fetch all the images by specific tag or multiple tags
 app.get("/api/images/:userId/:tags", async (req, res) => {
   const userId = req.params.userId; // Get user ID from URL parameter
@@ -457,6 +467,7 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
 
     // If the user doesn't exist or has no images, return an empty response
     if (!user || !user.Images || user.Images.length === 0) {
+
       return res.status(404).json({
         success: false,
         message: "No images found for the user.",
@@ -464,12 +475,15 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
     }
 
     // Filter images based on tags
-    const filteredImages = user.Images.filter((image) => tags.includes(image.tag));
+    const filteredImages = user.Images.filter((image) =>
+      tags.includes(image.tag)
+    );
 
     // If no images match any of the specified tags, return an empty response
     if (filteredImages.length === 0) {
       return res.status(404).json({
         success: false,
+
         message: "No images found for the specified tag(s).",
       });
     }
@@ -485,6 +499,9 @@ app.get("/api/images/:userId/:tags", async (req, res) => {
     // Extract image URLs and tags
     const imagesWithUrlsAndTags = resources.map((image) => ({
       url: image.secure_url,
+
+      publicId: image.public_id,
+
       tag: filteredImages.find((img) => img.publicId === image.public_id).tag,
     }));
 
@@ -591,12 +608,10 @@ app.delete("/api/DeleteUser/:userId", async (req, res) => {
 });
 
 // Heroku Deployment
-if (process.env.NODE_ENV === 'production')
-{
-    // Set static folder
-    app.use(express.static('frontend/build'));
-    app.get('*', (req, res) =>
-    {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-    });
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("frontend/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
 }

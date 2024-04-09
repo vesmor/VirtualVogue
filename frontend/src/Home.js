@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import "./styles.css";
 import Settings from "./Settings";
+import bruhImage from "./img/bruh.jpeg";
 import Logo from "./img/Logo.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -31,7 +32,7 @@ const Home = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="right-nav">
             <Nav>
-              <Nav.Link href="/my-outfits">MY OUTFITS</Nav.Link>
+              <Nav.Link href="/Home">MY OUTFITS</Nav.Link>
               <Nav.Link href="/create-outfit">CREATE OUTFIT</Nav.Link>
               <Nav.Link href="/my-clothes">MY CLOTHING</Nav.Link>
               <Nav.Link href="/Settings">SETTINGS</Nav.Link>
@@ -53,7 +54,7 @@ const Home = () => {
         </Col>
       </Row>
       <Row className="flex-grow h-100 overflow-auto">
-        <Container className="card-container">
+        <Container className="card-container p-3">
           {[...Array(20)].map((_, i) => (
             <Card key={i} className="cardImages">
               <Card.Body>
