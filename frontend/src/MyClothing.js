@@ -304,6 +304,7 @@ const MyClothing = () => {
   
           }
           else{
+            setNumPictures(0);
             console.error('No links were given');
           }
         } else {
