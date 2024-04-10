@@ -590,6 +590,35 @@ app.post("/api/Outfits/:userId", async (req, res) => {
   }
 });
 
+// Endpoint to retrieve all outfits for a user
+app.get("/api/Outfits/:userId", async (req, res) => {
+  const userId = req.params.userId; // Get user ID from URL parameter
+
+  try {
+    // Retrieve user's outfits from MongoDB
+    const user = await db
+      .collection("Users")
+      .findOne({ _id: new ObjectId(userId) });
+
+    // If the user doesn't exist or has no outfits, return an empty response
+    if (!user || !user.Outfits || user.Outfits.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No outfits found for the user." });
+    }
+
+    // Respond with the user's outfits
+    res.status(200).json({ success: true, outfits: user.Outfits });
+  } catch (error) {
+    console.error("Error fetching outfits for user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching outfits for user",
+      error: error.message,
+    });
+  }
+});
+
 // Delete all photos off of a user
 
 // Function to delete images associated with a user from Cloudinary
