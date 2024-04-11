@@ -27,7 +27,8 @@ const CreateOutfit = () => {
   );
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
+  const [outfitName, setOutfitName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [numPictures, setNumPictures] = useState(0); 
@@ -41,9 +42,8 @@ const CreateOutfit = () => {
 
   const handleClose = () => {
     setShowModal(false);
-    setSelectedShirt(null);
-    setSelectedPants(null); 
     setMessage('');
+    setOutfitName("");
   };
 
   const imageSelected = (index,tag,image) => {
@@ -106,6 +106,7 @@ const CreateOutfit = () => {
     else if (pantsCheck){
       setClothingText("My pants");
       fetchTagData("Pants");
+      
     }
     else{
       setClothingText("My outfits");
@@ -115,6 +116,10 @@ const CreateOutfit = () => {
 
   const UploadImage = async (event) => {
     event.preventDefault();
+    if(!outfitName || outfitName.length > 14){
+      setMessage("Outfits must have a unique name. The maximum length is 14 characters long");
+      return;
+    }
     const userData = localStorage.getItem('user_data');
     var parsedUserData;
     setLoading(true);
@@ -122,33 +127,41 @@ const CreateOutfit = () => {
       parsedUserData = JSON.parse(userData);
     }
   
-    var formData = new FormData();
-    setMessage("Uploading image...");
-    formData.append('tag', 'Outfit');
+    let jsonPayload = JSON.stringify({
+      shirtURL: selectedShirt,
+      shirtTag: 'Shirt',
+      pantsURL: selectedPants,
+      pantsTag: 'Pants',
+      outfitName: outfitName
+  }
+  );
 
-    //TODO: COMBINE BOTH IMAGES AND PUT IT INSIDE THE FORM
-    // formData.append('image', selectedImage);
-    
-  
-    try {
-      const response = await fetch(buildPath(`api/Upload/${parsedUserData.userId}`), {
-        method: 'POST',
-        body: formData
+  //API stuff here!
+
+  try {
+      const response = await fetch(buildPath(`api/Outfits/${parsedUserData.userId}`), {
+          method: 'POST',
+          body: jsonPayload,
+          headers: { 'Content-Type': 'application/json' }
       });
-  
-      let res = await response.json();
-  
-      if (res.success) {
-        setMessage(res.message);
-        fetchTagData("Shirt,Pants");
-      } else {
-        setMessage(res.message);
+
+      console.log("Fetch response");
+
+      let res = JSON.parse(await response.text());
+
+      if (!res.success) {
+          console.log('Error');
+          setMessage(res.message);
       }
-      setLoading(false);
-    } catch (e) {
+      else {
+          setMessage("Outfit saved, check out the outfits page!");
+      }
+  }
+  catch (e) {
       alert(e.toString());
       return;
-    }
+  }
+    
   };
 
   const fetchTagData = async (tag) => {
@@ -162,6 +175,7 @@ const CreateOutfit = () => {
     
         let res = await response.json();
         if(res.success){
+          
           setNumPictures(res.images.length);
           setImagesURL(prevImagesURL => {
             const newImagesURL = []; // Create a new array
@@ -178,7 +192,6 @@ const CreateOutfit = () => {
             }
             return newImagesTag;
           });
-
         }
         else{
           setNumPictures(0);
@@ -199,9 +212,22 @@ const CreateOutfit = () => {
     if(firstTime){
       setDoFirstFech(false);
       fetchTagData("Shirt,Pants");
+    } else {
+      // Logic that depends on imagesURL
+      if(selectedShirt || selectedPants){
+        var arr = ([...Array(100)].map(() => false));
+        for(var i = 0 ; i < imagesURL.length; i++){
+          if(imagesURL[i] === selectedShirt){
+            arr[i] = true;
+          }
+          if(imagesURL[i] === selectedPants ){
+            arr[i] = true;
+          }
+        }
+        setShowCheckIcon(arr);
+      }
     }
-
-  }, []);
+  }, [imagesURL]);
   
   const app_name = 'virtvogue-af76e325d3c9';
   function buildPath(route)
@@ -222,12 +248,26 @@ const CreateOutfit = () => {
         <Modal.Header closeButton>
           <Modal.Title>Create New Outfit</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Info that will be sent to API here</Modal.Body>
+        <Modal.Body>
+        <Image src={selectedShirt}/>{" "}
+        <Image src={selectedPants}/>{" "}
+          {message}
+        <p>Give a name to this outfit!</p>
+        <Form.Group controlId="idFirstName">
+              <Form.Label classname = "form-label"> Name:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Outfit Name"
+                value={outfitName}
+                onChange={(e) => setOutfitName(e.target.value)}
+              />
+            </Form.Group>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={UploadImage}>
             Save
           </Button>
         </Modal.Footer>
