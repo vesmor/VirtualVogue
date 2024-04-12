@@ -542,11 +542,16 @@ app.post("/api/DeletePhoto/:userId", async (req, res) => {
 });
 
 // Endpoint to upload an outfit for a user
-app.post("/api/outfits/:userId", async (req, res) => {
+app.post("/api/Outfits/:userId", async (req, res) => {
   const userId = req.params.userId; // Get user ID from URL parameter
   const outfitData = req.body; // Outfit data from request body
 
   try {
+    // Check if outfit name is provided and not empty
+    if (!outfitData.outfitName || outfitData.outfitName.trim() === "") {
+      return res.status(400).json({ success: false, message: "Outfit name is required." });
+    }
+
     // Retrieve user's outfits from MongoDB
     let user = await db.collection("Users").findOne({ _id: new ObjectId(userId) });
 
