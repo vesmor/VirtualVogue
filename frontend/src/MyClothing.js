@@ -470,11 +470,6 @@ const MyClothing = () => {
           <Col xs={12} sm={6} md={8} lg={9} className="RightBar">
             <Row className="flex-grow justify-content-between p-0">
               <Col xs={4}>
-                <Form.Control
-                  className="homeSearchBar"
-                  type="search"
-                  placeholder="Search"
-                />
               </Col>
               <Col xs={8} className="d-flex justify-content-end">
                 <p className="myClothing">{clothingText}</p>

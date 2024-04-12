@@ -23,7 +23,7 @@ const CreateOutfit = () => {
   const [pantsIconColor, setPantsColor] = useState(false);
 
   const [showCheckIcon, setShowCheckIcon] = useState(
-    [...Array(100)].map(() => false)
+    [...Array(200)].map(() => false)
   );
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -215,7 +215,7 @@ const CreateOutfit = () => {
     } else {
       // Logic that depends on imagesURL
       if(selectedShirt || selectedPants){
-        var arr = ([...Array(100)].map(() => false));
+        var arr = ([...Array(200)].map(() => false));
         for(var i = 0 ; i < imagesURL.length; i++){
           if(imagesURL[i] === selectedShirt){
             arr[i] = true;
@@ -340,11 +340,7 @@ const CreateOutfit = () => {
           <Col xs={12} sm={6} md={8} lg={9} className="RightBar">
             <Row className="flex-grow justify-content-between p-0">
               <Col xs={4}>
-                <Form.Control
-                  className="homeSearchBar"
-                  type="search"
-                  placeholder="Search"
-                />
+
               </Col>
               <Col xs={8} className="d-flex justify-content-end">
                 <p className="myClothing">{clothingText}</p>

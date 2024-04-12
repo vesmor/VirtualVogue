@@ -79,8 +79,46 @@ const Home = () => {
   }, []);
   
 
-  const deleteImage = (event, url) => {
-    window.confirm("Are you sure you want to delete this clothing?");
+  const deleteOutfit = async (event, name) => {
+    event.preventDefault();
+  
+    const acceptDelete = window.confirm("Are you sure you want to delete this clothing?");
+  
+    // Proceed to delete image
+    if (acceptDelete) {
+      const userData = localStorage.getItem('user_data');
+  
+      // Get the userId
+      var parsedUserData;
+      if (userData) {
+        parsedUserData = JSON.parse(userData);
+      }
+      const bodyData =  {
+        outfitName:name
+      };
+      try {
+        const response = await fetch(buildPath(`api/Outfits/${parsedUserData.userId}/${name}`), {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+          },
+          body: JSON.stringify(bodyData) // Convert the body data object to JSON string
+        });
+  
+        let res = await response.json();
+  
+        if (res.success) {
+          fetchOutfits();
+        } else {
+          alert("failed");
+        }
+      } catch (e) {
+        alert(e.toString());
+        return;
+      }
+    } else {
+      return;
+    }
   };
   return (
     <Container fluid className="main-container">
@@ -121,7 +159,7 @@ const Home = () => {
 
       </Card.Header>
       <Card.Body style={{ position: 'relative' }}>
-      <div className="icon-wrapper" onClick={(event) => deleteImage(event, outfits[i])}>
+      <div className="icon-wrapper" onClick={(event) => deleteOutfit(event, outfits[i].outfitName)}>
             <FaTrashAlt style={{ color: 'black' }} />
       </div>
             <Image
