@@ -69,8 +69,33 @@ const Settings = () => {
         }
     }
 
-    const deleteAccount = () => {
-      window.confirm("Are you sure you want to delete your account?"); 
+    const deleteAccount = async () => {
+     const check = window.confirm("Are you sure you want to delete your account? This data cannot be recovered later."); 
+      if(!check) return;
+
+      try {
+        const userData = localStorage.getItem('user_data');
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          const response = await fetch(buildPath(`api/DeleteUser/${parsedUserData.userId}`), {
+            method: 'DELETE'
+          });
+      
+          let res = await response.json();
+          if(res.success){
+            window.location.href = '/';
+          }
+          else{
+            console.error('An error ocurred o delete accounnt.');
+          }
+        } else {
+          alert("User not found");
+          console.error('User data not found in localStorage.');
+        }
+      } catch (error) {
+        alert("An error occurred");
+        console.error('Error fetching data:', error);
+      }
     };
 
     const saveChanges = async (event) =>  {

@@ -111,3 +111,66 @@
   height: 80vh;
   object-fit: cover;
 }
+
+
+.card-imageHome {
+  width: 100%;
+  height: 15vh; /* Maintain aspect ratio */
+}
+
+.outfitTitle{
+  color: #342a21;
+  text-align: center;
+  font-family: "Lemands";
+  position:absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.outfitTag{
+  color: #342a21;
+  text-align: center;
+  font-family: "Lemands";
+  position:absolute;
+  left: 0;
+  right: 0;
+  top: 84%;
+}
+
+.cardOutfit{
+  background-color: #f1e0c5;
+  height: 50vh;
+  padding-top: 9vh;
+}
+
+.cardOutfit:hover .outfitTitle {
+  color:#f1e0c5;
+}
+
+.cardOutfit:hover {
+  background-color: #342a21; /* Change the background color on hover */
+
+}
+
+.cardOutfit:hover .outfitTag {
+  color:#f1e0c5;
+}
+
+.cardOutfit:hover .icon-wrapper {
+  display: flex;
+}
+
+.cardOutfit:hover .icon-wrapper:hover {
+  background-color: white;
+}
+
+.imageTagText{
+  position: absolute;
+  left: 50%; /* Place the text horizontally centered */
+  transform: translateX(-50%); /* Center the text horizontally */
+  color: #342a21;
+  text-align: center;
+  font-family: "Lemands";
+
+}

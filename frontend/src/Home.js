@@ -79,8 +79,46 @@ const Home = () => {
   }, []);
   
 
-  const deleteImage = (event, url) => {
-    window.confirm("Are you sure you want to delete this clothing?");
+  const deleteOutfit = async (event, name) => {
+    event.preventDefault();
+  
+    const acceptDelete = window.confirm("Are you sure you want to delete this clothing?");
+  
+    // Proceed to delete image
+    if (acceptDelete) {
+      const userData = localStorage.getItem('user_data');
+  
+      // Get the userId
+      var parsedUserData;
+      if (userData) {
+        parsedUserData = JSON.parse(userData);
+      }
+      const bodyData =  {
+        outfitName:name
+      };
+      try {
+        const response = await fetch(buildPath(`api/Outfits/${parsedUserData.userId}/${name}`), {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+          },
+          body: JSON.stringify(bodyData) // Convert the body data object to JSON string
+        });
+  
+        let res = await response.json();
+  
+        if (res.success) {
+          fetchOutfits();
+        } else {
+          alert("failed");
+        }
+      } catch (e) {
+        alert(e.toString());
+        return;
+      }
+    } else {
+      return;
+    }
   };
   return (
     <Container fluid className="main-container">
@@ -106,41 +144,44 @@ const Home = () => {
       </Row>
       <Row className="flex-grow justify-content-between py-3">
         <Col xs={4}>
-          <Form.Control
-            className="homeSearchBar"
-            type="search"
-            placeholder="Search"
-          />
+
         </Col>
         <Col xs={8} className="d-flex justify-content-end">
           <p className="myOutfit">My Outfits</p>
         </Col>
       </Row>
       <Row className="flex-grow h-100 overflow-auto">
-        <Container className="card-container p-3">
-          {[...Array(numPictures)].map((_, i) => (
-            <Card key={i} className="cardImages" >
-            <Card.Body style={{ position: 'relative'}}>
-              <div className="icon-wrapper" onClick={(event) => deleteImage(event, outfits[i])}>
-                <FaTrashAlt style={{ color: 'black' }} />
-              </div>
-              <img 
-                src={outfits[i].shirtURL}
-                alt="Selected"
-                className="card-image"
-              />
-              <img 
-                src={outfits[i].pantsURL}
-                alt="Selected"
-                className="card-image"
-              />
+      <Container className="card-container p-3">
+  {[...Array(numPictures)].map((_, i) => (
+    <Card key={i} className="cardOutfit">
+      <Card.Header className="outfitTitle">
+        <h1 >{outfits[i].outfitName}</h1> 
 
-              <h1 className= "imageTagText">{"Outfit"}</h1> 
-              {/* outfits[i].outfitName */}
-            </Card.Body>
-            </Card>
-          ))}
-        </Container>
+      </Card.Header>
+      <Card.Body style={{ position: 'relative' }}>
+      <div className="icon-wrapper" onClick={(event) => deleteOutfit(event, outfits[i].outfitName)}>
+            <FaTrashAlt style={{ color: 'black' }} />
+      </div>
+            <Image
+            src={outfits[i].shirtURL}
+              alt="Selected"
+              className="card-imageHome"
+            /> 
+
+            <Image
+              src={outfits[i].pantsURL}
+                alt="Selected"
+                className="card-imageHome"
+            />
+
+      </Card.Body>
+      <Card.Footer className = "outfitTag">
+      <h1>{"Outfit"}</h1> 
+      </Card.Footer>
+    </Card>
+  ))}
+</Container>
+
       </Row>
     </Container>
   );
