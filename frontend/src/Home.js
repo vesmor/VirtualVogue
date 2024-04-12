@@ -106,41 +106,44 @@ const Home = () => {
       </Row>
       <Row className="flex-grow justify-content-between py-3">
         <Col xs={4}>
-          <Form.Control
-            className="homeSearchBar"
-            type="search"
-            placeholder="Search"
-          />
+
         </Col>
         <Col xs={8} className="d-flex justify-content-end">
           <p className="myOutfit">My Outfits</p>
         </Col>
       </Row>
       <Row className="flex-grow h-100 overflow-auto">
-        <Container className="card-container p-3">
-          {[...Array(numPictures)].map((_, i) => (
-            <Card key={i} className="cardImages" >
-            <Card.Body style={{ position: 'relative'}}>
-              <div className="icon-wrapper" onClick={(event) => deleteImage(event, outfits[i])}>
-                <FaTrashAlt style={{ color: 'black' }} />
-              </div>
-              <img 
-                src={outfits[i].shirtURL}
-                alt="Selected"
-                className="card-image"
-              />
-              <img 
-                src={outfits[i].pantsURL}
-                alt="Selected"
-                className="card-image"
-              />
+      <Container className="card-container p-3">
+  {[...Array(numPictures)].map((_, i) => (
+    <Card key={i} className="cardOutfit">
+      <Card.Header className="outfitTitle">
+        <h1 >{outfits[i].outfitName}</h1> 
 
-              <h1 className= "imageTagText">{"Outfit"}</h1> 
-              {/* outfits[i].outfitName */}
-            </Card.Body>
-            </Card>
-          ))}
-        </Container>
+      </Card.Header>
+      <Card.Body style={{ position: 'relative' }}>
+      <div className="icon-wrapper" onClick={(event) => deleteImage(event, outfits[i])}>
+            <FaTrashAlt style={{ color: 'black' }} />
+      </div>
+            <Image
+            src={outfits[i].shirtURL}
+              alt="Selected"
+              className="card-imageHome"
+            /> 
+
+            <Image
+              src={outfits[i].pantsURL}
+                alt="Selected"
+                className="card-imageHome"
+            />
+
+      </Card.Body>
+      <Card.Footer className = "outfitTag">
+      <h1>{"Outfit"}</h1> 
+      </Card.Footer>
+    </Card>
+  ))}
+</Container>
+
       </Row>
     </Container>
   );
