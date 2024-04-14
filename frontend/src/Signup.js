@@ -85,10 +85,8 @@ const Signup = () => {
       }
       else
       {
-        alert("SUCCESS!!");
         var user = {login:res.login, password:res.password, firstName:res.firstName, lastName:res.lastName, email: res.email, id:res.id}
-        localStorage.setItem('user_data', JSON.stringify(user));
-        window.location.href = '/home';
+        setErrorMessage("An email was sent to verify your account. Please open the email to proceed");
       }
     }
     catch(e)

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   Nav,
@@ -16,8 +16,109 @@ import Logo from "./img/Logo.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 
 const Home = () => {
-  const deleteImage = () => {
-    window.confirm("Are you sure you want to delete this clothing?");
+
+  const [numPictures, setNumPictures] = useState(0); 
+  const [outfits, setOutfits] = useState(null);
+  const [doFirstFetch, setDoFirstFech] = useState(true);
+
+  const app_name = 'virtvogue-af76e325d3c9';
+  function buildPath(route)
+  {
+      if(process.env.NODE_ENV === 'production')
+      {
+          return 'https://' + app_name + '.herokuapp.com/' + route;
+      }
+      else
+      {
+          return 'http://localhost:5001/' + route;
+      }
+  }
+
+
+  const fetchOutfits = async() => {
+    try {
+      const userData = localStorage.getItem('user_data');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const response = await fetch(buildPath(`api/Outfits/${parsedUserData.userId}`), {
+          method: 'GET'
+        });
+    
+        let res = await response.json();
+        if(res.success){
+          setNumPictures(res.outfits.length);
+          setOutfits(prevImagesURL => {
+            const newImagesURL = []; // Create a new array
+            for (var i = 0; i < res.outfits.length; i++) {
+              newImagesURL.push(res.outfits[i]); // Append values to the new array
+            }
+            return newImagesURL;
+          });
+        }
+        else{
+          setNumPictures(0);
+          console.error('No links were given');
+        }
+      } else {
+        alert("User not found");
+        console.error('User data not found in localStorage.');
+      }
+    } catch (error) {
+      alert("An error occurred");
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
+    var firstTime = doFirstFetch;
+    if(firstTime){
+      setDoFirstFech(false);
+      fetchOutfits();
+    }
+
+  }, []);
+  
+
+  const deleteOutfit = async (event, name) => {
+    event.preventDefault();
+  
+    const acceptDelete = window.confirm("Are you sure you want to delete this clothing?");
+  
+    // Proceed to delete image
+    if (acceptDelete) {
+      const userData = localStorage.getItem('user_data');
+  
+      // Get the userId
+      var parsedUserData;
+      if (userData) {
+        parsedUserData = JSON.parse(userData);
+      }
+      const bodyData =  {
+        outfitName:name
+      };
+      try {
+        const response = await fetch(buildPath(`api/Outfits/${parsedUserData.userId}/${name}`), {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+          },
+          body: JSON.stringify(bodyData) // Convert the body data object to JSON string
+        });
+  
+        let res = await response.json();
+  
+        if (res.success) {
+          fetchOutfits();
+        } else {
+          alert("failed");
+        }
+      } catch (e) {
+        alert(e.toString());
+        return;
+      }
+    } else {
+      return;
+    }
   };
   return (
     <Container fluid className="main-container">
@@ -43,28 +144,44 @@ const Home = () => {
       </Row>
       <Row className="flex-grow justify-content-between py-3">
         <Col xs={4}>
-          <Form.Control
-            className="homeSearchBar"
-            type="search"
-            placeholder="Search"
-          />
+
         </Col>
         <Col xs={8} className="d-flex justify-content-end">
           <p className="myOutfit">My Outfits</p>
         </Col>
       </Row>
       <Row className="flex-grow h-100 overflow-auto">
-        <Container className="card-container p-3">
-          {[...Array(20)].map((_, i) => (
-            <Card key={i} className="card">
-              <Card.Body>
-                <div className="icon-wrapper" onClick={deleteImage}>
-                  <FaTrashAlt />
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
-        </Container>
+      <Container className="card-container p-3">
+  {[...Array(numPictures)].map((_, i) => (
+    <Card key={i} className="cardOutfit">
+      <Card.Header className="outfitTitle">
+        <h1 >{outfits[i].outfitName}</h1> 
+
+      </Card.Header>
+      <Card.Body style={{ position: 'relative' }}>
+      <div className="icon-wrapper" onClick={(event) => deleteOutfit(event, outfits[i].outfitName)}>
+            <FaTrashAlt style={{ color: 'black' }} />
+      </div>
+            <Image
+            src={outfits[i].shirtURL}
+              alt="Selected"
+              className="card-imageHome"
+            /> 
+
+            <Image
+              src={outfits[i].pantsURL}
+                alt="Selected"
+                className="card-imageHome"
+            />
+
+      </Card.Body>
+      <Card.Footer className = "outfitTag">
+      <h1>{"Outfit"}</h1> 
+      </Card.Footer>
+    </Card>
+  ))}
+</Container>
+
       </Row>
     </Container>
   );
