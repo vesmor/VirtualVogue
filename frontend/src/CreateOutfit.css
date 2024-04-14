@@ -80,3 +80,18 @@
 .newOutfitButton:disabled {
   background-color: #342a21;
 }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(
+    100% - 48px
+  ); /* Replace 56px with the height of your search bar row */
+}
