@@ -333,7 +333,7 @@ const CreateOutfit = () => {
                 background
                 size="lg"
                 onClick={handleShow}
-                // disabled={isButtonDisabled}
+                disabled={isButtonDisabled}
               >
                 New Outfit
               </Button>
