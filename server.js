@@ -288,7 +288,7 @@ const sendVerificationEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Email Verification",
-    html: `Click of the following link to verify your email. <a href=http://localhost:3000/verification-check?userId=${userId}> here </a>`,
+    html: `Click of the following link to verify your email. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/verification-check?userId=${userId}> here </a>`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
@@ -300,7 +300,7 @@ const sendVerificationEmail = (email, userId) => {
   });
 };
 
-const sendResetPasswodnEmail = (email, userId) => {
+const sendResetPasswodnEmail = (email, userId, username) => {
   var Transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -315,7 +315,7 @@ const sendResetPasswodnEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Reset Password",
-    html: `Click of the following link to change your password. <a href=http://localhost:3000/resetpassword?userId=${userId}> here </a>`,
+    html: `Click of the following link to change your password. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/resetpassword?userId=${userId}> here </a> If you also forgot your username, it is ${username}`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
@@ -344,7 +344,7 @@ app.post("/api/findUser", async (req, res, next) => {
     console.log(results.length);
     if (results.length > 0) {
       found = true;
-      sendResetPasswodnEmail(email, results[0]._id);
+      sendResetPasswodnEmail(email, results[0]._id, results[0].Login);
     } else {
       error = "User with this email doesn't exist";
     }
