@@ -153,7 +153,7 @@ const Home = () => {
             <Card key={i} className="cardOutfit p-0">
               <Row className="outfitTitle">
                 <Col>
-                  <h1 className="m-0">{outfits[i].outfitName}</h1>
+                  <h1 className="pt-2">{outfits[i].outfitName}</h1>
                 </Col>
               </Row>
               <Row>
@@ -182,11 +182,11 @@ const Home = () => {
                   />
                 </Col>
               </Row>
-              {/* <Row className="outfitTag">
+              <Row className="outfitTag">
                 <Col>
                   <h1>{"Outfit"}</h1>
                 </Col>
-              </Row> */}
+              </Row>
             </Card>
           ))}
         </Container>

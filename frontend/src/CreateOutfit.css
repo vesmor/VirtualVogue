@@ -81,6 +81,12 @@
   background-color: #342a21;
 }
 
+.uploadButton:disabled {
+  background-color: #929292;
+  border-color: transparent;
+  text-decoration: none;
+}
+
 .card-body {
   display: flex;
   flex-direction: column;

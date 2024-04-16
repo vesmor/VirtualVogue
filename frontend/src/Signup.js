@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Container,
-  Row,
-  Col,
-  Image,
-  Form
-} from "react-bootstrap";
+import { Button, Container, Row, Col, Image, Form } from "react-bootstrap";
 import Logo from "./img/Logo.jpg";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Signup.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Signup.css";
 
 const Signup = () => {
   const [login, setLogin] = useState("");
@@ -20,26 +13,23 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const app_name = 'virtvogue-af76e325d3c9';
-  function buildPath(route)
-  {
-    if(process.env.NODE_ENV === 'production')
-    {
-      return 'https://' + app_name + '.herokuapp.com/' + route;
-    }
-    else
-    {
-      return 'http://localhost:5001/' + route;
+  const app_name = "virtvogue-af76e325d3c9";
+  function buildPath(route) {
+    if (process.env.NODE_ENV === "production") {
+      return "https://" + app_name + ".herokuapp.com/" + route;
+    } else {
+      return "http://localhost:5001/" + route;
     }
   }
 
   const doRegister = async (event) => {
     event.preventDefault();
     console.log(firstName, lastName, email, password, confirmPassword);
-  
+
     // Password validation criteria
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,.])[A-Za-z\d@$!%*?&,.]{8,}$/;
-    
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,.])[A-Za-z\d@$!%*?&,.]{8,}$/;
+
     // Email validation criteria
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -55,15 +45,15 @@ const Signup = () => {
     } else if (!emailRegex.test(email)) {
       error = "Invalid email";
       isValid = false;
-    }
-    else if(!login.trim()){
+    } else if (!login.trim()) {
       error = "Usernane is required";
       isValid = false;
     } else if (password !== confirmPassword) {
       error = "Passwords don't match";
       isValid = false;
     } else if (!passwordRegex.test(password)) {
-      error = "Password must be 8 characters long, one upper and lower case letter, and a special symbol";
+      error =
+        "Password must be 8 characters long, one upper and lower case letter, and a special symbol";
       isValid = false;
     }
 
@@ -73,51 +63,76 @@ const Signup = () => {
     }
 
     console.log("ALL FIELDS ARE CORRECT!");
-    var obj = {login:login, password:password, firstName: firstName, lastName: lastName, email: email};
+    var obj = {
+      login: login,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    };
     var js = JSON.stringify(obj);
-    try
-    {
-      const response = await fetch(buildPath('api/Register'),{method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+    try {
+      const response = await fetch(buildPath("api/Register"), {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json" },
+      });
       var res = JSON.parse(await response.text());
-      if( res.error )
-      {
+      if (res.error) {
         setErrorMessage(res.error);
+      } else {
+        var user = {
+          login: res.login,
+          password: res.password,
+          firstName: res.firstName,
+          lastName: res.lastName,
+          email: res.email,
+          id: res.id,
+        };
+        setErrorMessage(
+          "An email was sent to verify your account. Please open the email to proceed"
+        );
       }
-      else
-      {
-        var user = {login:res.login, password:res.password, firstName:res.firstName, lastName:res.lastName, email: res.email, id:res.id}
-        setErrorMessage("An email was sent to verify your account. Please open the email to proceed");
-      }
-    }
-    catch(e)
-    {
-    alert(e.toString());
-    return;
+    } catch (e) {
+      alert(e.toString());
+      return;
     }
     // Handle form submission
   };
 
   const redirectToLogin = () => {
-    window.location.href = '/login'; // Specify the URL you want to navigate to
+    window.location.href = "/login"; // Specify the URL you want to navigate to
   };
 
   return (
     <Container fluid className="signupContainer">
-      <Row className= "rowContainer">
-        <Col className = "leftColumn" >
-        <h2 className = "leftText">Virtual Vogue</h2>
-        <Image className="image-holder" src={Logo}></Image>
-        <h2 className = "leftText">Set the next trend!</h2>
+      <Row className="rowContainer">
+        <Col className="leftColumn">
+          <Row className="justify-content-center align-items-center">
+            <h2 className="leftText">Virtual Vogue</h2>
+          </Row>
+          <Row className="justify-content-center align-items-center mt-5">
+            <Col xs={6} className="text-center">
+              <Image src={Logo} roundedCircle className="big-logo" />
+            </Col>
+            {/* <Row className="justify-content-center align-items-center">
+              <Col lg={6} className="text-center">
+                <h1 className="virtual-vogue-text">VIRTUAL VOGUE</h1>
+              </Col>
+            </Row> */}
+          </Row>
+          <Row className="justify-content-center align-items-center mt-5">
+            <h2 className="leftText">Set the next trend!</h2>
+          </Row>
         </Col>
 
         <Col className="rightColumn">
-            <Form onSubmit={doRegister} className = "signupForm" >
-
-            <h2 className = "signupTitle">SIGN UP</h2>
+          <Form onSubmit={doRegister} className="signupForm">
+            <h2 className="signupTitle">SIGN UP</h2>
 
             {/* First name field */}
             <Form.Group controlId="idFirstName">
-              <Form.Label classname = "form-label"> First name</Form.Label>
+              <Form.Label classname="form-label"> First name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="First name"
@@ -184,15 +199,23 @@ const Signup = () => {
             {/* Error Message field*/}
             <p id="errorSignUp">{errorMessage}</p>
 
-            <Button type="submit" className="signupButtonsPage">Sign up</Button>
+            <Button type="submit" className="signupButtonsPage">
+              Sign up
+            </Button>
             <hr />
 
-             {/* Redirect to the login page */}
-             <p className="loginQuestion">Already have an account?</p>
-            <Button style= {{alignSelf: "center"}} type="button" className="signupButtonsPage" onClick={redirectToLogin}>Login</Button>
-
-            </Form>
-            </Col>
+            {/* Redirect to the login page */}
+            <p className="loginQuestion">Already have an account?</p>
+            <Button
+              style={{ alignSelf: "center" }}
+              type="button"
+              className="signupButtonsPage"
+              onClick={redirectToLogin}
+            >
+              Login
+            </Button>
+          </Form>
+        </Col>
       </Row>
     </Container>
   );
