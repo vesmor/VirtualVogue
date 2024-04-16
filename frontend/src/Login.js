@@ -100,11 +100,15 @@ const Login = () => {
     window.location.href = "/forgotpassword";
   };
 
+  const redirectToSignUp = () => {
+    window.location.href = "/signup"; // Specify the URL you want to navigate to
+  };
+
   return (
     <Container fluid id="loginPage">
       <Row>
-        <Col md={4} id="sideBar">
-          <Row>
+        <Col id="sideBar" className="p-5 d-flex align-items-center flex-column">
+          {/* <Row className="justify-content-center align-items-center mt-5">
             <h1 className="h1">New Here?</h1>
           </Row>
           <Row>
@@ -116,7 +120,7 @@ const Login = () => {
             >
               Sign up
             </Button>
-          </Row>
+          </Row> */}
           <Row>
             <h1 className="h1">Forgot Password?</h1>
           </Row>
@@ -131,68 +135,53 @@ const Login = () => {
             </Button>
           </Row>
         </Col>
+        <Col className="rightColumn d-flex flex-column justify-content-center align-items-center">
+          <Form onSubmit={doLogin} className="signupForm">
+            <h2 className="signupTitle">LOGIN</h2>
 
-        <Col md={8} id="rightBar">
-          <Row style={{ justifyContent: "center", alignContent: "center" }}>
-            <Col md={6}>
-              <Card className="loginCard">
-                <CardBody>
-                  <Form onSubmit={doLogin}>
-                    <Row>
-                      <h2 class="h2" id="loginHeader">
-                        Login
-                      </h2>
-                    </Row>
-                    <Row id="formInput">
-                      <Row
-                        className="formPart"
-                        style={{ justifyContent: "center" }}
-                      >
-                        <Col md={10}>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl
-                            required
-                            value={login}
-                            placeholder="Username"
-                            id="login"
-                            type="text"
-                            onChange={(e) => setLogin(e.target.value)}
-                          ></FormControl>
-                        </Col>
-                      </Row>
-                      <Row
-                        className="formPart"
-                        style={{ justifyContent: "center" }}
-                      >
-                        <Col md={10}>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl
-                            required
-                            value={password}
-                            placeholder="Password"
-                            id="password"
-                            type="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                          ></FormControl>
-                        </Col>
-                      </Row>
-                    </Row>
-                    <Row style={{ justifyContent: "center" }}>
-                      <p>{errorMessage}</p>
-                      <Button
-                        id="loginButton"
-                        className="loginButton"
-                        variant="primary"
-                        type="submit"
-                      >
-                        Login
-                      </Button>
-                    </Row>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+            {/* Username field */}
+            <Form.Group controlId="login">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Username"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+              />
+            </Form.Group>
+
+            {/* Password field */}
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
+            {/* Error Message field*/}
+            <p id="errorSignUp">{errorMessage}</p>
+
+            <Button type="submit" className="signupButtonsPage">
+              Login
+            </Button>
+            <hr />
+
+            {/* Redirect to the signup page */}
+            <p className="loginQuestion">New here?</p>
+            <Button
+              style={{ alignSelf: "center" }}
+              type="button"
+              className="signupButtonsPage"
+              onClick={redirectToSignUp}
+            >
+              Sign Up
+            </Button>
+          </Form>
         </Col>
       </Row>
     </Container>
