@@ -11,7 +11,6 @@ import {
 } from "react-bootstrap";
 import "./styles.css";
 import Settings from "./Settings";
-import bruhImage from "./img/bruh.jpeg";
 import Logo from "./img/Logo.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -19,6 +18,8 @@ const Home = () => {
   const [numPictures, setNumPictures] = useState(0);
   const [outfits, setOutfits] = useState(null);
   const [doFirstFetch, setDoFirstFech] = useState(true);
+  const [arrayEmpty, setArrayEmpty] = useState(false);
+
 
   const app_name = "virtvogue-af76e325d3c9";
   function buildPath(route) {
@@ -51,16 +52,18 @@ const Home = () => {
             }
             return newImagesURL;
           });
+          setArrayEmpty(false);
         } else {
           setNumPictures(0);
+          setArrayEmpty(true);
           console.error("No links were given");
         }
       } else {
-        alert("User not found");
+        console.log("User not found");
         console.error("User data not found in localStorage.");
       }
     } catch (error) {
-      alert("An error occurred");
+      console.log("An error occurred");
       console.error("Error fetching data:", error);
     }
   };
@@ -109,16 +112,57 @@ const Home = () => {
         if (res.success) {
           fetchOutfits();
         } else {
-          alert("failed");
+          console.log("failed");
         }
       } catch (e) {
-        alert(e.toString());
+        console.log(e.toString());
         return;
       }
     } else {
       return;
     }
   };
+
+  const searchOutfit = async (value) => {
+    if(!value){
+      fetchOutfits();
+    }
+    else{
+        try {
+        const userData = localStorage.getItem("user_data");
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          const response = await fetch(
+            buildPath(`api/SearchOutfits/${parsedUserData.userId}/${value}`),
+            {
+              method: "GET",
+            }
+          );
+  
+          let res = await response.json();
+          if (!res.error || res.searchResults.length > 0) {
+            setNumPictures(res.searchResults.length);
+            setOutfits((prevImagesURL) => {
+              const newImagesURL = []; // Create a new array
+              for (var i = 0; i < res.searchResults.length; i++) {
+                newImagesURL.push(res.searchResults[i]); // Append values to the new array
+              }
+              return newImagesURL;
+            });
+            setArrayEmpty(false);
+            } else {
+            setNumPictures(0);
+            console.error("No links were given");
+          }
+        } else {
+          console.error("User data not found in localStorage.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }
+
   return (
     <Container fluid className="main-container">
       <Row>
@@ -142,12 +186,22 @@ const Home = () => {
         </Navbar>
       </Row>
       <Row style={{ height: "10%" }}>
-        <Col xs={4}></Col>
+        <Col xs={4}>
+        <Form.Control
+            className="homeSearchBar"
+            type="search"
+            placeholder="Search"
+            onChange={(e) => searchOutfit(e.target.value)}
+          />
+        </Col>
         <Col xs={8} className="d-flex justify-content-end">
           <p className="myOutfit">My Outfits</p>
         </Col>
       </Row>
       <Row style={{ height: "80%", overflow: "auto" }}>
+      <p className="emptyMessageOutfit" style={{ display: arrayEmpty ? "block" : "none" }}>
+              You don't have any outfits yet! <br></br> Go to create outfit tab to create one!
+      </p>
         <Container className="card-container p-3">
           {[...Array(numPictures)].map((_, i) => (
             <Card key={i} className="cardOutfit p-0">

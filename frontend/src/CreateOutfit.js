@@ -22,6 +22,8 @@ const CreateOutfit = () => {
   const [shirtIconColor, setShirtIconColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
 
+  const [arrayEmpty, setArrayEmpty] = useState(false);
+
   const [showCheckIcon, setShowCheckIcon] = useState(
     [...Array(200)].map(() => false)
   );
@@ -187,7 +189,9 @@ const CreateOutfit = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links were given");
         }
@@ -346,6 +350,9 @@ const CreateOutfit = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
+            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
+              You don't have any clothing yet! <br></br> Click on My clothing tab and add some shirts and pants!
+            </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (
                 <Card

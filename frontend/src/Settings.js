@@ -117,7 +117,7 @@ const Settings = () => {
         isValid = false;
       }
       else if (!passwordRegex.test(password)) {
-        error = "Password must be 8 characters long, one upper and lower case letter, and a special symbol. Changes were not applied.";
+        error = "Password must be 8 characters long, one upper and lower case letter, a number, and a special symbol. Changes were not applied.";
         isValid = false;
       }
   
