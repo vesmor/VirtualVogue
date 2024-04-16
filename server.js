@@ -288,7 +288,7 @@ const sendVerificationEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Email Verification",
-    html: `Click of the following link to verify your email. <a href=http://localhost:3000/verification-check?userId=${userId}> here </a>`,
+    html: `Click of the following link to verify your email. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/verification-check?userId=${userId}> here </a>`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
