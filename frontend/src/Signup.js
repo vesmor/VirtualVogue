@@ -53,7 +53,7 @@ const Signup = () => {
       isValid = false;
     } else if (!passwordRegex.test(password)) {
       error =
-        "Password must be 8 characters long, one upper and lower case letter, and a special symbol";
+        "Password must be 8 characters long, one upper and lower case letter, a number, and a special symbol";
       isValid = false;
     }
 

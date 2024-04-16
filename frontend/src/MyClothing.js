@@ -26,6 +26,8 @@ const MyClothing = () => {
   const [dressIconColor, setDressColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
 
+  const [arrayEmpty, setArrayEmpty] = useState(false);
+
   //Used to hide and show the Modal (Form) info
   const [showModal, setShowModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState("");
@@ -265,7 +267,9 @@ const MyClothing = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links given.");
         }
@@ -309,7 +313,9 @@ const MyClothing = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links were given");
         }
@@ -504,6 +510,9 @@ const MyClothing = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
+            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
+              Click on New Cloth button to add your first clothing!
+            </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (
                 <Card
@@ -514,6 +523,7 @@ const MyClothing = () => {
                   <Card.Body style={{ position: "relative" }}>
                     <Row>
                       <Col>
+                      <a href={imagesURL[i]} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                         <div
                           className="icon-wrapper"
                           onClick={(event) => deleteImage(event, imagesURL[i])}
@@ -525,6 +535,8 @@ const MyClothing = () => {
                           alt="Selected"
                           className="card-image"
                         />
+                       </a>
+
                       </Col>
                     </Row>
                     <Row>
