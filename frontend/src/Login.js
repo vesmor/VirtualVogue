@@ -100,11 +100,15 @@ const Login = () => {
     window.location.href = "/forgotpassword";
   };
 
+  const redirectToSignUp = () => {
+    window.location.href = "/signup"; // Specify the URL you want to navigate to
+  };
+
   return (
     <Container fluid id="loginPage">
       <Row>
-        <Col md={4} id="sideBar">
-          <Row>
+        <Col id="sideBar" className="p-5 d-flex align-items-center flex-column">
+          {/* <Row className="justify-content-center align-items-center mt-5">
             <h1 className="h1">New Here?</h1>
           </Row>
           <Row>
@@ -116,7 +120,7 @@ const Login = () => {
             >
               Sign up
             </Button>
-          </Row>
+          </Row> */}
           <Row>
             <h1 className="h1">Forgot Password?</h1>
           </Row>
@@ -131,8 +135,10 @@ const Login = () => {
             </Button>
           </Row>
         </Col>
-
-        <Col md={8} id="rightBar">
+        <Col
+          id="rightBar"
+          className="rightBar justify-content-center align-items-center p-0"
+        >
           <Row style={{ justifyContent: "center", alignContent: "center" }}>
             <Col md={6}>
               <Card className="loginCard">
@@ -148,7 +154,7 @@ const Login = () => {
                         className="formPart"
                         style={{ justifyContent: "center" }}
                       >
-                        <Col md={10}>
+                        <Col>
                           <FormLabel>Username</FormLabel>
                           <FormControl
                             required
@@ -161,10 +167,10 @@ const Login = () => {
                         </Col>
                       </Row>
                       <Row
-                        className="formPart"
+                        className="formPart align-items-center"
                         style={{ justifyContent: "center" }}
                       >
-                        <Col md={10}>
+                        <Col>
                           <FormLabel>Password</FormLabel>
                           <FormControl
                             required
@@ -176,17 +182,29 @@ const Login = () => {
                           ></FormControl>
                         </Col>
                       </Row>
-                    </Row>
-                    <Row style={{ justifyContent: "center" }}>
-                      <p>{errorMessage}</p>
-                      <Button
-                        id="loginButton"
-                        className="loginButton"
-                        variant="primary"
-                        type="submit"
-                      >
-                        Login
-                      </Button>
+                      <Row style={{ justifyContent: "center" }} className="m-0">
+                        <Button
+                          id="loginButton"
+                          className="loginButton"
+                          variant="primary"
+                          type="submit"
+                        >
+                          Login
+                        </Button>
+                      </Row>
+                      <Row sm={12} className="m-o p-0">
+                        <p className="loginQuestion">New here?</p>
+                      </Row>
+                      <Row style={{ justifyContent: "center" }}>
+                        <Button
+                          style={{ alignSelf: "center" }}
+                          type="button"
+                          className="signupButtonsPage"
+                          onClick={redirectToSignUp}
+                        >
+                          Sign Up
+                        </Button>
+                      </Row>
                     </Row>
                   </Form>
                 </CardBody>

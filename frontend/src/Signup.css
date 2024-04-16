@@ -59,11 +59,12 @@ body {
   text-align: center;
 }
 .signupForm {
-  margin: auto;
+  /* margin: auto; */
   margin-top: 25px;
   margin-bottom: 25px;
   background-color: white;
   justify-content: center;
+  width: 70%;
   max-width: 430px;
   border-radius: 47px;
   padding: 20px;
