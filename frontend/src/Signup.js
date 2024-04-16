@@ -127,7 +127,7 @@ const Signup = () => {
         </Col>
 
         <Col className="rightColumn d-flex flex-column justify-content-center align-items-center">
-          <Form onSubmit={doRegister} className="signupForm m-0">
+          <Form onSubmit={doRegister} className="signupForm">
             <h2 className="signupTitle">SIGN UP</h2>
 
             {/* First name field */}

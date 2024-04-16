@@ -94,3 +94,9 @@ body {
   justify-content: center;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
+
+.rightColumn {
+  width: 100%;
+  background-color: #f1e0c5;
+  flex: 1;
+}

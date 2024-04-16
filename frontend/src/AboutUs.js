@@ -20,6 +20,7 @@ import dora from "./img/dora.png";
 import j from "./img/j.png";
 import sev from "./img/sev.png";
 import emy from "./img/emy.png";
+import alex from "./img/alex.jpeg";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "./img/Logo.jpg";
@@ -74,7 +75,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">doubles d's</h1>
+                <h1 className="m-0 imageTagText">Diego</h1>
               </Col>
             </Row>
           </Card>
@@ -89,7 +90,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">sofa</h1>
+                <h1 className="m-0 imageTagText">Sophia</h1>
               </Col>
             </Row>
           </Card>
@@ -104,7 +105,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">dre</h1>
+                <h1 className="m-0 imageTagText">Dre</h1>
               </Col>
             </Row>
           </Card>
@@ -114,12 +115,12 @@ const LandingPage = () => {
           <Card className="landing-card">
             <Row>
               <Col>
-                <Image className="image-holder" src={dora}></Image>
+                <Image className="image-holder" src={alex}></Image>
               </Col>
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">alex the explorer</h1>
+                <h1 className="m-0 imageTagText">Alex</h1>
               </Col>
             </Row>
           </Card>
@@ -149,7 +150,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">vesron</h1>
+                <h1 className="imageTagText">vesron</h1>
               </Col>
             </Row>
           </Card>
@@ -157,16 +158,18 @@ const LandingPage = () => {
 
         <Col md={3} className="d-flex justify-content-center p-2">
           <Card className="landing-card">
-            <Row>
-              <Col>
-                <Image className="image-holder" src={emy}></Image>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <h1 className="m-0 imageTagText">emily</h1>
-              </Col>
-            </Row>
+            <Col>
+              <Row>
+                <Col>
+                  <Image className="image-holder" src={emy}></Image>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <h1 className="m-0 imageTagText">Emily</h1>
+                </Col>
+              </Row>
+            </Col>
           </Card>
         </Col>
       </Row>

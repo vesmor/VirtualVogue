@@ -135,82 +135,53 @@ const Login = () => {
             </Button>
           </Row>
         </Col>
-        <Col
-          id="rightBar"
-          className="rightBar justify-content-center align-items-center p-0"
-        >
-          <Row style={{ justifyContent: "center", alignContent: "center" }}>
-            <Col md={6}>
-              <Card className="loginCard">
-                <CardBody>
-                  <Form onSubmit={doLogin}>
-                    <Row>
-                      <h2 class="h2" id="loginHeader">
-                        Login
-                      </h2>
-                    </Row>
-                    <Row id="formInput">
-                      <Row
-                        className="formPart"
-                        style={{ justifyContent: "center" }}
-                      >
-                        <Col>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl
-                            required
-                            value={login}
-                            placeholder="Username"
-                            id="login"
-                            type="text"
-                            onChange={(e) => setLogin(e.target.value)}
-                          ></FormControl>
-                        </Col>
-                      </Row>
-                      <Row
-                        className="formPart align-items-center"
-                        style={{ justifyContent: "center" }}
-                      >
-                        <Col>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl
-                            required
-                            value={password}
-                            placeholder="Password"
-                            id="password"
-                            type="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                          ></FormControl>
-                        </Col>
-                      </Row>
-                      <Row style={{ justifyContent: "center" }} className="m-0">
-                        <Button
-                          id="loginButton"
-                          className="loginButton"
-                          variant="primary"
-                          type="submit"
-                        >
-                          Login
-                        </Button>
-                      </Row>
-                      <Row sm={12} className="m-o p-0">
-                        <p className="loginQuestion">New here?</p>
-                      </Row>
-                      <Row style={{ justifyContent: "center" }}>
-                        <Button
-                          style={{ alignSelf: "center" }}
-                          type="button"
-                          className="signupButtonsPage"
-                          onClick={redirectToSignUp}
-                        >
-                          Sign Up
-                        </Button>
-                      </Row>
-                    </Row>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+        <Col className="rightColumn d-flex flex-column justify-content-center align-items-center">
+          <Form onSubmit={doLogin} className="signupForm">
+            <h2 className="signupTitle">LOGIN</h2>
+
+            {/* Username field */}
+            <Form.Group controlId="login">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Username"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+              />
+            </Form.Group>
+
+            {/* Password field */}
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
+            {/* Error Message field*/}
+            <p id="errorSignUp">{errorMessage}</p>
+
+            <Button type="submit" className="signupButtonsPage">
+              Login
+            </Button>
+            <hr />
+
+            {/* Redirect to the signup page */}
+            <p className="loginQuestion">New here?</p>
+            <Button
+              style={{ alignSelf: "center" }}
+              type="button"
+              className="signupButtonsPage"
+              onClick={redirectToSignUp}
+            >
+              Sign Up
+            </Button>
+          </Form>
         </Col>
       </Row>
     </Container>
