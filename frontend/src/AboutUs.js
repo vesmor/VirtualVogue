@@ -13,6 +13,13 @@ import {
 // import "./styles.css";
 import "./AboutUs.css";
 import bruhImage from "./img/bruh.jpeg";
+import sofa from "./img/sofa.jpg";
+import dre from "./img/dre.jpg";
+import eyes from "./img/eyes.jpg";
+import dora from "./img/dora.png";
+import j from "./img/j.png";
+import sev from "./img/sev.png";
+import emy from "./img/emy.png";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "./img/Logo.jpg";
@@ -62,27 +69,12 @@ const LandingPage = () => {
           <Card className="landing-card">
             <Row>
               <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
+                <Image className="image-holder" src={eyes}></Image>
               </Col>
             </Row>
             <Row>
               <Col>
-                <p className="m-0">more more swag</p>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-
-        <Col md={3} className="d-flex justify-content-center p-2">
-          <Card className="landing-card">
-            <Row>
-              <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <p className="m-0">more more swag</p>
+                <h1 className="m-0 imageTagText">doubles d's</h1>
               </Col>
             </Row>
           </Card>
@@ -92,29 +84,12 @@ const LandingPage = () => {
           <Card className="landing-card">
             <Row>
               <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
+                <Image className="image-holder" src={sofa}></Image>
               </Col>
             </Row>
             <Row>
               <Col>
-                <p className="m-0">more more swag</p>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={3} className="d-flex justify-content-center p-2">
-          <Card className="landing-card">
-            <Row>
-              <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <p className="m-0">more more swag</p>
+                <h1 className="m-0 imageTagText">sofa</h1>
               </Col>
             </Row>
           </Card>
@@ -124,27 +99,12 @@ const LandingPage = () => {
           <Card className="landing-card">
             <Row>
               <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
+                <Image className="image-holder" src={dre}></Image>
               </Col>
             </Row>
             <Row>
               <Col>
-                <p className="m-0">more more swag</p>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-
-        <Col md={3} className="d-flex justify-content-center p-2">
-          <Card className="landing-card">
-            <Row>
-              <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <p className="m-0">more more swag</p>
+                <h1 className="m-0 imageTagText">dre</h1>
               </Col>
             </Row>
           </Card>
@@ -154,12 +114,57 @@ const LandingPage = () => {
           <Card className="landing-card">
             <Row>
               <Col>
-                <Image className="image-holder" src={bruhImage}></Image>
+                <Image className="image-holder" src={dora}></Image>
               </Col>
             </Row>
             <Row>
               <Col>
-                <p>more more swag</p>
+                <h1 className="m-0 imageTagText">alex the explorer</h1>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        <Col md={3} className="d-flex justify-content-center p-2">
+          <Card className="landing-card">
+            <Row>
+              <Col>
+                <Image className="image-holder" src={j}></Image>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1 className="m-0 imageTagText">joe</h1>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        <Col md={3} className="d-flex justify-content-center p-2">
+          <Card className="landing-card">
+            <Row>
+              <Col>
+                <Image className="image-holder" src={sev}></Image>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1 className="m-0 imageTagText">vesron</h1>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        <Col md={3} className="d-flex justify-content-center p-2">
+          <Card className="landing-card">
+            <Row>
+              <Col>
+                <Image className="image-holder" src={emy}></Image>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1 className="m-0 imageTagText">emily</h1>
               </Col>
             </Row>
           </Card>

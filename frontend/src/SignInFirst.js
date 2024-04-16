@@ -15,7 +15,7 @@ function SignInFirst() {
       </Row>
       <Row className="mb-5">
         <Col className="d-flex justify-content-center align-items-end">
-          <Button onClick={() => navigate("/signin")}>Go to Sign In</Button>
+          <Button onClick={() => navigate("/login")}>Go to Sign In</Button>
         </Col>
       </Row>
     </Container>

@@ -83,19 +83,17 @@ body {
   align-items: center;
 }
 
-.cardImages{
+.cardImages {
   background-color: #f1e0c5;
 }
 
 .cardImages:hover {
   background-color: #342a21; /* Change the background color on hover */
-
 }
 
 .cardImages:hover .imageTagText {
-  color:#f1e0c5;
+  color: #f1e0c5;
 }
-
 
 .cardImages:hover .icon-wrapper {
   display: flex;
@@ -122,25 +120,25 @@ body {
 }
 
 .card-body {
-  position: relative;
-  justify-content: center; /* Vertically center content */
+  display: flex;
+  flex-direction: column; /* Add this line */
+  justify-content: center;
   align-items: center;
-  height: 100%;
 }
 
 .card-image {
-  width: 100%;
-  height: 85%; /* Maintain aspect ratio */
-  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
-
-.imageTagText{
-  position: absolute;
-  left: 50%; /* Place the text horizontally centered */
-  transform: translateX(-50%); /* Center the text horizontally */
+.imageTagText {
+  /* position: absolute; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
   color: #342a21;
   text-align: center;
   font-family: "Lemands";
-
+  margin: 0;
 }

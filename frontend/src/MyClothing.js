@@ -14,11 +14,10 @@ import {
   Form,
   Button,
   Image,
-  Dropdown
+  Dropdown,
 } from "react-bootstrap";
 import "./MyClothing.css";
 import Logo from "./img/Logo.jpg";
-
 
 const MyClothing = () => {
   //Used to know which clothing type image should display
@@ -29,24 +28,24 @@ const MyClothing = () => {
 
   //Used to hide and show the Modal (Form) info
   const [showModal, setShowModal] = useState(false);
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [message, setMessage] = useState();
   const [loading, setLoading] = useState(false);
 
   //Count number of pictures to be displayed so far
-  const [numPictures, setNumPictures] = useState(0); 
+  const [numPictures, setNumPictures] = useState(0);
   const [imagesURL, setImagesURL] = useState(null);
-  const [imagesTag , setImagesTag] = useState(null);
+  const [imagesTag, setImagesTag] = useState(null);
   const [removeBackground, setRemoveBackground] = useState(false);
   const [doFirstFetch, setDoFirstFech] = useState(true);
 
   const handleClose = () => {
     setShowModal(false);
-    setSelectedImage(null); 
-    setSelectedTag('');
+    setSelectedImage(null);
+    setSelectedTag("");
     setRemoveBackground(false);
-    setMessage('');
+    setMessage("");
   };
   const handleShow = () => setShowModal(true);
 
@@ -56,18 +55,18 @@ const MyClothing = () => {
 
   const handleRemoveBackgroundChange = (option) => {
     setRemoveBackground(option);
-  }
+  };
 
-  const handleImageChange= async (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-  
+
     // Check if a file was selected
     if (file) {
       // Get the file's MIME type
       const fileType = file.type;
-  
+
       // Check if the file's MIME type starts with 'image/'
-      if (fileType && fileType.startsWith('image/')) {
+      if (fileType && fileType.startsWith("image/")) {
         setSelectedImage(file);
       } else {
         // If the file is not an image, alert the user and clear the selection
@@ -125,38 +124,39 @@ const MyClothing = () => {
 
   const UploadImage = async (event) => {
     event.preventDefault();
-    if(!selectedTag){
+    if (!selectedTag) {
       setMessage("Please select a clothing type");
       return;
     }
-    const userData = localStorage.getItem('user_data');
+    const userData = localStorage.getItem("user_data");
     var parsedUserData;
     setLoading(true);
     if (userData) {
       parsedUserData = JSON.parse(userData);
     }
-  
+
     var formData = new FormData();
-    formData.append('tag', selectedTag);
-    if(removeBackground){
+    formData.append("tag", selectedTag);
+    if (removeBackground) {
       setMessage("Removing background, this might take a minute");
       const processedImage = await imglyRemoveBackground(selectedImage);
       setSelectedImage(processedImage);
-      formData.append('image', processedImage);
+      formData.append("image", processedImage);
+    } else {
+      formData.append("image", selectedImage);
     }
-    else{
-      formData.append('image', selectedImage);
-    }
-    
-  
+
     try {
-      const response = await fetch(buildPath(`api/Upload/${parsedUserData.userId}`), {
-        method: 'POST',
-        body: formData
-      });
-  
+      const response = await fetch(
+        buildPath(`api/Upload/${parsedUserData.userId}`),
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
       let res = await response.json();
-  
+
       if (res.success) {
         setMessage(res.message);
         fetchAllData();
@@ -172,40 +172,45 @@ const MyClothing = () => {
 
   const deleteImage = async (event, url) => {
     event.preventDefault();
-  
-    const acceptDelete = window.confirm("Are you sure you want to delete this clothing?");
-  
+
+    const acceptDelete = window.confirm(
+      "Are you sure you want to delete this clothing?"
+    );
+
     // Proceed to delete image
     if (acceptDelete) {
-      const userData = localStorage.getItem('user_data');
-  
+      const userData = localStorage.getItem("user_data");
+
       // Get the userId
       var parsedUserData;
       if (userData) {
         parsedUserData = JSON.parse(userData);
       }
-  
+
       // Get the image public ID from the link
-      const parts = url.split('/');
+      const parts = url.split("/");
       const idWithExtension = parts[parts.length - 1];
       const id = idWithExtension.slice(0, -4);
-  
+
       // Construct the request body as JSON
       const bodyData = {
-        id: id
+        id: id,
       };
-  
+
       try {
-        const response = await fetch(buildPath(`api/DeletePhoto/${parsedUserData.userId}`), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json' // Set the content type to JSON
-          },
-          body: JSON.stringify(bodyData) // Convert the body data object to JSON string
-        });
-  
+        const response = await fetch(
+          buildPath(`api/DeletePhoto/${parsedUserData.userId}`),
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json", // Set the content type to JSON
+            },
+            body: JSON.stringify(bodyData), // Convert the body data object to JSON string
+          }
+        );
+
         let res = await response.json();
-  
+
         if (res.success) {
           fetchAllData();
         } else {
@@ -219,115 +224,112 @@ const MyClothing = () => {
       return;
     }
   };
-  
 
   useEffect(() => {
     var firstTime = doFirstFetch;
-    if(firstTime){
+    if (firstTime) {
       setDoFirstFech(false);
       fetchAllData();
     }
-
   }, []);
-  
+
   //Calls the fetch images API
   const fetchAllData = async () => {
     try {
-      const userData = localStorage.getItem('user_data');
+      const userData = localStorage.getItem("user_data");
       if (userData) {
         const parsedUserData = JSON.parse(userData);
-        const response = await fetch(buildPath(`api/images/${parsedUserData.userId}`), {
-          method: 'GET'
-        });
-    
+        const response = await fetch(
+          buildPath(`api/images/${parsedUserData.userId}`),
+          {
+            method: "GET",
+          }
+        );
+
         let res = await response.json();
         if (res.success) {
           setNumPictures(res.images.length);
           // Use functional update to append to imagesURL
-          setImagesURL(prevImagesURL => {
-            const newImagesURL = []; 
+          setImagesURL((prevImagesURL) => {
+            const newImagesURL = [];
             for (var i = 0; i < res.images.length; i++) {
-              newImagesURL.push(res.images[i].url); 
+              newImagesURL.push(res.images[i].url);
             }
             return newImagesURL;
           });
 
-          setImagesTag(prevImagesTag => {
-            const newImagesTag = []; 
+          setImagesTag((prevImagesTag) => {
+            const newImagesTag = [];
             for (var i = 0; i < res.images.length; i++) {
-              newImagesTag.push(res.images[i].tag); 
+              newImagesTag.push(res.images[i].tag);
             }
             return newImagesTag;
           });
-        }
-        else{
+        } else {
           setNumPictures(0);
-          console.error('No links given.');
+          console.error("No links given.");
         }
       } else {
         alert("User not found");
-        console.error('User data not found in localStorage.');
+        console.error("User data not found in localStorage.");
       }
     } catch (error) {
       alert("An error occurred");
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
   const fetchTagData = async (tag) => {
-      try {
-        const userData = localStorage.getItem('user_data');
-        if (userData) {
-          const parsedUserData = JSON.parse(userData);
-          const response = await fetch(buildPath(`api/images/${parsedUserData.userId}/${tag}`), {
-            method: 'GET'
+    try {
+      const userData = localStorage.getItem("user_data");
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const response = await fetch(
+          buildPath(`api/images/${parsedUserData.userId}/${tag}`),
+          {
+            method: "GET",
+          }
+        );
+
+        let res = await response.json();
+        if (res.success) {
+          setNumPictures(res.images.length);
+          setImagesURL((prevImagesURL) => {
+            const newImagesURL = []; // Create a new array
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesURL.push(res.images[i].url); // Append values to the new array
+            }
+            return newImagesURL;
           });
-      
-          let res = await response.json();
-          if(res.success){
-            setNumPictures(res.images.length);
-            setImagesURL(prevImagesURL => {
-              const newImagesURL = []; // Create a new array
-              for (var i = 0; i < res.images.length; i++) {
-                newImagesURL.push(res.images[i].url); // Append values to the new array
-              }
-              return newImagesURL;
-            });
 
-            setImagesTag(prevImagesTag => {
-              const newImagesTag = []; 
-              for (var i = 0; i < res.images.length; i++) {
-                newImagesTag.push(res.images[i].tag); 
-              }
-              return newImagesTag;
-            });
-  
-          }
-          else{
-            setNumPictures(0);
-            console.error('No links were given');
-          }
+          setImagesTag((prevImagesTag) => {
+            const newImagesTag = [];
+            for (var i = 0; i < res.images.length; i++) {
+              newImagesTag.push(res.images[i].tag);
+            }
+            return newImagesTag;
+          });
         } else {
-          alert("User not found");
-          console.error('User data not found in localStorage.');
+          setNumPictures(0);
+          console.error("No links were given");
         }
-      } catch (error) {
-        alert("An error occurred");
-        console.error('Error fetching data:', error);
+      } else {
+        alert("User not found");
+        console.error("User data not found in localStorage.");
       }
-    };
+    } catch (error) {
+      alert("An error occurred");
+      console.error("Error fetching data:", error);
+    }
+  };
 
-  const app_name = 'virtvogue-af76e325d3c9';
-  function buildPath(route)
-  {
-      if(process.env.NODE_ENV === 'production')
-      {
-          return 'https://' + app_name + '.herokuapp.com/' + route;
-      }
-      else
-      {
-          return 'http://localhost:5001/' + route;
-      }
+  const app_name = "virtvogue-af76e325d3c9";
+  function buildPath(route) {
+    if (process.env.NODE_ENV === "production") {
+      return "https://" + app_name + ".herokuapp.com/" + route;
+    } else {
+      return "http://localhost:5001/" + route;
+    }
   }
 
   return (
@@ -338,56 +340,84 @@ const MyClothing = () => {
         </Modal.Header>
         <Modal.Body>
           <Row>
-              <p>Upload your cloth image: </p>
-                {selectedImage && ( 
-                <img className="mb-4"
-                  src={URL.createObjectURL(selectedImage)}
-                  alt="Selected"
-                  style={{ maxWidth: '100%', display: 'block', margin: 'auto', marginTop: '10px' }}
-                />
-              )}
-              <input type="file" name="image" accept="image/*" onChange={handleImageChange}></input>
+            <p>Upload your cloth image: </p>
+            {selectedImage && (
+              <img
+                className="mb-4"
+                src={URL.createObjectURL(selectedImage)}
+                alt="Selected"
+                style={{
+                  maxWidth: "100%",
+                  display: "block",
+                  margin: "auto",
+                  marginTop: "10px",
+                }}
+              />
+            )}
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+            ></input>
           </Row>
           <Row className="align-items-center mt-3">
+            <p className="mb-0 mr-2">What kind of clothing is it?</p>
 
-              <p className="mb-0 mr-2">What kind of clothing is it?</p>
+            <Dropdown className="mt-2">
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                {selectedTag ? selectedTag : "Clothing type"}
+              </Dropdown.Toggle>
 
-              <Dropdown className="mt-2">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                {selectedTag ? selectedTag : 'Clothing type'}
-                </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => handleTagChange("Shirt")}>
+                  Shirt
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => handleTagChange("Pants")}>
+                  Pants
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => handleTagChange("Dress")}>
+                  Dress
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleTagChange("Shirt")}>Shirt</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleTagChange('Pants')}>Pants</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleTagChange('Dress')}>Dress</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+            <p className="mb-0 mr-2">
+              Do you want to remove the background to your cloth? Doing so will
+              make an outfit visual more efficient, however doing so will take a
+              minute or two
+            </p>
 
-              <p className="mb-0 mr-2">Do you want to remove the background to your cloth? Doing so will make an outfit visual more efficient, however doing so will take a minute or two</p>
+            <Dropdown className="mt-2">
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                {removeBackground ? "Yes" : "No"}
+              </Dropdown.Toggle>
 
-              <Dropdown className="mt-2">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  {removeBackground ? 'Yes' : 'No'}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(true)}>Yes</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleRemoveBackgroundChange(false)}>No</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => handleRemoveBackgroundChange(true)}
+                >
+                  Yes
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => handleRemoveBackgroundChange(false)}
+                >
+                  No
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Row>
           <Row>
-              <p>{message}</p>
+            <p>{message}</p>
           </Row>
         </Modal.Body>
         <Modal.Footer>
-<Button variant="secondary" onClick={handleClose} disabled={loading}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={UploadImage} disabled={loading}>
-          {loading ? 'Uploading...' : 'Upload Clothing'}
-        </Button>
+          <Button variant="secondary" onClick={handleClose} disabled={loading}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={UploadImage} disabled={loading}>
+            {loading ? "Uploading..." : "Upload Clothing"}
+          </Button>
         </Modal.Footer>
       </Modal>
       <Container fluid className="main-container">
@@ -469,31 +499,42 @@ const MyClothing = () => {
           </Col>
           <Col xs={12} sm={6} md={8} lg={9} className="RightBar">
             <Row className="flex-grow justify-content-between p-0">
-              <Col xs={4}>
-              </Col>
+              <Col xs={4}></Col>
               <Col xs={8} className="d-flex justify-content-end">
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
-            {[...Array(numPictures)].map((_, i) => (
-              <Card key={i} className="cardImages" >
-                <Card.Body style={{ position: 'relative'}}>
-                <a href={imagesURL[i]} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                  <div className="icon-wrapper" onClick={(event) => deleteImage(event, imagesURL[i])}>
-                    <FaTrashAlt style={{ color: 'black' }} />
-                  </div>
-                  <img 
-                    src={imagesURL[i]}
-                    alt="Selected"
-                    className="card-image"
-                  />
-
-                  <h1 className= "imageTagText">{imagesTag[i]}</h1>
-                </a>
-                </Card.Body>
-              </Card>
-            ))}
+              {[...Array(numPictures)].map((_, i) => (
+                <Card
+                  key={i}
+                  className="cardImages"
+                  style={{ maxHeight: "300px" }}
+                >
+                  <Card.Body style={{ position: "relative" }}>
+                    <Row>
+                      <Col>
+                        <div
+                          className="icon-wrapper"
+                          onClick={(event) => deleteImage(event, imagesURL[i])}
+                        >
+                          <FaTrashAlt style={{ color: "black" }} />
+                        </div>
+                        <img
+                          src={imagesURL[i]}
+                          alt="Selected"
+                          className="card-image"
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <h1 className="imageTagText">{imagesTag[i]}</h1>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              ))}
             </Container>
           </Col>
         </Row>
