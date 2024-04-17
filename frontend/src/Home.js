@@ -128,6 +128,7 @@ const Home = () => {
       fetchOutfits();
     }
     else{
+      if(arrayEmpty) return;
         try {
         const userData = localStorage.getItem("user_data");
         if (userData) {
