@@ -171,3 +171,23 @@
   text-align: center;
   font-family: "Lemands";
 }
+
+.emptyMesage {
+  position: absolute;
+  top: 50%;
+  left: 63%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: "Lemands";
+  font-size: 200%;
+}
+
+.emptyMessageOutfit{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: "Lemands";
+  font-size: 200%;
+}

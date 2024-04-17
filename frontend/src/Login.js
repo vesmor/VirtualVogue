@@ -58,7 +58,7 @@ const Login = () => {
 
       if (res.userId < 0) {
         console.log("Error");
-        setError("Wrong username/password");
+        setError("Wrong username/password or account doesn't exist");
       } else {
         console.log("Success");
 
@@ -79,8 +79,8 @@ const Login = () => {
           setError("User not verified yet. Please check your email");
 
           //To make things easier when testing uncomment these 2 lines. In the Heroku version, COMMENT THESE 2 LINES BELOW
-          localStorage.setItem("user_data", JSON.stringify(user));
-          window.location.href = "/home";
+          // localStorage.setItem("user_data", JSON.stringify(user));
+          // window.location.href = "/home";
         } else {
           localStorage.setItem("user_data", JSON.stringify(user));
           window.location.href = "/home";

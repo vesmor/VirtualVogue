@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoIosShirt } from "react-icons/io";
 import { GiAmpleDress, GiArmoredPants } from "react-icons/gi";
+import { FaQuestionCircle } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import imglyRemoveBackground from "@imgly/background-removal";
@@ -25,6 +26,10 @@ const MyClothing = () => {
   const [shirtIconColor, setShirtIconColor] = useState(false);
   const [dressIconColor, setDressColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+
+  const [arrayEmpty, setArrayEmpty] = useState(false);
 
   //Used to hide and show the Modal (Form) info
   const [showModal, setShowModal] = useState(false);
@@ -265,7 +270,9 @@ const MyClothing = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links given.");
         }
@@ -309,7 +316,9 @@ const MyClothing = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links were given");
         }
@@ -336,11 +345,11 @@ const MyClothing = () => {
     <>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton={!loading}>
-          <Modal.Title>Upload New Cloth</Modal.Title>
+          <Modal.Title style={{ fontFamily: "Lemands" }}>Upload New Cloth</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <p>Upload your cloth image: </p>
+            <p style={{ fontFamily: "Roboto" }}>Upload your cloth image: </p>
             {selectedImage && (
               <img
                 className="mb-4"
@@ -362,10 +371,12 @@ const MyClothing = () => {
             ></input>
           </Row>
           <Row className="align-items-center mt-3">
-            <p className="mb-0 mr-2">What kind of clothing is it?</p>
-
+            <Col md={8}>
+            <p className="mb-0 mr-2" style={{ fontFamily: "Roboto" }}>What kind of clothing is it?</p>
+            </Col>
+            <Col md={4}>
             <Dropdown className="mt-2">
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: '#342a21' }}>
                 {selectedTag ? selectedTag : "Clothing type"}
               </Dropdown.Toggle>
 
@@ -381,15 +392,31 @@ const MyClothing = () => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            
+            </Col>
 
-            <p className="mb-0 mr-2">
-              Do you want to remove the background to your cloth? Doing so will
-              make an outfit visual more efficient, however doing so will take a
-              minute or two
-            </p>
-
+          </Row>
+          <Row className="mb-0 mr-2 mt-3">
+          <Col md={8}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', fontFamily: "Roboto", position: 'relative' }}>
+              <p className="mb-0 mr-2 mt-2">
+                Remove image's background?
+              </p>
+              <div
+                style={{ position: 'absolute', top: '100%', left: '100%', transform: 'translateY(-110%)', display: showTooltip ? 'block' : 'none', backgroundColor: 'white', padding: '5px', border: '1px solid black', borderRadius: '5px', zIndex: 999 }}
+              >
+                This is recommended if you want to use it in an outift. However, it might take a minute or two to process the image.
+              </div>
+              <FaQuestionCircle
+                style={{ marginLeft: '5px', marginTop: '5px', color: '#71816d', cursor: 'pointer' }}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              />
+            </div>
+          </Col>
+            <Col md={4}>
             <Dropdown className="mt-2">
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: '#342a21'  }}>
                 {removeBackground ? "Yes" : "No"}
               </Dropdown.Toggle>
 
@@ -406,7 +433,9 @@ const MyClothing = () => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            </Col>
           </Row>
+
           <Row>
             <p>{message}</p>
           </Row>
@@ -415,7 +444,7 @@ const MyClothing = () => {
           <Button variant="secondary" onClick={handleClose} disabled={loading}>
             Close
           </Button>
-          <Button variant="primary" onClick={UploadImage} disabled={loading}>
+          <Button variant="primary" onClick={UploadImage} disabled={loading} style={{ backgroundColor: '#71816d' }}>
             {loading ? "Uploading..." : "Upload Clothing"}
           </Button>
         </Modal.Footer>
@@ -504,6 +533,9 @@ const MyClothing = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
+            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
+              Click on New Cloth button to add your first clothing!
+            </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (
                 <Card
@@ -514,6 +546,7 @@ const MyClothing = () => {
                   <Card.Body style={{ position: "relative" }}>
                     <Row>
                       <Col>
+                      <a href={imagesURL[i]} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                         <div
                           className="icon-wrapper"
                           onClick={(event) => deleteImage(event, imagesURL[i])}
@@ -525,6 +558,8 @@ const MyClothing = () => {
                           alt="Selected"
                           className="card-image"
                         />
+                       </a>
+
                       </Col>
                     </Row>
                     <Row>

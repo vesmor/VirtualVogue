@@ -18,9 +18,11 @@ import "./CreateOutfit.css";
 import Logo from "./img/Logo.jpg";
 
 const CreateOutfit = () => {
-  const [clothingText, setClothingText] = useState("My Outfits");
+  const [clothingText, setClothingText] = useState("Create Outfits");
   const [shirtIconColor, setShirtIconColor] = useState(false);
   const [pantsIconColor, setPantsColor] = useState(false);
+
+  const [arrayEmpty, setArrayEmpty] = useState(false);
 
   const [showCheckIcon, setShowCheckIcon] = useState(
     [...Array(200)].map(() => false)
@@ -92,7 +94,7 @@ const CreateOutfit = () => {
     if (shirtCheck && pantsCheck) {
       setPantsColor(false);
       setShirtIconColor(false);
-      setClothingText("My outfits");
+      setClothingText("Create Outfits");
       fetchTagData("Shirt,Pants");
     } else if (shirtCheck) {
       setClothingText("My shirts");
@@ -101,16 +103,16 @@ const CreateOutfit = () => {
       setClothingText("My pants");
       fetchTagData("Pants");
     } else {
-      setClothingText("My outfits");
+      setClothingText("Create Outfits");
       fetchTagData("Shirt,Pants");
     }
   };
 
   const UploadImage = async (event) => {
     event.preventDefault();
-    if (!outfitName || outfitName.length > 14) {
+    if (!outfitName || outfitName.length > 14 || !/^[a-zA-Z0-9\s]+$/.test(outfitName)) {
       setMessage(
-        "Outfits must have a unique name. The maximum length is 14 characters long"
+        "Outfits must have a unique name, no special characters, and a maximum length of 14 characters."
       );
       return;
     }
@@ -187,7 +189,9 @@ const CreateOutfit = () => {
             }
             return newImagesTag;
           });
+          setArrayEmpty(false);
         } else {
+          setArrayEmpty(true);
           setNumPictures(0);
           console.error("No links were given");
         }
@@ -235,7 +239,7 @@ const CreateOutfit = () => {
   return (
     <>
       <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton style={{ fontFamily: "Lemands" }}>
           <Modal.Title>Create New Outfit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -248,29 +252,36 @@ const CreateOutfit = () => {
             </Col>
           </Row>
           <Row>
-            <Col>{message}</Col>
-          </Row>
-          <Row>
-            <Col>
-              <p>Give a name to this outfit!</p>
+            <p className="mt-3" style={{ marginLeft: '2%' }}>Give a name to this outfit!</p>
+            <Col style={{ fontFamily: "Roboto" }}>
               <Form.Group controlId="idFirstName">
-                <Form.Label classname="form-label"> Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Outfit Name"
-                  value={outfitName}
-                  onChange={(e) => setOutfitName(e.target.value)}
-                />
+                <Row>
+                <Col md={2}>
+                    <Form.Label classname="mt-2"  style={{ fontFamily: "Roboto" }}> Name:</Form.Label>
+                </Col>
+                <Col  md={10}>
+                  <Form.Control
+                          type="text"
+                          placeholder="Outfit Name"
+                          value={outfitName}
+                          onChange={(e) => setOutfitName(e.target.value)}
+                          style={{ width: '90%' }}
+                        />
+                  </Col>
+                </Row>
               </Form.Group>
             </Col>
+          </Row>
+          <Row>
+            <Col  style={{ fontFamily: "Roboto", marginLeft:'2%'}}>{message}</Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={UploadImage}>
-            Save
+          <Button variant="primary" onClick={UploadImage} style={{ backgroundColor: '#71816d' }}>
+            Create
           </Button>
         </Modal.Footer>
       </Modal>
@@ -346,6 +357,9 @@ const CreateOutfit = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
+            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
+              You don't have any clothing yet! <br></br> Click on My clothing tab and add some shirts and pants!
+            </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (
                 <Card

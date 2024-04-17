@@ -288,7 +288,7 @@ const sendVerificationEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Email Verification",
-    html: `Click of the following link to verify your email. <a href=http://localhost:3000/verification-check?userId=${userId}> here </a>`,
+    html: `Click the following link to verify your email. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/verification-check?userId=${userId}> here </a>`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
@@ -300,7 +300,7 @@ const sendVerificationEmail = (email, userId) => {
   });
 };
 
-const sendResetPasswodnEmail = (email, userId) => {
+const sendResetPasswordEmail = (email, userId, username) => {
   var Transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -315,7 +315,7 @@ const sendResetPasswodnEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Reset Password",
-    html: `Click of the following link to change your password. <a href=http://localhost:3000/resetpassword?userId=${userId}> here </a>`,
+    html: `Click the following link to change your password. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/resetpassword?userId=${userId}> here </a> If you also forgot your username, it is ${username}`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
@@ -344,7 +344,7 @@ app.post("/api/findUser", async (req, res, next) => {
     console.log(results.length);
     if (results.length > 0) {
       found = true;
-      sendResetPasswodnEmail(email, results[0]._id);
+      sendResetPasswordEmail(email, results[0]._id, results[0].Login);
     } else {
       error = "User with this email doesn't exist";
     }
@@ -438,7 +438,6 @@ app.get("/api/images/:userId", async (req, res) => {
       };
     });
 
-
     // Respond with the images data (public IDs, tags, and URLs)
     res.status(200).json({ success: true, images: imagesWithTagsAndUrls });
 
@@ -451,8 +450,6 @@ app.get("/api/images/:userId", async (req, res) => {
     });
   }
 });
-
-
 
 // fetch all the images by specific tag or multiple tags
 app.get("/api/images/:userId/:tags", async (req, res) => {
@@ -668,8 +665,6 @@ app.delete("/api/Outfits/:userId/:outfitName", async (req, res) => {
   }
 });
 
-// Delete all photos off of a user
-
 // Function to delete images associated with a user from Cloudinary
 async function deleteImagesFromCloudinary(imageIds) {
   try {
@@ -722,6 +717,37 @@ app.delete("/api/DeleteUser/:userId", async (req, res) => {
       error: error.message,
     });
   }
+});
+
+// API Endpoint to Search For Outfits by Name
+app.get("/api/SearchOutfits/:userId/:searchParam", async (req, res) => {
+  // incoming: userId, searchParam
+  // outgoing: searchResults, error
+
+  var error = "";
+  var searchResults = {};
+
+  try {
+    const userId = req.params.userId; // Get userId from URL
+    const searchParam = (req.params.searchParam).toLowerCase(); // Get sequence of characters to search from URL
+    const user = await db.collection("Users").findOne({ _id: new ObjectId(userId) }); // Get user
+
+    // User has outfits
+    if (user.Outfits) {
+      searchResults = user.Outfits.filter((outfit) =>
+        (outfit.outfitName.toLowerCase()).includes(searchParam)
+      );
+    }
+
+    var ret = { searchResults: searchResults, error: error };
+    res.status(200).json(ret);
+
+  // An error was found
+  } catch (e) {
+    error = e.toString();
+    var ret = { error: error };
+    res.status(500).json(ret);
+  } 
 });
 
 // Heroku Deployment

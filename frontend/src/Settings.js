@@ -83,6 +83,7 @@ const Settings = () => {
       
           let res = await response.json();
           if(res.success){
+            localStorage.setItem("user_data", {});
             window.location.href = '/';
           }
           else{
@@ -93,7 +94,6 @@ const Settings = () => {
           console.error('User data not found in localStorage.');
         }
       } catch (error) {
-        alert("An error occurred");
         console.error('Error fetching data:', error);
       }
     };
@@ -117,7 +117,7 @@ const Settings = () => {
         isValid = false;
       }
       else if (!passwordRegex.test(password)) {
-        error = "Password must be 8 characters long, one upper and lower case letter, and a special symbol. Changes were not applied.";
+        error = "Password must be 8 characters long, one upper and lower case letter, a number, and a special symbol. Changes were not applied.";
         isValid = false;
       }
   
@@ -296,8 +296,8 @@ const Settings = () => {
               <p id="settingsMessage">{message}</p>
             <div className="settingButtons" >
 
-              <Button type="submit" className="deleteButton" background size="lg" onClick={deleteAccount}>Delete Account</Button>
-              <Button type="button" className="saveButton" background size="lg" onClick={saveChanges}>Save Changes</Button>
+              <Button type="button" className="deleteButton" background size="lg" onClick={deleteAccount}>Delete Account</Button>
+              <Button type="submit" className="saveButton" background size="lg" onClick={saveChanges}>Save Changes</Button>
             </div>
 
             </Form>
