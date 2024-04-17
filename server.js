@@ -288,7 +288,7 @@ const sendVerificationEmail = (email, userId) => {
     from: sender,
     to: email,
     subject: "Email Verification",
-    html: `Click of the following link to verify your email. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/verification-check?userId=${userId}> here </a>`,
+    html: `Click the following link to verify your email. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/verification-check?userId=${userId}> here </a>`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
@@ -315,7 +315,7 @@ const sendResetPasswordEmail = (email, userId, username) => {
     from: sender,
     to: email,
     subject: "Reset Password",
-    html: `Click of the following link to change your password. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/resetpassword?userId=${userId}> here </a> If you also forgot your username, it is ${username}`,
+    html: `Click the following link to change your password. <a href=https://virtvogue-af76e325d3c9.herokuapp.com/resetpassword?userId=${userId}> here </a> If you also forgot your username, it is ${username}`,
   };
 
   Transport.sendMail(mailOptions, function (error, respose) {
