@@ -58,7 +58,7 @@ const Login = () => {
 
       if (res.userId < 0) {
         console.log("Error");
-        setError("Wrong username/password");
+        setError("Wrong username/password or account doesn't exist");
       } else {
         console.log("Success");
 
