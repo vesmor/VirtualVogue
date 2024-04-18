@@ -461,7 +461,7 @@ const MyClothing = () => {
             <Nav>
               <Image src={Logo} roundedCircle className="large-circle" />{" "}
             </Nav>
-            <Navbar.Brand href="#home" className="brand-margin">
+            <Navbar.Brand href="./" className="brand-margin py-0">
               VIRTUAL VOGUE
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
