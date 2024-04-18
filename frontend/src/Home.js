@@ -125,8 +125,10 @@ const Home = () => {
   const searchOutfit = async (value) => {
     if (!value) {
       fetchOutfits();
-    } else {
-      try {
+    }
+    else{
+      if(arrayEmpty) return;
+        try {
         const userData = localStorage.getItem("user_data");
         if (userData) {
           const parsedUserData = JSON.parse(userData);

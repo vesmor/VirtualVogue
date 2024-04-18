@@ -97,10 +97,10 @@ const CreateOutfit = () => {
       setClothingText("Create Outfits");
       fetchTagData("Shirt,Pants");
     } else if (shirtCheck) {
-      setClothingText("My shirts");
+      setClothingText("My Shirts");
       fetchTagData("Shirt");
     } else if (pantsCheck) {
-      setClothingText("My pants");
+      setClothingText("My Pants");
       fetchTagData("Pants");
     } else {
       setClothingText("Create Outfits");
