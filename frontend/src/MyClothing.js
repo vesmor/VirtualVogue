@@ -28,7 +28,6 @@ const MyClothing = () => {
   const [pantsIconColor, setPantsColor] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
-
   const [arrayEmpty, setArrayEmpty] = useState(false);
 
   //Used to hide and show the Modal (Form) info
@@ -345,11 +344,13 @@ const MyClothing = () => {
     <>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton={!loading}>
-          <Modal.Title style={{ fontFamily: "Lemands" }}>Upload New Cloth</Modal.Title>
+          <Modal.Title style={{ fontFamily: "Lemands" }}>
+            Upload New Clothing Item
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <p style={{ fontFamily: "Roboto" }}>Upload your cloth image: </p>
+            <p style={{ fontFamily: "Roboto" }}>Upload an image: </p>
             {selectedImage && (
               <img
                 className="mb-4"
@@ -372,67 +373,97 @@ const MyClothing = () => {
           </Row>
           <Row className="align-items-center mt-3">
             <Col md={8}>
-            <p className="mb-0 mr-2" style={{ fontFamily: "Roboto" }}>What kind of clothing is it?</p>
+              <p className="mb-0 mr-2" style={{ fontFamily: "Roboto" }}>
+                What kind of clothing is it?
+              </p>
             </Col>
             <Col md={4}>
-            <Dropdown className="mt-2">
-              <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: '#342a21' }}>
-                {selectedTag ? selectedTag : "Clothing type"}
-              </Dropdown.Toggle>
+              <Dropdown className="mt-2">
+                <Dropdown.Toggle
+                  variant="success"
+                  id="dropdown-basic"
+                  style={{ backgroundColor: "#342a21" }}
+                >
+                  {selectedTag ? selectedTag : "Clothing type"}
+                </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleTagChange("Shirt")}>
-                  Shirt
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleTagChange("Pants")}>
-                  Pants
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleTagChange("Dress")}>
-                  Dress
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleTagChange("Shirt")}>
+                    Shirt
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleTagChange("Pants")}>
+                    Pants
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleTagChange("Dress")}>
+                    Dress
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Col>
-
           </Row>
           <Row className="mb-0 mr-2 mt-3">
-          <Col md={8}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', fontFamily: "Roboto", position: 'relative' }}>
-              <p className="mb-0 mr-2 mt-2">
-                Remove image's background?
-              </p>
+            <Col md={8}>
               <div
-                style={{ position: 'absolute', top: '100%', left: '100%', transform: 'translateY(-110%)', display: showTooltip ? 'block' : 'none', backgroundColor: 'white', padding: '5px', border: '1px solid black', borderRadius: '5px', zIndex: 999 }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  fontFamily: "Roboto",
+                  position: "relative",
+                }}
               >
-                This is recommended if you want to use it in an outift. However, it might take a minute or two to process the image.
+                <p className="mb-0 mr-2 mt-2">Remove image background?</p>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "100%",
+                    transform: "translateY(-110%)",
+                    display: showTooltip ? "block" : "none",
+                    backgroundColor: "white",
+                    padding: "5px",
+                    border: "1px solid black",
+                    borderRadius: "5px",
+                    zIndex: 999,
+                  }}
+                >
+                  This is recommended if you want to use it in an outift.
+                  However, it might take a minute or two to process the image.
+                </div>
+                <FaQuestionCircle
+                  style={{
+                    marginLeft: "5px",
+                    marginTop: "5px",
+                    color: "#71816d",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
+                />
               </div>
-              <FaQuestionCircle
-                style={{ marginLeft: '5px', marginTop: '5px', color: '#71816d', cursor: 'pointer' }}
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
-              />
-            </div>
-          </Col>
+            </Col>
             <Col md={4}>
-            <Dropdown className="mt-2">
-              <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: '#342a21'  }}>
-                {removeBackground ? "Yes" : "No"}
-              </Dropdown.Toggle>
+              <Dropdown className="mt-2">
+                <Dropdown.Toggle
+                  variant="success"
+                  id="dropdown-basic"
+                  style={{ backgroundColor: "#342a21" }}
+                >
+                  {removeBackground ? "Yes" : "No"}
+                </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={() => handleRemoveBackgroundChange(true)}
-                >
-                  Yes
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => handleRemoveBackgroundChange(false)}
-                >
-                  No
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => handleRemoveBackgroundChange(true)}
+                  >
+                    Yes
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleRemoveBackgroundChange(false)}
+                  >
+                    No
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Col>
           </Row>
 
@@ -444,7 +475,12 @@ const MyClothing = () => {
           <Button variant="secondary" onClick={handleClose} disabled={loading}>
             Close
           </Button>
-          <Button variant="primary" onClick={UploadImage} disabled={loading} style={{ backgroundColor: '#71816d' }}>
+          <Button
+            variant="primary"
+            onClick={UploadImage}
+            disabled={loading}
+            style={{ backgroundColor: "#71816d" }}
+          >
             {loading ? "Uploading..." : "Upload Clothing"}
           </Button>
         </Modal.Footer>
@@ -455,7 +491,7 @@ const MyClothing = () => {
             <Nav>
               <Image src={Logo} roundedCircle className="large-circle" />{" "}
             </Nav>
-            <Navbar.Brand href="#home" className="brand-margin">
+            <Navbar.Brand href="./" className="brand-margin py-0">
               VIRTUAL VOGUE
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -533,7 +569,10 @@ const MyClothing = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
-            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
+            <p
+              className="emptyMesage"
+              style={{ display: arrayEmpty ? "block" : "none" }}
+            >
               Click on New Cloth button to add your first clothing!
             </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
@@ -546,20 +585,26 @@ const MyClothing = () => {
                   <Card.Body style={{ position: "relative" }}>
                     <Row>
                       <Col>
-                      <a href={imagesURL[i]} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <div
-                          className="icon-wrapper"
-                          onClick={(event) => deleteImage(event, imagesURL[i])}
+                        <a
+                          href={imagesURL[i]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ textDecoration: "none" }}
                         >
-                          <FaTrashAlt style={{ color: "black" }} />
-                        </div>
-                        <img
-                          src={imagesURL[i]}
-                          alt="Selected"
-                          className="card-image"
-                        />
-                       </a>
-
+                          <div
+                            className="icon-wrapper"
+                            onClick={(event) =>
+                              deleteImage(event, imagesURL[i])
+                            }
+                          >
+                            <FaTrashAlt style={{ color: "black" }} />
+                          </div>
+                          <img
+                            src={imagesURL[i]}
+                            alt="Selected"
+                            className="card-image"
+                          />
+                        </a>
                       </Col>
                     </Row>
                     <Row>

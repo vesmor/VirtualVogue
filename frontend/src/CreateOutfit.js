@@ -110,7 +110,11 @@ const CreateOutfit = () => {
 
   const UploadImage = async (event) => {
     event.preventDefault();
-    if (!outfitName || outfitName.length > 14 || !/^[a-zA-Z0-9\s]+$/.test(outfitName)) {
+    if (
+      !outfitName ||
+      outfitName.length > 14 ||
+      !/^[a-zA-Z0-9\s]+$/.test(outfitName)
+    ) {
       setMessage(
         "Outfits must have a unique name, no special characters, and a maximum length of 14 characters."
       );
@@ -252,35 +256,49 @@ const CreateOutfit = () => {
             </Col>
           </Row>
           <Row>
-            <p className="mt-3" style={{ marginLeft: '2%' }}>Give a name to this outfit!</p>
+            <p className="mt-3" style={{ marginLeft: "2%" }}>
+              Give a name to this outfit!
+            </p>
             <Col style={{ fontFamily: "Roboto" }}>
               <Form.Group controlId="idFirstName">
                 <Row>
-                <Col md={2}>
-                    <Form.Label classname="mt-2"  style={{ fontFamily: "Roboto" }}> Name:</Form.Label>
-                </Col>
-                <Col  md={10}>
-                  <Form.Control
-                          type="text"
-                          placeholder="Outfit Name"
-                          value={outfitName}
-                          onChange={(e) => setOutfitName(e.target.value)}
-                          style={{ width: '90%' }}
-                        />
+                  <Col md={2}>
+                    <Form.Label
+                      classname="mt-2"
+                      style={{ fontFamily: "Roboto" }}
+                    >
+                      {" "}
+                      Name:
+                    </Form.Label>
+                  </Col>
+                  <Col md={10}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Outfit Name"
+                      value={outfitName}
+                      onChange={(e) => setOutfitName(e.target.value)}
+                      style={{ width: "90%" }}
+                    />
                   </Col>
                 </Row>
               </Form.Group>
             </Col>
           </Row>
           <Row>
-            <Col  style={{ fontFamily: "Roboto", marginLeft:'2%'}}>{message}</Col>
+            <Col style={{ fontFamily: "Roboto", marginLeft: "2%" }}>
+              {message}
+            </Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={UploadImage} style={{ backgroundColor: '#71816d' }}>
+          <Button
+            variant="primary"
+            onClick={UploadImage}
+            style={{ backgroundColor: "#71816d" }}
+          >
             Create
           </Button>
         </Modal.Footer>
@@ -291,7 +309,7 @@ const CreateOutfit = () => {
             <Nav>
               <Image src={Logo} roundedCircle className="large-circle" />{" "}
             </Nav>
-            <Navbar.Brand href="#home" className="brand-margin">
+            <Navbar.Brand href="./" className="brand-margin py-0">
               VIRTUAL VOGUE
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -357,8 +375,12 @@ const CreateOutfit = () => {
                 <p className="myClothing">{clothingText}</p>
               </Col>
             </Row>
-            <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
-              You don't have any clothing yet! <br></br> Click on My clothing tab and add some shirts and pants!
+            <p
+              className="emptyMesage"
+              style={{ display: arrayEmpty ? "block" : "none" }}
+            >
+              You don't have any clothing yet! <br></br> Click on My clothing
+              tab and add some shirts and pants!
             </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (

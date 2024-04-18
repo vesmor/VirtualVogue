@@ -71,7 +71,7 @@
   background-color: #c1c1c1;
   border: #000000;
   width: auto;
-  height: 425px;
+  height: 400px;
   border-radius: 15px;
 }
 
@@ -125,6 +125,17 @@
   left: 0;
   right: 0;
   top: 0;
+}
+
+.myOutfit {
+  color: #342a21;
+  /* text-align: center; */
+  font-family: "Lemands";
+  font-size: 300%;
+  margin-right: 30px;
+  margin-bottom: 0%;
+  /* margin-top: 40px; */
+  /* position: absolute; */
 }
 
 .outfitTag {
@@ -182,7 +193,7 @@
   font-size: 200%;
 }
 
-.emptyMessageOutfit{
+.emptyMessageOutfit {
   position: absolute;
   top: 50%;
   left: 50%;

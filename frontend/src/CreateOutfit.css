@@ -93,11 +93,18 @@
   justify-content: center;
   align-items: center;
 }
+.myClothing {
+  color: #342a21;
+  font-family: "Lemands";
+  font-size: 300%;
+  margin-right: 30px;
+  margin-bottom: 0%;
+}
 
 .card-container {
   flex: 1;
   overflow-y: auto;
   height: calc(
-    100% - 48px
+    100% - 72px
   ); /* Replace 56px with the height of your search bar row */
 }
