@@ -47,6 +47,7 @@
 .landing-card {
   display: flex;
   flex-direction: column;
+  /* justify-content: space-between; */
   background-color: #c9b79c;
   border: #000000;
   width: 275px;
@@ -58,11 +59,11 @@
 }
 
 .landing-text {
-  padding-top: 4%;
-  padding-bottom: 2%;
+  /* padding-top: 4%;
+  padding-bottom: 2%; */
   text-align: center;
   justify-content: center;
-  display: flex;
+  /* display: flex; */
 }
 
 .bold-outline-btn {
@@ -83,8 +84,8 @@
 
 .image-holder {
   width: 100%; /* This will make the image take the full width of the card */
-  max-height: 180px; /* This will ensure the image never grows larger than the card */
-  object-fit: contain; /* This will ensure the image fits within the card */
+  max-height: 180px;
+  /* object-fit: contain; */
   margin: 0px;
 }
 

@@ -20,7 +20,6 @@ const Home = () => {
   const [doFirstFetch, setDoFirstFech] = useState(true);
   const [arrayEmpty, setArrayEmpty] = useState(false);
 
-
   const app_name = "virtvogue-af76e325d3c9";
   function buildPath(route) {
     if (process.env.NODE_ENV === "production") {
@@ -124,7 +123,7 @@ const Home = () => {
   };
 
   const searchOutfit = async (value) => {
-    if(!value){
+    if (!value) {
       fetchOutfits();
     }
     else{
@@ -139,7 +138,7 @@ const Home = () => {
               method: "GET",
             }
           );
-  
+
           let res = await response.json();
           if (!res.error || res.searchResults.length > 0) {
             setNumPictures(res.searchResults.length);
@@ -151,7 +150,7 @@ const Home = () => {
               return newImagesURL;
             });
             setArrayEmpty(false);
-            } else {
+          } else {
             setNumPictures(0);
             console.error("No links were given");
           }
@@ -162,7 +161,7 @@ const Home = () => {
         console.error("Error fetching data:", error);
       }
     }
-  }
+  };
 
   return (
     <Container fluid className="main-container">

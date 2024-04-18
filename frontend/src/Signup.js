@@ -108,11 +108,11 @@ const Signup = () => {
     <Container fluid className="signupContainer">
       <Row className="rowContainer">
         <Col className="leftColumn">
-          <Row className="justify-content-center align-items-center">
+          <Row className="justify-content-center align-items-center mt-5">
             <h2 className="leftText">Virtual Vogue</h2>
           </Row>
           <Row className="justify-content-center align-items-center mt-5">
-            <Col xs={6} className="text-center">
+            <Col xs={6} xl={5} className="text-center">
               <Image src={Logo} roundedCircle className="big-logo" />
             </Col>
             {/* <Row className="justify-content-center align-items-center">
@@ -126,7 +126,7 @@ const Signup = () => {
           </Row>
         </Col>
 
-        <Col className="rightColumn">
+        <Col className="rightColumn d-flex flex-column justify-content-center align-items-center">
           <Form onSubmit={doRegister} className="signupForm">
             <h2 className="signupTitle">SIGN UP</h2>
 
