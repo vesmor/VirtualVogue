@@ -52,7 +52,7 @@ const CreateOutfit = () => {
     var arr = [...showCheckIcon];
     arr[index] = !arr[index];
     if (arr[index] == true) {
-      if (tag === "Shirt") {
+      if (tag === "Top") {
         if (selectedShirt) return;
         setSelectedShirt(image);
         if (selectedPants) {
@@ -60,7 +60,7 @@ const CreateOutfit = () => {
         } else {
           setIsButtonDisabled(true);
         }
-      } else if (tag === "Pants") {
+      } else if (tag === "Bottom") {
         if (selectedPants) return;
         setSelectedPants(image);
         if (selectedShirt) {
@@ -70,9 +70,9 @@ const CreateOutfit = () => {
         }
       }
     } else {
-      if (tag === "Shirt") {
+      if (tag === "Top") {
         setSelectedShirt(null);
-      } else if (tag === "Pants") {
+      } else if (tag === "Bottom") {
         setSelectedPants(null);
       }
       setIsButtonDisabled(true);
@@ -95,16 +95,16 @@ const CreateOutfit = () => {
       setPantsColor(false);
       setShirtIconColor(false);
       setClothingText("Create Outfits");
-      fetchTagData("Shirt,Pants");
+      fetchTagData("Top,Bottom");
     } else if (shirtCheck) {
-      setClothingText("My shirts");
-      fetchTagData("Shirt");
+      setClothingText("My Tops");
+      fetchTagData("Top");
     } else if (pantsCheck) {
-      setClothingText("My pants");
-      fetchTagData("Pants");
+      setClothingText("My Bottoms");
+      fetchTagData("Bottom");
     } else {
       setClothingText("Create Outfits");
-      fetchTagData("Shirt,Pants");
+      fetchTagData("Top,Bottom");
     }
   };
 
@@ -125,9 +125,9 @@ const CreateOutfit = () => {
 
     let jsonPayload = JSON.stringify({
       shirtURL: selectedShirt,
-      shirtTag: "Shirt",
+      shirtTag: "Top",
       pantsURL: selectedPants,
-      pantsTag: "Pants",
+      pantsTag: "Bottom",
       outfitName: outfitName,
     });
 
@@ -209,7 +209,7 @@ const CreateOutfit = () => {
     var firstTime = doFirstFetch;
     if (firstTime) {
       setDoFirstFech(false);
-      fetchTagData("Shirt,Pants");
+      fetchTagData("Top,Bottom");
     } else {
       // Logic that depends on imagesURL
       if (selectedShirt || selectedPants) {
@@ -358,7 +358,7 @@ const CreateOutfit = () => {
               </Col>
             </Row>
             <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
-              You don't have any clothing yet! <br></br> Click on My clothing tab and add some shirts and pants!
+              You don't have any clothing yet! <br></br> Click on My clothing tab and add some tops and bottoms!
             </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (

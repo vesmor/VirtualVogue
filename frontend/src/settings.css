@@ -47,6 +47,7 @@ color: #342A21;
   .form-label {
     margin-right: 10px; /* Adjust spacing between label and input */
     width: 150px; /* Set a fixed width for the labels */
+    margin-top: 5px;
   }
   
   .SettingsForm input[type="text"],

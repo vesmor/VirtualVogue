@@ -37,6 +37,7 @@ const MyClothing = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [message, setMessage] = useState();
   const [loading, setLoading] = useState(false);
+  const [messageColorRed, setMessageColorRed] = useState(false);
 
   //Count number of pictures to be displayed so far
   const [numPictures, setNumPictures] = useState(0);
@@ -51,6 +52,7 @@ const MyClothing = () => {
     setSelectedTag("");
     setRemoveBackground(false);
     setMessage("");
+    setMessageColorRed(false);
   };
   const handleShow = () => setShowModal(true);
 
@@ -104,20 +106,20 @@ const MyClothing = () => {
       setDressColor(false);
       setPantsColor(false);
     } else if (shirtCheck && dressCheck) {
-      setClothingText("My Shirts & Dresses");
-      fetchTagData("Shirt,Dress");
+      setClothingText("My Top & Dresses");
+      fetchTagData("Top,Dress");
     } else if (shirtCheck && pantsCheck) {
-      setClothingText("My Shirts & Pants");
-      fetchTagData("Shirt,Pants");
+      setClothingText("My Tops & Bottoms");
+      fetchTagData("Top,Bottom");
     } else if (dressCheck && pantsCheck) {
-      setClothingText("My Dresses & Pants");
-      fetchTagData("Dress,Pants");
+      setClothingText("My Dresses & Bottoms");
+      fetchTagData("Dress,Bottom");
     } else if (shirtCheck) {
-      setClothingText("My Shirts");
-      fetchTagData("Shirt");
+      setClothingText("My Tops");
+      fetchTagData("Top");
     } else if (pantsCheck) {
-      setClothingText("My Pants");
-      fetchTagData("Pants");
+      setClothingText("My Bottoms");
+      fetchTagData("Bottom");
     } else if (dressCheck) {
       setClothingText("My Dresses");
       fetchTagData("Dress");
@@ -130,6 +132,7 @@ const MyClothing = () => {
   const UploadImage = async (event) => {
     event.preventDefault();
     if (!selectedTag) {
+      setMessageColorRed(true);
       setMessage("Please select a clothing type");
       return;
     }
@@ -143,7 +146,8 @@ const MyClothing = () => {
     var formData = new FormData();
     formData.append("tag", selectedTag);
     if (removeBackground) {
-      setMessage("Removing background, this might take a minute");
+      setMessageColorRed(false);
+      setMessage("Removing background, this might take a minute...");
       const processedImage = await imglyRemoveBackground(selectedImage);
       setSelectedImage(processedImage);
       formData.append("image", processedImage);
@@ -163,9 +167,11 @@ const MyClothing = () => {
       let res = await response.json();
 
       if (res.success) {
+        setMessageColorRed(false);
         setMessage(res.message);
         fetchAllData();
       } else {
+        setMessageColorRed(true);
         setMessage(res.message);
       }
       setLoading(false);
@@ -345,11 +351,11 @@ const MyClothing = () => {
     <>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton={!loading}>
-          <Modal.Title style={{ fontFamily: "Lemands" }}>Upload New Cloth</Modal.Title>
+          <Modal.Title style={{ fontFamily: "Lemands" }}>Upload New Clothing Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <p style={{ fontFamily: "Roboto" }}>Upload your cloth image: </p>
+            <p style={{ fontFamily: "Roboto" }}>Upload an image: </p>
             {selectedImage && (
               <img
                 className="mb-4"
@@ -381,11 +387,11 @@ const MyClothing = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleTagChange("Shirt")}>
-                  Shirt
+                <Dropdown.Item onClick={() => handleTagChange("Top")}>
+                  Top
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleTagChange("Pants")}>
-                  Pants
+                <Dropdown.Item onClick={() => handleTagChange("Bottom")}>
+                  Bottom
                 </Dropdown.Item>
                 <Dropdown.Item onClick={() => handleTagChange("Dress")}>
                   Dress
@@ -437,7 +443,7 @@ const MyClothing = () => {
           </Row>
 
           <Row>
-            <p>{message}</p>
+            <p style={{ color: messageColorRed ? 'red' : 'black'}}>{message}</p>
           </Row>
         </Modal.Body>
         <Modal.Footer>
@@ -522,7 +528,7 @@ const MyClothing = () => {
                 size="lg"
                 onClick={handleShow}
               >
-                New Cloth
+                New Item
               </Button>
             </Row>
           </Col>
@@ -534,7 +540,7 @@ const MyClothing = () => {
               </Col>
             </Row>
             <p className="emptyMesage" style={{ display: arrayEmpty ? "block" : "none" }}>
-              Click on New Cloth button to add your first clothing!
+              Click on New Item button to add your first clothing!
             </p>
             <Container className="card-container flex: 1 overflow-y-auto pb-3">
               {[...Array(numPictures)].map((_, i) => (

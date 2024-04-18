@@ -206,7 +206,7 @@ const Settings = () => {
 
             {/* Last name field */}
             <Form.Group controlId="idLastName" className="form-group">
-            <Form.Label>Last name:</Form.Label>
+            <Form.Label className="mt-2">Last name:</Form.Label>
             <Form.Control
                 type="text"
                 placeholder= {lastName}
@@ -228,7 +228,7 @@ const Settings = () => {
 
             {/* Email field */}
             <Form.Group controlId="idEmail" className="form-group">
-            <Form.Label>Email:</Form.Label>
+            <Form.Label className="mt-2">Email:</Form.Label>
             <Form.Control
                 type="text"
                 placeholder={email}
@@ -250,7 +250,7 @@ const Settings = () => {
 
             {/* Login ID field */}
             <Form.Group controlId="idLogin" className="form-group">
-            <Form.Label>Username:</Form.Label>
+            <Form.Label className="mt-2">Username:</Form.Label>
             <Form.Control
                 type="text"
                 placeholder={login }
@@ -272,7 +272,7 @@ const Settings = () => {
 
             {/* Password field */}
             <Form.Group controlId="idPassword" className="form-group">
-            <Form.Label>Password:</Form.Label>
+            <Form.Label className="mt-2">Password:</Form.Label>
             <Form.Control
                 type="password"
                 placeholder={password}
