@@ -171,7 +171,7 @@ const Home = () => {
           <Nav>
             <Image src={Logo} roundedCircle className="large-circle" />{" "}
           </Nav>
-          <Navbar.Brand href="#home" className="brand-margin">
+          <Navbar.Brand href="./" className="brand-margin py-0">
             VIRTUAL VOGUE
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -188,21 +188,25 @@ const Home = () => {
       </Row>
       <Row style={{ height: "10%" }}>
         <Col xs={4}>
-        <Form.Control
+          <Form.Control
             className="homeSearchBar"
             type="search"
             placeholder="Search"
             onChange={(e) => searchOutfit(e.target.value)}
           />
         </Col>
-        <Col xs={8} className="d-flex justify-content-end">
+        <Col xs={8} className="d-flex justify-content-end align-items-center">
           <p className="myOutfit">My Outfits</p>
         </Col>
       </Row>
       <Row style={{ height: "80%", overflow: "auto" }}>
-      <p className="emptyMessageOutfit" style={{ display: arrayEmpty ? "block" : "none" }}>
-              You don't have any outfits yet! <br></br> Go to create outfit tab to create one!
-      </p>
+        <p
+          className="emptyMessageOutfit"
+          style={{ display: arrayEmpty ? "block" : "none" }}
+        >
+          You don't have any outfits yet! <br></br> Go to create outfit tab to
+          create one!
+        </p>
         <Container className="card-container p-3">
           {[...Array(numPictures)].map((_, i) => (
             <Card key={i} className="cardOutfit p-0">
@@ -237,11 +241,11 @@ const Home = () => {
                   />
                 </Col>
               </Row>
-              <Row className="outfitTag">
+              {/* <Row className="outfitTag">
                 <Col>
                   <h1>{"Outfit"}</h1>
                 </Col>
-              </Row>
+              </Row> */}
             </Card>
           ))}
         </Container>
