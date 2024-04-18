@@ -106,20 +106,20 @@ const MyClothing = () => {
       setDressColor(false);
       setPantsColor(false);
     } else if (shirtCheck && dressCheck) {
-      setClothingText("My Top & Dresses");
-      fetchTagData("Top,Dress");
+      setClothingText("My Shirts & Dresses");
+      fetchTagData("Shirt,Dress");
     } else if (shirtCheck && pantsCheck) {
-      setClothingText("My Tops & Bottoms");
-      fetchTagData("Top,Bottom");
+      setClothingText("My Shirts & Pants");
+      fetchTagData("Shirt,Pants");
     } else if (dressCheck && pantsCheck) {
-      setClothingText("My Dresses & Bottoms");
-      fetchTagData("Dress,Bottom");
+      setClothingText("My Dresses & Pants");
+      fetchTagData("Dress,Pants");
     } else if (shirtCheck) {
-      setClothingText("My Tops");
-      fetchTagData("Top");
+      setClothingText("My Shirts");
+      fetchTagData("Shirt");
     } else if (pantsCheck) {
-      setClothingText("My Bottoms");
-      fetchTagData("Bottom");
+      setClothingText("My Pants");
+      fetchTagData("Pants");
     } else if (dressCheck) {
       setClothingText("My Dresses");
       fetchTagData("Dress");
@@ -387,11 +387,11 @@ const MyClothing = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleTagChange("Top")}>
-                  Top
+                <Dropdown.Item onClick={() => handleTagChange("Shirt")}>
+                  Shirt
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleTagChange("Bottom")}>
-                  Bottom
+                <Dropdown.Item onClick={() => handleTagChange("Pants")}>
+                  Pants
                 </Dropdown.Item>
                 <Dropdown.Item onClick={() => handleTagChange("Dress")}>
                   Dress
