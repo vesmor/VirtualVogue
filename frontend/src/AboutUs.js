@@ -19,7 +19,7 @@ import eyes from "./img/eyes.jpg";
 import dora from "./img/dora.png";
 import j from "./img/j.png";
 import sev from "./img/sev.png";
-import emy from "./img/emy.png";
+import emy from "./img/emily.png";
 import alex from "./img/alex.jpeg";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -135,7 +135,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="m-0 imageTagText">joe</h1>
+                <h1 className="m-0 imageTagText">Jonathan</h1>
               </Col>
             </Row>
           </Card>
@@ -150,7 +150,7 @@ const LandingPage = () => {
             </Row>
             <Row>
               <Col>
-                <h1 className="imageTagText">vesron</h1>
+                <h1 className="imageTagText">Vesron</h1>
               </Col>
             </Row>
           </Card>
